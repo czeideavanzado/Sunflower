@@ -1,0 +1,96 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8"/>
+    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!--webfonts-->
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'/>
+    <!--//webfonts-->
+</head>
+
+<body>
+<div id="root" class="main">
+    <form>
+        <div class="label">
+            <div class="col_1_of_2 span_1_of_2">
+                <input v-model="first_name" id="first_name" type="text" class="text" placeholder="First Name"/>
+            </div>
+            <div class="col_1_of_2 span_1_of_2">
+                <input v-model="last_name" id="last_name" type="text" class="text" placeholder="Last Name"/>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="label-2">
+            <input v-model="username" id="username" type="text" class="text" placeholder="example@gmail.com"/>
+            <input v-model="password" id="password" type="password" class="text" placeholder="Password"/>
+            <input v-model="passwordConfirm" id="passwordConfirm" type="password" class="text" placeholder="Confirm Password"/>
+        </div>
+        <h3>By creating an account, you agree to our
+            <span class="term">
+					<a href="#">Terms &amp; Conditions</a>
+            </span>
+        </h3>
+        <div class="submit">
+            <input v-on:click="register" type="submit" value="Create account"/>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
+<!-- start-copyright -->
+<div class="copy-right">
+    <p>Template by
+        <a href="http://w3layouts.com">w3layouts</a>
+    </p>
+</div>
+<!-- //end-copyright -->
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://vuejs.org/js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: '#root',
+        data: {
+            first_name: '',
+            last_name: '',
+            username: '',
+            password: '',
+            passwordConfirm: ''
+        },
+        methods: {
+            register() {
+                if (this.password !== this.passwordConfirm) {
+                    alert("Passwords do not match");
+                    return;
+                }
+                axios({
+                    method: 'post',
+                    url: 'register',
+                    data: {
+                        first_name: this.first_name,
+                        last_name: this.last_name,
+                        username: this.username,
+                        password: this.password,
+                        passwordConfirm: this.passwordConfirm
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+</html>
