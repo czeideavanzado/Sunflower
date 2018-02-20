@@ -1,57 +1,49 @@
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
 
-$(document).ready(function(){
+function set_cookie(name, value) {
+    document.cookie = name +'='+ value +'; Path=/;';
+}
+function delete_cookie(name) {
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
 
+window.Event = new Vue({
+    data: {isLoggedIn: false}
+});
 
-	/* ---- Countdown timer ---- */
-
-	$('#counter').countdown({
-		timestamp : (new Date('2/22/2018')).getTime()
-	});
-
-
-	/* ---- Animations ---- */
-
-	$('#links a').hover(
-		function(){ $(this).animate({ left: 3 }, 'fast'); },
-		function(){ $(this).animate({ left: 0 }, 'fast'); }
-	);
-
-	$('footer a').hover(
-		function(){ $(this).animate({ top: 3 }, 'fast'); },
-		function(){ $(this).animate({ top: 0 }, 'fast'); }
-	);
-
-
-	/* ---- Using Modernizr to check if the "required" and "placeholder" attributes are supported ---- */
-
-	if (!Modernizr.input.placeholder) {
-		$('.email').val('Input your e-mail address here...');
-		$('.email').focus(function() {
-			if($(this).val() == 'Input your e-mail address here...') {
-				$(this).val('');
-			}
-		});
-	}
-
-	// for detecting if the browser is Safari
-	var browser = navigator.userAgent.toLowerCase();
-
-	if(!Modernizr.input.required || (browser.indexOf("safari") != -1 && browser.indexOf("chrome") == -1)) {
-		$('form').submit(function() {
-			$('.popup').remove();
-			if(!$('.email').val() || $('.email').val() == 'Input your e-mail address here...') {
-				$('form').append('<p class="popup">Please fill out this field.</p>');
-				$('.email').focus();
-				return false;
-			}
-		});
-		$('.email').keydown(function() {
-			$('.popup').remove();
-		});
-		$('.email').blur(function() {
-			$('.popup').remove();
-		});
-	}
-
-
+Vue.component('login-component',{
+    data: function(){
+        return {logged_in_msg : ""}
+    },
+    mounted(){
+        if(getCookie("access_token")){
+            axios.get("/getUsername?access_token=" + getCookie("access_token"))
+                .then(function(response){
+                    this.logged_in_msg = "Welcome back , " + response.data;
+                    window.Event.isLoggedIn = true;
+                    Event.$emit('logged-in');
+                }.bind(this))
+                .catch(function(error){
+                    delete_cookie("access_token");
+                    return error;
+                });
+        }
+    },
+    methods : {
+        logOut(){
+            axios.get("/logouts?access_token="+getCookie("access_token"))
+                .then(function(response){
+                    window.Event.isLoggedIn = false;
+                    this.logged_in_msg  = "Successfully logged out";
+                    delete_cookie("access_token")
+                }.bind(this))
+        },
+        isLoggedIn(){
+            return window.Event.isLoggedIn;
+        }
+    }
 });

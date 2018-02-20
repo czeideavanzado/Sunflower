@@ -5,30 +5,34 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE html>
-<html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta charset="utf-8" />
-    <link href="css/style.css" rel='stylesheet' type='text/css' />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <meta charset="utf-8"/>
+    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
     <!--webfonts-->
-    <link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css' />
+    <link href='http://fonts.googleapis.com/css?family=Oxygen:400,300,700' rel='stylesheet' type='text/css'/>
     <!--//webfonts-->
 </head>
 
 <body>
-<div class="main">
-    <form>
-        <div class="label-2">
-            <input type="text" class="text" placeholder="Username" />
-            <input type="password" class="text" placeholder="Password" />
-        </div>
-        <div class="submit">
-            <input type="submit" value="Login" />
-        </div>
-        <div class="clear"> </div>
-    </form>
+<div id="root" class="main">
+    <div class="label-2">
+        <input v-model="username" id="username" type="text" class="text" placeholder="Username"/>
+        <input v-model="password" id="password" type="password" class="text" placeholder="Password"/>
+    </div>
+    <div class="submit">
+        <input v-on:click="login" type="submit" value="Login"/>
+    </div>
+    <div class="clear"></div>
 </div>
 <!-- start-copyright -->
 <div class="copy-right">
@@ -38,7 +42,37 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </div>
 <!-- //end-copyright -->
 </body>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://vuejs.org/js/vue.js"></script>
-
+<div th:replace="fragment/footer :: foot"></div>
+<script>
+    var app = new Vue({
+        el: '#root',
+        mounted() {
+            Event.$on('logged-in', function () {
+                window.location.replace("/");
+            })
+        },
+        data: {
+            username: '',
+            password: '',
+        },
+        methods: {
+            login() {
+                var params = new URLSearchParams();
+                params.append('grant_type', 'password');
+                params.append('username', this.username);
+                params.append('password', this.password);
+                axios({
+                    method: 'post',
+                    url: 'oauth/token',
+                    auth: {username: 'my-trusted-client', password: 'secret'},
+                    headers: {"Content-type": "application/x-www-form-urlencoded; charset=utf-8"},
+                    data: params
+                }).then(function (response) {
+                    set_cookie("access_token", response.data.access_token);
+                    document.location.replace("/");
+                });
+            }
+        }
+    });
+</script>
 </html>

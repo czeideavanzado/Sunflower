@@ -11,7 +11,7 @@ public class SunflowerController {
 
     @GetMapping(value = "/")
     public String index() {
-        return "index";
+        return "development/index";
     }
 
     @GetMapping(value = "/login")
