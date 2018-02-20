@@ -63,6 +63,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script>
     var app = new Vue({
         el: '#root',
+        mounted() {
+            Event.$on('logged-in',function(){
+                window.location.replace("/");
+            })
+        },
         data: {
             first_name: '',
             last_name: '',

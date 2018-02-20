@@ -49,60 +49,6 @@ body{
     text-align:left;
     font-family: 'Oxygen', sans-serif;
 }
-
-ul.facebook{
-    list-style:none;
-    padding:0;
-    -webkit-transition: all 0.5s ease-out;
-    -moz-transition: all 0.5s ease-out;
-    -ms-transition: all 0.5s ease-out;
-    -o-transition: all 0.5s ease-out;
-    background: #3B5998;
-    padding: 12px;
-}
-i.fb{
-    width:30px;
-    height:30px;
-    background:url(../images/fb.png);
-    float:left;
-    margin-right: 2em;
-}
-ul.facebook li{
-    color:#fff;
-    font-size:1em;
-    float: left;
-    margin-top: 5px;
-}
-ul.facebook:hover{
-    background: #5D7BBA;
-}
-
-ul.twitter{
-    list-style:none;
-    padding:0;
-    -webkit-transition: all 0.5s ease-out;
-    -moz-transition: all 0.5s ease-out;
-    -ms-transition: all 0.5s ease-out;
-    -o-transition: all 0.5s ease-out;
-    background:#55ACEE;
-    padding: 12px;
-}
-i.tw{
-    width:30px;
-    height:30px;
-    background:url(../images/tw.png);
-    float:left;
-    margin-right: 2em;
-}
-ul.twitter li{
-    color:#fff;
-    font-size:1em;
-    float: left;
-    margin-top: 5px;
-}
-ul.twitter:hover{
-    background: #71B8ED;
-}
 span.term a{
     color: #1888A8;
     font-weight: bold;
@@ -238,9 +184,6 @@ input[type=submit] {
     }
     .span_1_of_f {
         width: 50%;
-    }
-    i.fb, i.tw {
-        margin-right: 1em;
     }
     .main {
         width: 50%;

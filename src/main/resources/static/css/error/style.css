@@ -66,53 +66,6 @@ h1 {
     font-size: 25px;
     color: #e6e6e6;
 }
-/*-- form --*/
-.newsletter input[type="email"] {
-    width: 45%;
-    padding: 13px 55px 13px 16px;
-    border: none;
-    border: 1px solid #d4284b;
-    text-align: left;
-    color: #fff;
-    background-color: #191818;
-    outline: none;
-    border-radius: 25px;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    -ms-border-radius: 25px;
-    -o-border-radius: 25px;
-    font-family: 'Roboto Condensed', sans-serif;
-}
-.newsletter {
-    position: relative;
-    margin: 75px auto 55px;
-}
-.newsletter input[type="submit"] {
-    width: 47px;
-    height: 31px;
-    background-image: url('../images/email.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    position: absolute;
-    background-color: rgba(216, 40, 76, 0.98);
-    top: 6px;
-    right: 199px;
-    padding: 0em;
-    border: none;
-    outline: none;
-    border-radius: 17px;
-    -webkit-border-radius: 17px;
-    -moz-border-radius: 17px;
-    -ms-border-radius: 17px;
-    -o-border-radius: 17px;
-    -webkit-transition: all 0.2s ease 0s;
-    -moz-transition: all 0.2s ease 0s;
-    -o-transition: all 0.2s ease 0s;
-    -ms-transition: all 0.2s ease 0s;
-    transition: all 0.2s ease 0s;
-    cursor:pointer;
-}
-/*-- //form --*/
 /*--copy-right-starts-here--*/
 .copyright-w3-agile {
     margin: 0 auto;

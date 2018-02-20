@@ -28,6 +28,11 @@ public class SunflowerController {
         return "register";
     }
 
+    @GetMapping(value = "/home")
+    public String home() {
+        return "index";
+    }
+
     @RequestMapping("404")
     public String get404ErrorPage() {
         return "error/404";
