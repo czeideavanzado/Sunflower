@@ -65,7 +65,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         el: '#root',
         mounted() {
             Event.$on('logged-in',function(){
-                window.location.replace("/");
+                window.location.replace("/home");
             })
         },
         data: {
@@ -92,7 +92,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         passwordConfirm: this.passwordConfirm
                     }
                 }).then(function (response) {
-                    document.location.replace("/");
+                    document.location.replace("/home");
                 });
             }
         }

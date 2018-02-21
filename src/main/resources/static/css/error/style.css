@@ -31,7 +31,7 @@ img{max-width:100%;}
 body {
     font-family: 'Roboto Condensed', sans-serif;
     width: 100%;
-    background:#1f253d;
+    background: #3C4C55;
     text-align:center;
 }
 h1 {
@@ -46,7 +46,7 @@ h1 {
 .main-wthree {
     width: 52%;
     margin: 0 auto 3%;
-    background: rgba(216, 40, 76, 0.98);
+    background: #4F4F4F;
     border: 10px solid #FFFDFE;
 }
 .main-wthree h2 {

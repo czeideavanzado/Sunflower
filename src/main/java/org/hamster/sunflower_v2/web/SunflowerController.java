@@ -32,14 +32,4 @@ public class SunflowerController {
     public String home() {
         return "index";
     }
-
-    @RequestMapping("404")
-    public String get404ErrorPage() {
-        return "error/404";
-    }
-
-    @RequestMapping("401")
-    public String get401ErrorPage() {
-        return "error/401";
-    }
 }

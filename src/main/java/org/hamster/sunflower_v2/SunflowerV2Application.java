@@ -17,9 +17,6 @@ public class SunflowerV2Application {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private RoleRepository roleRepository;
-
 	public static void main(String[] args) {
 		SpringApplication.run(SunflowerV2Application.class, args);
 	}
