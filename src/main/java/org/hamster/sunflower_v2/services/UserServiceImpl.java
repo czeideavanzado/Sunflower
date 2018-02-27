@@ -10,9 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
@@ -48,6 +46,16 @@ public class UserServiceImpl implements UserService {
         user.setUsername(accountDto.getUsername());
         user.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByRole("BUYER"))));
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return new ArrayList<>(userRepository.findAll());
     }
 
     private boolean emailExist(String username) {

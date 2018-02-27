@@ -1,7 +1,5 @@
-package org.hamster.sunflower_v2.configuration;
+package org.hamster.sunflower_v2.configurations;
 
-import org.hamster.sunflower_v2.domain.models.CustomUserDetails;
-import org.hamster.sunflower_v2.domain.models.UserRepository;
 import org.hamster.sunflower_v2.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +33,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider());
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -53,10 +50,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/", "/registration").permitAll()
-//                .and().formLogin().loginPage("/login").permitAll()
-//                .and().logout().permitAll();
-        http.authorizeRequests().antMatchers("/", "/registration").permitAll();
+        http.authorizeRequests()
+                .antMatchers("/", "/registration").permitAll()
+                    .antMatchers("/admin").hasRole("ADMIN")
+                .and().formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
+                .and().logout().permitAll();
+        http.exceptionHandling().accessDeniedPage("/403");
     }
 }

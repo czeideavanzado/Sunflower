@@ -1,0 +1,111 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sunflower | Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Shoppy Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Custom Theme files -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!--js-->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <!--icons-css-->
+    <link href="css/font-awesome.css" rel="stylesheet" />
+    <!--Google Fonts-->
+    <link href='//fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css' />
+    <link href='//fonts.googleapis.com/css?family=Work+Sans:400,500,600' rel='stylesheet' type='text/css' />
+</head>
+<body>
+<div class="page-container">
+    <div>
+        <div class="mother-grid-inner">
+            <div th:replace="/fragments/navbar :: navbar('guest')"></div>
+            <!--inner block start here-->
+            <div class="inner-block">
+                <!--market updates updates-->
+                <div class="market-updates">
+                    <div class="col-md-12 market-update-gd">
+                        <div class="market-update-block clr-block-1">
+                            <div class="col-md-8 market-update-left">
+                                <h3 th:text="${users.size()}"></h3>
+                                <h4 th:text="'Registered Users'"></h4>
+                            </div>
+                            <div class="col-md-4 market-update-right">
+                                <i class="fa fa-file-text-o"> </i>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <!--market updates end here-->
+                <!--mainpage chit-chating-->
+                <div class="chit-chat-layer1">
+                    <div class="col-md-12 chit-chat-layer1-left">
+                        <div class="work-progres">
+                            <div class="chit-chat-heading">
+                                Users
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Active</th>
+                                        <th>Roles</th>
+                                        <!--<th>Progress</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="user: ${users}">
+                                    <tr>
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.firstName}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.enabled}"></td>
+                                        <td>
+                                            <select>
+                                                <option th:each="role : ${user.roles}" th:value="${role.id}" th:text="${role.role}"></option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-xs btn-danger">Deactivate</button>
+                                        </td>
+                                        <!--<td th:text=""></td>-->
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <!--inner block end here-->
+            <!--copy rights start here-->
+            <div class="copyrights">
+                <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+            </div>
+            <!--COPY rights end here-->
+        </div>
+    </div>
+    <div class="clearfix"> </div>
+</div>
+<!--scrolling js-->
+<script src="js/jquery.nicescroll.js"></script>
+<script src="js/scripts.js"></script>
+<!--//scrolling js-->
+<script src="js/bootstrap.js"> </script>
+<!-- mother grid end here-->
+</body>
+</html>

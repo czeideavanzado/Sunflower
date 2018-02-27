@@ -1,4 +1,4 @@
-package org.hamster.sunflower_v2.web;
+package org.hamster.sunflower_v2.controllers;
 
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;

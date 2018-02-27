@@ -1,5 +1,6 @@
 package org.hamster.sunflower_v2.services;
 
+import org.hamster.sunflower_v2.domain.models.CustomUserDetails;
 import org.hamster.sunflower_v2.domain.models.Role;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserRepository;
@@ -13,12 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * Created by ONB-CZEIDE on 02/26/2018
  */
-@Service
+@Service("userDetailsService")
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -32,18 +34,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+
         if (user == null) {
-            throw new UsernameNotFoundException(
-                    "No user found with username: "+ username);
+            throw new UsernameNotFoundException("Username not found");
         }
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-        return  new org.springframework.security.core.userdetails.User
-                (user.getUsername(), user.getPassword().toLowerCase(),
-                        enabled, accountNonExpired,
-                        credentialsNonExpired, accountNonLocked,
+
+        return new org.springframework.security.core.userdetails.User
+                (user.getUsername(), user.getPassword(),
+                        true, true,
+                        true, true,
                         getAuthorities(user.getRoles()));
     }
 
@@ -51,7 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole()));
         }
         return authorities;
     }

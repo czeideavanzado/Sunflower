@@ -45,7 +45,7 @@ a:hover {
 }
 .left-content {
     float: right;
-        width: 86.5%;
+    width: 86.5%;
 }
 .page-container.sidebar-collapsed {
   transition: all 100ms linear;
@@ -376,6 +376,9 @@ span.logo-clr{
 .profile_details_left {
     float: left;
         width: 50%;
+}
+.null {
+    display: none;
 }
 .dropdown-menu {
     box-shadow: 2px 3px 4px rgba(0, 0, 0, .175);
@@ -762,7 +765,12 @@ ul.dropdown-menu {
 	padding:0em 3em 0 1em;
 }
 .profile_img span.prfil-img{
-	float:left;
+	float:left
+}
+.profile_img img {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
 }
 .user-name{
 	 float:left;

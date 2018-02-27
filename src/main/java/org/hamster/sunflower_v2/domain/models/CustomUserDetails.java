@@ -8,50 +8,33 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
  */
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails {
 
-    private Collection<? extends GrantedAuthority> authorities;
-    private String username;
-    private String password;
-
-    public CustomUserDetails(User user) {
-        username = user.getUsername();
-        password = user.getPassword();
-        authorities = translate(user.getRoles());
-    }
-
-    private Collection<? extends GrantedAuthority>  translate(Set<Role> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        for (Role role : roles) {
-            String name = role.getRole().toUpperCase();
-
-            if(!name.startsWith("ROLE_"))
-                name = "ROLE_" + name;
-
-            authorities.add(new SimpleGrantedAuthority(name));
-        }
-
-        return authorities;
+    public CustomUserDetails(final User user) {
+        super(user);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public String getPassword() {
-        return this.password;
+        return super.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.username;
+        return super.getUsername();
     }
 
     @Override

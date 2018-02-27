@@ -40,11 +40,11 @@ public class User {
     public User() {
     }
 
-    public User(String pUsername, String pPassword, String pFirstName, String pLastName) {
-        username = pUsername;
-        password = pPassword;
-        first_name = pFirstName;
-        last_name = pLastName;
+    public User(User user) {
+        username = user.getUsername();
+        password = user.getPassword();
+        first_name = user.getFirstName();
+        last_name = user.getLastName();
     }
 
     public Long getId() {
@@ -69,6 +69,10 @@ public class User {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public void setFirstName(String pFirstName) {
