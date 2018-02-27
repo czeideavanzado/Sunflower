@@ -1,13 +1,32 @@
 package org.hamster.sunflower_v2.domain.models;
 
+import org.hamster.sunflower_v2.domain.constraints.PasswordMatches;
+import org.hamster.sunflower_v2.domain.constraints.ValidEmail;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by ONB-CZEIDE on 02/19/2018
  */
+@PasswordMatches
 public class UserDTO {
 
+    @NotNull
+    @NotEmpty
     private String first_name;
+
+    @NotNull
+    @NotEmpty
     private String last_name;
+
+    @ValidEmail(min = 6, message = "Please enter a valid email.")
+    @NotNull
+    @NotEmpty
     private String username;
+
+    @NotNull
+    @NotEmpty
     private String password;
     private String passwordConfirm;
 
