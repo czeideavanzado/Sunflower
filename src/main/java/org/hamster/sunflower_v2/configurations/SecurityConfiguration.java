@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/registration").permitAll()
                     .antMatchers("/admin").hasRole("ADMIN")
-                .and().formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
+                .and().formLogin().loginPage("/login").permitAll()
                 .and().logout().permitAll();
         http.exceptionHandling().accessDeniedPage("/403");
     }

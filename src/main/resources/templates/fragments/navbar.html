@@ -1,8 +1,8 @@
 <!--header start here-->
-<div class="header-main" th:fragment="navbar(user)" xmlns:th="http://www.w3.org/1999/xhtml">
+<div class="header-main" th:fragment="navbar(loggedUser)" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="header-left">
         <div class="logo-name">
-            <a href="index.html"> <h1>Sunflower</h1>
+            <a th:href="@{/}"> <h1>Sunflower</h1>
                 <!--<img id="logo" src="" alt="Logo"/>-->
             </a>
         </div>
@@ -16,7 +16,7 @@
         <div class="clearfix"> </div>
     </div>
     <div class="header-right">
-        <div th:class="${user == 'admin'} ? 'profile_details_left' : 'null'"><!--notifications of menu start -->
+        <div th:class="${loggedUser == 'admin'} ? 'profile_details_left' : 'null'"><!--notifications of menu start -->
             <!--<ul class="nofitications-dropdown">-->
                 <!--<li class="dropdown head-dpdn">-->
                     <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge">3</span></a>-->
@@ -151,14 +151,14 @@
             <div class="clearfix"> </div>
         </div>
         <!--notification menu end -->
-        <div class="profile_details">
+        <div th:class="${loggedUser != null} ? 'profile_details' : 'null'">
             <ul>
                 <li class="dropdown profile_details_drop">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <div class="profile_img">
                             <span class="prfil-img"><img src="images/p1.png" alt="" /> </span>
                             <div class="user-name">
-                                <p th:text="${loggedUser}"></p>
+                                <p th:if="${loggedUser != null}" th:text="${loggedUser.getFirstName()}"></p>
                             </div>
                             <i class="fa fa-angle-down lnr"></i>
                             <i class="fa fa-angle-up lnr"></i>

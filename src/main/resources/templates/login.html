@@ -33,6 +33,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
         <div class="login-block">
             <form th:action="@{/login}" method="POST">
+                <div class="alert alert-danger alert-dismissable error" th:if="${param.error}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Incorrect username or password </div>
+                <div class="alert alert-success alert-dismissable error" th:if="${param.logout != null}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Logged out successfully </div>
                 <input type="text" id="username" name="username" placeholder="Username" required="" />
                 <input type="password" id="password" name="password" class="lock" placeholder="Password" />
                 <div class="forgot-top-grids">
