@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Service("productService")
 @Transactional
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
     private UserService userService;
@@ -47,6 +47,16 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product find(Long id) {
         return productRepository.findOne(id);
+    }
+
+    @Override
+    public void removeProduct(Long id) {
+        productRepository.delete(id);
+    }
+
+    @Override
+    public User findBySellerByUsername(String username) {
+        return userService.findByUsername(username);
     }
 
     private User getSeller(String username) {

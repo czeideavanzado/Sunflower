@@ -7,14 +7,10 @@ import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,20 +24,18 @@ import javax.validation.Valid;
 public class ProductController {
 
     private ProductService productService;
-    private UserService userService;
 
     private static String PRODUCT_PATH = "product/";
 
     @Autowired
-    public ProductController(ProductService productService, UserService userService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.userService = userService;
     }
 
     @GetMapping(value = "/sell")
     public String sellProductForm(ModelMap modelMap) {
         ProductDTO product = new ProductDTO();
-        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User loggedUser = productService.findBySellerByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("product", product);
         return PRODUCT_PATH + "sell";
@@ -56,5 +50,19 @@ public class ProductController {
         } else {
             return new ModelAndView(PRODUCT_PATH + "sell", "product", productDTO);
         }
+    }
+
+    @GetMapping(value = "/remove/{id}")
+    public ModelAndView removeProduct(@PathVariable("id") Long id) {
+        productService.removeProduct(id);
+        return new ModelAndView(PRODUCT_PATH + "removeConfirmation", "", "");
+    }
+
+    @GetMapping(value = "/myProducts")
+    public String myProducts(ModelMap modelMap) {
+        User seller = productService.findBySellerByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        modelMap.put("loggedUser", seller);
+        modelMap.put("products", seller.getProducts());
+        return PRODUCT_PATH + "my_products";
     }
 }

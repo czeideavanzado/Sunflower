@@ -2439,6 +2439,9 @@ ul.nav.tabs li a span {
     padding: 0.8em 1.5em;
     background: #337AB7;
 }
+.produ-cost a {
+    color: #000000;
+}
 .produ-cost h4 {
     font-size: 1.2em;
     color: #fff;
