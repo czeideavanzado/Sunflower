@@ -11,12 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
  */
 @Controller
+@RequestMapping(value = "/")
 public class SunflowerController {
 
     private UserService userService;
@@ -28,7 +30,7 @@ public class SunflowerController {
         this.productService = productService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping
     public String index(ModelMap modelMap) {
         User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         modelMap.put("products", productService.findAll());
