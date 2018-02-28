@@ -3,7 +3,7 @@ package org.hamster.sunflower_v2.controllers;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
-import org.hamster.sunflower_v2.services.UserServiceImpl;
+import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
@@ -13,7 +13,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
@@ -21,11 +20,11 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping(value = "/registration")
@@ -48,20 +47,15 @@ public class UserController {
     }
 
     private User createUserAccount(UserDTO accountDto, BindingResult result) {
-        User registered = null;
+        User registered;
 
         try {
-            registered = userServiceImpl.registerNewUserAccount(accountDto);
+            registered = userService.registerNewUserAccount(accountDto);
         } catch (EmailExistsException e) {
             return null;
         }
 
         return registered;
-    }
-
-    @GetMapping(value = "/users")
-    public List<User> users() {
-        return userServiceImpl.getAllUsers();
     }
 
     @GetMapping(value = "/getUsername")

@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * Created by ONB-CZEIDE on 02/19/2018
  */
-@Service
+@Service(value = "userService")
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -74,12 +74,4 @@ public class UserServiceImpl implements UserService {
 //            user.setEnabled(true);
 //        userRepository.save(user);
 //    }
-
-    public User getUser(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
 }
