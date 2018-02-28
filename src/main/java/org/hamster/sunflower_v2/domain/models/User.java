@@ -37,6 +37,9 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seller", cascade = CascadeType.ALL)
+    private Set<Product> products;
+
     public User() {
     }
 
@@ -55,47 +58,55 @@ public class User {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
         return first_name;
     }
 
+    public void setFirstName(String first_name) {
+        this.first_name = first_name;
+    }
+
     public String getLastName() {
         return last_name;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public void setLastName(String last_name) {
+        this.last_name = last_name;
     }
 
     public boolean isEnabled() {
         return enabled;
     }
 
-    public void setFirstName(String pFirstName) {
-        first_name = pFirstName;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public void setLastName(String pLastName) {
-        last_name = pLastName;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setPassword(String pPassword) {
-        password = pPassword;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
-    public void setUsername(String pUsername) {
-        username = pUsername;
+    public Set<Product> getProducts() {
+        return products;
     }
 
-    public void setRoles(Set<Role> pRoles) {
-        roles = pRoles;
-    }
-
-    public void setEnabled(Boolean pCondition) {
-        enabled = pCondition;
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 }

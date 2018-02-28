@@ -28,6 +28,13 @@ public class Product {
     @Column(name = "photo")
     private String photo;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seller_id", nullable = false)
+    private User seller;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -59,6 +66,14 @@ public class Product {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
 
     @Override

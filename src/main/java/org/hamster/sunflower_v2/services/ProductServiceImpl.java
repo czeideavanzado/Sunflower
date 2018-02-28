@@ -3,7 +3,9 @@ package org.hamster.sunflower_v2.services;
 import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.domain.models.ProductDTO;
 import org.hamster.sunflower_v2.domain.models.ProductRepository;
+import org.hamster.sunflower_v2.domain.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +19,12 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService{
 
     private ProductRepository productRepository;
+    private UserService userService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, UserService userService) {
         this.productRepository = productRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -30,7 +34,8 @@ public class ProductServiceImpl implements ProductService{
         product.setPrice(productDTO.getPrice());
         product.setDescription(productDTO.getDescription());
 //        product.setPhoto(productDTO.getPhoto());
-
+        User seller = getSeller(SecurityContextHolder.getContext().getAuthentication().getName());
+        product.setSeller(seller);
         return productRepository.save(product);
     }
 
@@ -42,5 +47,9 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product find(Long id) {
         return productRepository.findOne(id);
+    }
+
+    private User getSeller(String username) {
+        return userService.findByUsername(username);
     }
 }
