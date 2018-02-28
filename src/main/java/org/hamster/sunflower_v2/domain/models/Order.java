@@ -13,4 +13,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
+
+    
 }
