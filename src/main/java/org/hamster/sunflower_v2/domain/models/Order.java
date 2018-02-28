@@ -28,6 +28,18 @@ public class Order {
     @JoinColumn(name = "buyer_id", nullable = false)
     private User buyer;
 
+    public Long getId() {
+        return id;
+    }
+
+    public Date getDateOrdered() {
+        return dateOrdered;
+    }
+
+    public String getTransactionStatus() {
+        return transactionStatus;
+    }
+
     public void setDateOrdered(Date dateOrdered) {
         this.dateOrdered = dateOrdered;
     }

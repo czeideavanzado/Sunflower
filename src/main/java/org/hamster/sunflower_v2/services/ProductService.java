@@ -21,5 +21,5 @@ public interface ProductService {
     BigDecimal findPrice(Long id);
 
 
-    User findBySellerByUsername(String username);
+    User findByUserByUsername(String username);
 }

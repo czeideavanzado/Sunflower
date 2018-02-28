@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public User findBySellerByUsername(String username) {
+    public User findByUserByUsername(String username) {
         return getSeller(username);
     }
 

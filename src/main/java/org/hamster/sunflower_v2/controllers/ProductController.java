@@ -4,7 +4,6 @@ import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.domain.models.ProductDTO;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.services.ProductService;
-import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -42,7 +41,7 @@ public class ProductController {
     @GetMapping(value = "/sell")
     public String sellProductForm(ModelMap modelMap) {
         ProductDTO product = new ProductDTO();
-        User loggedUser = productService.findBySellerByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("product", product);
         return PRODUCT_PATH + "sell";
@@ -61,7 +60,7 @@ public class ProductController {
 
     @GetMapping(value = "/edit/{id}")
     public String editProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
-        User loggedUser = productService.findBySellerByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("product", productService.find(id));
         return PRODUCT_PATH + "edit";
@@ -86,9 +85,17 @@ public class ProductController {
 
     @GetMapping(value = "/myProducts")
     public String myProducts(ModelMap modelMap) {
-        User seller = productService.findBySellerByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User seller = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         modelMap.put("loggedUser", seller);
         modelMap.put("products", seller.getProducts());
         return PRODUCT_PATH + "my_products";
+    }
+
+    @GetMapping(value = "/myOrders")
+    public String myOrders(ModelMap modelMap) {
+        User buyer = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        modelMap.put("loggedUser", buyer);
+        modelMap.put("orders", buyer.getOrders());
+        return PRODUCT_PATH + "my_orders";
     }
 }
