@@ -1,7 +1,6 @@
 package org.hamster.sunflower_v2.domain.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by ONB-CZEIDE on 02/28/2018
@@ -9,4 +8,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "transactions")
 public class Transaction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 }
