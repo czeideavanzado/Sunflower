@@ -40,6 +40,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void updateProduct(Product product, Long id) {
+        Product updateProduct = productRepository.findOne(id);
+        updateProduct.setName(product.getName());
+        updateProduct.setPrice(product.getPrice());
+        updateProduct.setDescription(product.getDescription());
+//        updateProduct.setPhoto(product.getPhoto());
+        productRepository.save(updateProduct);
+    }
+
+    @Override
+    public void removeProduct(Long id) {
+        productRepository.delete(id);
+    }
+
+    @Override
     public List<Product> findAll() {
         return productRepository.findAll();
     }
@@ -47,11 +62,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product find(Long id) {
         return productRepository.findOne(id);
-    }
-
-    @Override
-    public void removeProduct(Long id) {
-        productRepository.delete(id);
     }
 
     @Override

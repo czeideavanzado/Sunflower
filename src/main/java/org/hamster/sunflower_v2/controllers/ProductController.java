@@ -1,5 +1,6 @@
 package org.hamster.sunflower_v2.controllers;
 
+import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.domain.models.ProductDTO;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.services.ProductService;
@@ -49,6 +50,25 @@ public class ProductController {
             return new ModelAndView(PRODUCT_PATH + "sellConfirmation", "product", productDTO);
         } else {
             return new ModelAndView(PRODUCT_PATH + "sell", "product", productDTO);
+        }
+    }
+
+    @GetMapping(value = "/edit/{id}")
+    public String editProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
+        User loggedUser = productService.findBySellerByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        modelMap.put("loggedUser", loggedUser);
+        modelMap.put("product", productService.find(id));
+        return PRODUCT_PATH + "edit";
+    }
+
+    @PostMapping(value = "/edit/{id}")
+    public ModelAndView editProduct(@PathVariable("id") Long id, @ModelAttribute("product") @Valid Product product, BindingResult result,
+                                    WebRequest request, Errors errors) {
+        if(!result.hasErrors()) {
+            productService.updateProduct(product, id);
+            return new ModelAndView(PRODUCT_PATH + "editConfirmation", "product", product);
+        } else {
+            return new ModelAndView(PRODUCT_PATH + "edit", "product", product);
         }
     }
 

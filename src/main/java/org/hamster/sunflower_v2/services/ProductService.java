@@ -12,9 +12,11 @@ import java.util.List;
 public interface ProductService {
 
     Product sellProduct(ProductDTO productDTO);
+    void updateProduct(Product product, Long id);
+    void removeProduct(Long id);
     List<Product> findAll();
     Product find(Long id);
-    void removeProduct(Long id);
+
 
     User findBySellerByUsername(String username);
 }
