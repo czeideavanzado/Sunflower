@@ -1,9 +1,6 @@
 package org.hamster.sunflower_v2.services;
 
-import org.hamster.sunflower_v2.domain.models.RoleRepository;
-import org.hamster.sunflower_v2.domain.models.User;
-import org.hamster.sunflower_v2.domain.models.UserDTO;
-import org.hamster.sunflower_v2.domain.models.UserRepository;
+import org.hamster.sunflower_v2.domain.models.*;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,14 +18,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private OrderDetailsService orderDetailsService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, OrderDetailsService orderDetailsService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.orderDetailsService = orderDetailsService;
     }
-
 
     @Transactional
     @Override
@@ -49,6 +47,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -56,6 +59,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return new ArrayList<>(userRepository.findAll());
+    }
+
+    @Override
+    public void addProductToOrders(Product product, String buyer) {
+        User user = userRepository.findByUsername(buyer);
+
+        OrderDetails orderDetails = orderDetailsService.createOrderDetails(product.getId(), user.getId());
+
+        Set<Order> orders = new HashSet<>();
+        orders.add(orderDetails.getOrder());
+
+        user.setOrders(orders);
+
+        userRepository.save(user);
     }
 
     private boolean emailExist(String username) {

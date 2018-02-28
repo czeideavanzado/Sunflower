@@ -112,4 +112,12 @@ public class User {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
 }

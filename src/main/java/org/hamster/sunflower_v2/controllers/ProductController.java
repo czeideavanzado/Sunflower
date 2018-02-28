@@ -33,6 +33,12 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping(value = "/buy/{id}")
+    public ModelAndView buyProduct(@PathVariable("id") Long id) {
+        productService.orderProduct(id);
+        return new ModelAndView(PRODUCT_PATH + "orderConfirmation", "", "");
+    }
+
     @GetMapping(value = "/sell")
     public String sellProductForm(ModelMap modelMap) {
         ProductDTO product = new ProductDTO();

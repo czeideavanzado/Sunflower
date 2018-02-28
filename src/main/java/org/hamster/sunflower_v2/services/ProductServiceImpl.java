@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,6 +41,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void orderProduct(Long id) {
+        String buyer = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.addProductToOrders(productRepository.findOne(id), buyer);
+    }
+
+    @Override
     public void updateProduct(Product product, Long id) {
         Product updateProduct = productRepository.findOne(id);
         updateProduct.setName(product.getName());
@@ -65,8 +72,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public BigDecimal findPrice(Long id) {
+        Product product = productRepository.findOne(id);
+        return product.getPrice();
+    }
+
+    @Override
     public User findBySellerByUsername(String username) {
-        return userService.findByUsername(username);
+        return getSeller(username);
     }
 
     private User getSeller(String username) {
