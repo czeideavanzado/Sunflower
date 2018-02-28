@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(accountDto.getLast_name());
         user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         user.setUsername(accountDto.getUsername());
-        user.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByRole("BUYER"))));
+        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByRole("BUYER"), roleRepository.findByRole("SELLER"))));
         return userRepository.save(user);
     }
 
