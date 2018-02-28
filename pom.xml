@@ -6,7 +6,10 @@
 	<groupId>org.hamster</groupId>
 	<artifactId>sunflower_v2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<modules>
+		<module>searchbox-core</module>
+	</modules>
+	<packaging>pom</packaging>
 
 	<name>sunflower_v2</name>
 	<description>An e-commerce web application</description>
@@ -52,13 +55,6 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-		<!--<dependency>-->
-			<!--<groupId>com.microsoft.sqlserver</groupId>-->
-			<!--<artifactId>mssql-jdbc</artifactId>-->
-			<!--<version>6.1.0.jre8</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

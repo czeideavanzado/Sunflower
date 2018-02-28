@@ -17,7 +17,7 @@
     </div>
     <div class="header-right">
         <div th:class="profile_details_left"><!--notifications of menu start -->
-            <ul class="nofitications-dropdown">
+            <ul class="nofitications-dropdown" th:unless="${loggedUser == null}">
                 <li class="dropdown head-dpdn"><a th:href="@{/product/sell}"><i class="fa fa-sellsy"></i>  Sell Product</a></li>
                 <!--<li class="dropdown head-dpdn">-->
                     <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge">3</span></a>-->
@@ -159,7 +159,7 @@
                         <div class="profile_img">
                             <span class="prfil-img"><img src="/images/visit.png" alt="" /> </span>
                             <div class="user-name">
-                                <p th:if="${loggedUser == null}" th:text="Guest"></p>
+                                <p th:text="Guest"></p>
                             </div>
                             <i class="fa fa-angle-down lnr"></i>
                             <i class="fa fa-angle-up lnr"></i>

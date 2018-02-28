@@ -29,7 +29,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div class="produ-cost">
                                 <h4 th:text="${product.name}"></h4>
                                 <h5 th:text="'&#8369;' + ${product.price}"></h5>
-                                <button>Buy</button>
+                                <button th:unless="${product.getSeller() == loggedUser || loggedUser == null}">Buy</button>
+                                <button th:text="View"></button>
                             </div>
                         </div>
                     </div>
