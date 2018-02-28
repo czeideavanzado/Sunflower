@@ -1,6 +1,7 @@
 package org.hamster.sunflower_v2.services;
 
 import org.hamster.sunflower_v2.domain.models.Product;
+import org.hamster.sunflower_v2.domain.models.ProductDTO;
 import org.hamster.sunflower_v2.domain.models.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,17 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    @Override
+    public Product sellProduct(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setPrice(productDTO.getPrice());
+        product.setDescription(productDTO.getDescription());
+//        product.setPhoto(productDTO.getPhoto());
+
+        return productRepository.save(product);
     }
 
     @Override

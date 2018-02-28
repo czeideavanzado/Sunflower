@@ -26,7 +26,7 @@ a:hover {
 .fixed{
 	position: fixed;
 	top: 0;
-	 width:87%;
+	 width:100%;
     margin: 0 auto;
 	z-index: 1;
 	background:#fff;
@@ -211,7 +211,7 @@ a:hover {
 }
 /*----*/
 .page-container.sidebar-collapsed .left-content .fixed {
-    width: 97%;
+    width: 100%;
 }
 /*----*/
 .logo {
@@ -1955,7 +1955,7 @@ p.grid1 {
 .signup-block {
     padding: 4em 2em;
 }
-.signup-block input[type="text"], .signup-block input[type="password"], .signup-block input[type="email"] {
+.signup-block input[type="text"], .signup-block input[type="password"], .signup-block input[type="email"], .signup-block input[type="file"] {
     font-size: 0.9em;
     padding: 10px 20px;
     width: 100%;
@@ -1969,6 +1969,7 @@ p.grid1 {
     background:#F5F5F5;
     margin: 0em 0em 1.5em 0em;
 }
+
 .signup-block input[type="submit"] {
     border: none;
     outline: none;
@@ -2422,6 +2423,12 @@ ul.nav.tabs li a span {
     box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.15);
     margin-bottom: 3em;
 }
+
+.product-items img {
+    height: 250px;
+    width: 350px;
+}
+
 .pro-head h2 {
     font-size: 2em;
     color: #68AE00;
@@ -3245,7 +3252,7 @@ li.dropdown.head-dpdn a.dropdown-toggle {
 .fixed {
     position: fixed;
     top: 0;
-    width: 85%;
+    width: 100%;
 }
 .profile_details_drop a.dropdown-toggle {
     display: block;
@@ -3758,10 +3765,10 @@ span.malorum-pro {
 	transition-delay: 300ms;
 }
 .fixed {
-    width: 92%;
+    width: 100%;
 }
 .page-container.sidebar-collapsed .left-content .fixed {		   
-    width: 97%;
+    width: 100%;
 }
 .page-container.sidebar-collapsed-back {
 	transition: all 100ms linear;
@@ -4254,7 +4261,7 @@ canvas#bar {
     padding: 1em 1em;	
 }
 .fixed {
-    width: 83%;
+    width: 100%;
 }
 .logo-name h1 {
     font-size: 1.8em;
@@ -4352,7 +4359,7 @@ li.dropdown.head-dpdn a.dropdown-toggle {
     width: 60%;
 }
 .fixed {
-    width: 84%;
+    width: 100%;
 }
 .search-box {
     width: 60%;

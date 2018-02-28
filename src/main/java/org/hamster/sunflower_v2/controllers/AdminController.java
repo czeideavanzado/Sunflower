@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by ONB-CZEIDE on 02/27/2018
  */
 @Controller
-@RequestMapping("admin")
+@RequestMapping(value = "admin")
 public class AdminController {
 
-    private static String ADMIN_PATH = "admin/";
-
     private UserService userService;
+
+    private static String ADMIN_PATH = "admin/";
 
     @Autowired
     public AdminController(UserService userService) {

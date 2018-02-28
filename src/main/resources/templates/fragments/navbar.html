@@ -151,12 +151,33 @@
             <div class="clearfix"> </div>
         </div>
         <!--notification menu end -->
+        <div th:class="${loggedUser == null} ? 'profile_details' : 'null'">
+            <ul>
+                <li class="dropdown profile_details_drop">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <div class="profile_img">
+                            <span class="prfil-img"><img src="/images/visit.png" alt="" /> </span>
+                            <div class="user-name">
+                                <p th:if="${loggedUser == null}" th:text="Guest"></p>
+                            </div>
+                            <i class="fa fa-angle-down lnr"></i>
+                            <i class="fa fa-angle-up lnr"></i>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu drp-mnu">
+                        <li><a th:href="@{/login}"><i class="fa fa-sign-in"></i>  Login</a> </li>
+                        <li><a th:href="@{/registration}"><i class="fa fa-user-plus"></i>Register</a> </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
         <div th:class="${loggedUser != null} ? 'profile_details' : 'null'">
             <ul>
                 <li class="dropdown profile_details_drop">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <div class="profile_img">
-                            <span class="prfil-img"><img src="images/p1.png" alt="" /> </span>
+                            <span class="prfil-img"><img src="/images/visit.png" alt="" /> </span>
                             <div class="user-name">
                                 <p th:if="${loggedUser != null}" th:text="${loggedUser.getFirstName()}"></p>
                             </div>
@@ -178,21 +199,21 @@
         <div class="clearfix"> </div>
     </div>
     <div class="clearfix"> </div>
+    <!-- script-for sticky-nav -->
+    <script>
+        $(document).ready(function() {
+            var navoffeset=$(".header-main").offset().top;
+            $(window).scroll(function(){
+                var scrollpos=$(window).scrollTop();
+                if(scrollpos >= navoffeset){
+                    $(".header-main").addClass("fixed");
+                }else{
+                    $(".header-main").removeClass("fixed");
+                }
+            });
+
+        });
+    </script>
+    <!-- /script-for sticky-nav -->
 </div>
 <!--header end here-->
-<!-- script-for sticky-nav -->
-<script>
-    $(document).ready(function() {
-        var navoffeset=$(".header-main").offset().top;
-        $(window).scroll(function(){
-            var scrollpos=$(window).scrollTop();
-            if(scrollpos >=navoffeset){
-                $(".header-main").addClass("fixed");
-            }else{
-                $(".header-main").removeClass("fixed");
-            }
-        });
-
-    });
-</script>
-<!-- /script-for sticky-nav -->

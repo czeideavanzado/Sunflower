@@ -5,7 +5,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/header :: head('Registration')">
+<head th:replace="/fragments/header :: head('Success')">
 </head>
 
 <body>
@@ -17,7 +17,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         <div class="signup-block">
             <div class="sign-down">
-                <h4>Thank you for creating an account. <a th:href="@{/login}"> Click here to login.</a></h4>
+                <h4>Product added. <a th:href="@{/login}"> Go back to home.</a></h4>
             </div>
         </div>
     </div>
@@ -28,6 +28,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
 </div>
 <!--COPY rights end here-->
+
 <div th:replace="/fragments/footer :: footer"></div>
+
 </body>
 </html>

@@ -3,6 +3,7 @@ package org.hamster.sunflower_v2.domain.models;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -14,8 +15,6 @@ public class ProductDTO {
     @NotEmpty
     private String name;
 
-    @NotNull
-    @NotEmpty
     private BigDecimal price;
 
     private String description;

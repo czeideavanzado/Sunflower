@@ -1,0 +1,59 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/header :: head('Sell Product')">
+</head>
+<body>
+
+<div class="page-container">
+    <div>
+        <div class="mother-grid-inner">
+            <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
+            <!--inner block start here-->
+            <div class="signup-page-main">
+                <div class="signup-main">
+                    <div class="signup-head">
+                        <h1>Sell Product</h1>
+                    </div>
+                    <div class="signup-block">
+                        <form th:action="@{/product/sell}" th:object="${product}" method="POST" enctype="multipart/form-data">
+                            <input th:field="*{name}" type="text" placeholder="Product Name" required="" />
+                            <div class="input-group">
+                                <span class="input-group-addon">&#8369;</span>
+                                <input th:field="*{price}" type="number" placeholder="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" />
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <textarea th:field="*{description}" class="form-control" rows="5" id="description"></textarea>
+                            </div>
+
+                            <!--<input th:field="*{photo}" type="file" accept="image/*" name="file" id="file" required="" />-->
+
+                            <input type="submit" value="Sell Product" />
+                        </form>
+                        <!--<div class="sign-down">-->
+                        <!--<h4>Already have an account? <a th:href="@{/login}"> Login here.</a></h4>-->
+                        <!--<h5><a th:href="@{/}">Go Back to Home</a></h5>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+            <!--inner block end here-->
+            <!--copy rights start here-->
+            <div class="copyrights">
+                <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+            </div>
+            <!--COPY rights end here-->
+        </div>
+    </div>
+    <div class="clearfix"> </div>
+</div>
+
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>
