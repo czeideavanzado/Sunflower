@@ -42,4 +42,11 @@ public class AdminController {
 
         return ADMIN_PATH + "index";
     }
+
+    @GetMapping(value = "")
+    public String addMoneyForm(ModelMap modelMap) {
+
+
+        return ADMIN_PATH + "index";
+    }
 }

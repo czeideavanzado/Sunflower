@@ -84,6 +84,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return false;
+
+//        Optional<User> user = userRepository.findByUsername(username);
+
+//        return user.isPresent();
+
     }
 
 //    public void save(User user) {

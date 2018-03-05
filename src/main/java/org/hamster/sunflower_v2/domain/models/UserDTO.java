@@ -2,6 +2,7 @@ package org.hamster.sunflower_v2.domain.models;
 
 import org.hamster.sunflower_v2.domain.constraints.PasswordMatches;
 import org.hamster.sunflower_v2.domain.constraints.ValidEmail;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,8 @@ public class UserDTO {
     @NotEmpty
     private String last_name;
 
-    @ValidEmail(min = 6, message = "Please enter a valid email.")
+//    @ValidEmail(min = 6, message = "Please enter a valid email.")
+    @Email
     @NotNull
     @NotEmpty
     private String username;

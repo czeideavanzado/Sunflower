@@ -33,6 +33,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Optional<User> userOptional = userRepository.findByUsername(username);
+//
+//        userOptional.orElseThrow(() -> new UsernameNotFoundException("Username not found!"));
+
+//        return userOptional
+//                .map(CustomUserDetails::new)
+//                .get();
+
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
@@ -50,7 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole()));
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
         return authorities;
     }
