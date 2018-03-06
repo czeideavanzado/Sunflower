@@ -1,15 +1,26 @@
 package org.hamster.sunflower_v2.controllers;
 
+import org.hamster.sunflower_v2.domain.models.Seed;
+import org.hamster.sunflower_v2.domain.models.SeedDTO;
 import org.hamster.sunflower_v2.domain.models.User;
+import org.hamster.sunflower_v2.exceptions.SeedExistsException;
 import org.hamster.sunflower_v2.services.ProductService;
+import org.hamster.sunflower_v2.services.SeedService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -21,13 +32,16 @@ public class AdminController {
 
     private UserService userService;
     private ProductService productService;
+    private SeedService seedService;
 
     private static String ADMIN_PATH = "admin/";
+    private static String SEED_PATH = "seed/";
 
     @Autowired
-    public AdminController(UserService userService, ProductService productService) {
+    public AdminController(UserService userService, ProductService productService, SeedService seedService) {
         this.userService = userService;
         this.productService = productService;
+        this.seedService = seedService;
     }
 
     @GetMapping
@@ -43,10 +57,44 @@ public class AdminController {
         return ADMIN_PATH + "index";
     }
 
-    @GetMapping(value = "")
-    public String addMoneyForm(ModelMap modelMap) {
+    @GetMapping(value = "/addSeed")
+    public String addSeedForm(ModelMap modelMap) {
+        SeedDTO seedDTO = new SeedDTO();
 
+        modelMap.put("seedDTO", seedDTO);
+        return ADMIN_PATH + "seed/add";
+    }
 
-        return ADMIN_PATH + "index";
+    @PostMapping(value = "/addSeed")
+    public ModelAndView addSeed(@ModelAttribute("product") @Valid SeedDTO seedDTO, BindingResult result,
+                                    WebRequest request, Errors errors) {
+
+        Seed seed = new Seed();
+
+        if (!result.hasErrors()) {
+            seed = createSeed(seedDTO, result);
+        }
+
+        if (seed == null) {
+            result.rejectValue("serialCode", "message.seedError");
+        }
+
+        if(!result.hasErrors()) {
+            return new ModelAndView(ADMIN_PATH + SEED_PATH + "addConfirmation", "seed", seedDTO);
+        } else {
+            return new ModelAndView(ADMIN_PATH + SEED_PATH + "add", "seed", seedDTO);
+        }
+    }
+
+    private Seed createSeed(SeedDTO seedDTO, BindingResult result) {
+        Seed seed;
+
+        try {
+            seed = seedService.registerSeed(seedDTO);
+        } catch (SeedExistsException e) {
+            return null;
+        }
+
+        return seed;
     }
 }

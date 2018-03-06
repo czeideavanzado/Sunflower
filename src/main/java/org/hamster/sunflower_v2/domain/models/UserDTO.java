@@ -21,7 +21,6 @@ public class UserDTO {
     @NotEmpty
     private String last_name;
 
-//    @ValidEmail(min = 6, message = "Please enter a valid email.")
     @Email
     @NotNull
     @NotEmpty

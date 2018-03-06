@@ -5,7 +5,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/header :: head('Sell Product')">
+<head th:replace="/fragments/header :: head('Add Seed')">
 </head>
 <body>
 
@@ -17,23 +17,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="signup-page-main">
                 <div class="signup-main">
                     <div class="signup-head">
-                        <h1>Sell Product</h1>
+                        <h1>Add Seed</h1>
                     </div>
                     <div class="signup-block">
-                        <form th:action="@{/product/sell}" th:object="${product}" method="POST" enctype="multipart/form-data">
-                            <input th:field="*{name}" type="text" placeholder="Product Name" required="" />
+                        <form th:action="@{/admin/addSeed}" th:object="${seedDTO}" method="POST" enctype="multipart/form-data">
+                            <input th:field="*{serial_code}" type="text" placeholder="Seed Code" required="" maxlength="19" />
+                            <input th:field="*{serial_pin}" type="text" placeholder="Seed Pin" required="" maxlength="19" />
                             <div class="input-group">
                                 <span class="input-group-addon">&#8369;</span>
-                                <input th:field="*{price}" type="number" placeholder="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" />
+                                <input th:field="*{value}" type="number" placeholder="0" min="0" step="50" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" />
                             </div>
-                            <div class="form-group">
-                                <label for="description">Description:</label>
-                                <textarea th:field="*{description}" class="form-control" rows="5" id="description"></textarea>
-                            </div>
+                            <br />
 
                             <!--<input th:field="*{photo}" type="file" accept="image/*" name="file" id="file" required="" />-->
 
-                            <input type="submit" value="Sell Product" />
+                            <input type="submit" value="Add Seed" />
                         </form>
                         <!--<div class="sign-down">-->
                         <!--<h4>Already have an account? <a th:href="@{/login}"> Login here.</a></h4>-->
@@ -54,6 +52,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </div>
 
 <div th:replace="/fragments/footer :: footer"></div>
+
 
 </body>
 </html>
