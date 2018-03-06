@@ -6,6 +6,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="/fragments/header :: head('Admin')">
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
 <body>
 <div class="page-container">
@@ -134,18 +136,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <!--Seeds in circulation-->
                             <!--</div>-->
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover table-striped table-bordered" width="100%" cellspacing="0" id="seedsTable">
                                     <thead>
-                                    <tr>
-                                        <th>Serial Code</th>
-                                        <th>Value</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Serial Code</th>
+                                            <th>Value</th>
+                                        </tr>
                                     </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Serial Code</th>
+                                            <th>Value</th>
+                                        </tr>
+                                    </tfoot>
                                     <tbody th:each="seed: ${seeds.entrySet()}">
-                                    <tr>
-                                        <td th:text="${seed.getKey()}"></td>
-                                        <td th:text="${seed.getValue()}"></td>
-                                    </tr>
+                                        <tr>
+                                            <td th:text="${seed.getKey()}"></td>
+                                            <td th:text="${seed.getValue()}"></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -165,5 +173,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="clearfix"> </div>
 </div>
 <div th:replace="/fragments/footer :: footer"></div>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#seedsTable').DataTable();
+    } );
+</script>
 </body>
 </html>

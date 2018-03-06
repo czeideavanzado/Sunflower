@@ -33,7 +33,7 @@ public class SeedServiceImpl implements SeedService {
         Seed seed = new Seed();
         seed.setId(new SeedId(generate(), generate()));
         seed.setValue(seedDTO.getValue());
-        seed.setActive(false);
+        seed.setActive(true);
 
         return seedRepository.save(seed);
     }

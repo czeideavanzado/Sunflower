@@ -14,6 +14,10 @@ public class SeedDTO {
     public SeedDTO() {
     }
 
+    public SeedDTO(BigDecimal value) {
+        this.value = value;
+    }
+
     public void setValue(BigDecimal value) {
         this.value = value;
     }
