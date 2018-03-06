@@ -1,5 +1,7 @@
 package org.hamster.sunflower_v2.seeders;
 
+import org.hamster.sunflower_v2.domain.models.Role;
+import org.hamster.sunflower_v2.domain.models.RoleRepository;
 import org.hamster.sunflower_v2.domain.models.SeedDTO;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
@@ -20,23 +22,39 @@ public class DatabaseSeeder {
 
     private UserService userService;
     private SeedService seedService;
+    private RoleRepository roleRepository;
     private CSVLoader csvDataLoader;
 
     private static final String usersFileName = "csv/USERS.csv";
     private static final String seedsFileName = "csv/SEEDS.csv";
+    private static final String rolesFileName = "csv/ROLES.csv";
 
     @Autowired
-    public DatabaseSeeder(UserService userService, SeedService seedService, CSVLoader csvDataLoader) {
+    public DatabaseSeeder(UserService userService, SeedService seedService, RoleRepository roleRepository, CSVLoader csvDataLoader) {
         this.userService = userService;
         this.seedService = seedService;
+        this.roleRepository = roleRepository;
         this.csvDataLoader = csvDataLoader;
     }
 
     @EventListener
     public void seed(ContextRefreshedEvent event) {
         // comment theses out to to stop mock data
+        seedRolesTable();
         seedUsersTable();
         seedSeedsTable();
+    }
+
+    private void seedRolesTable() {
+        if (roleRepository.findAll().size() <= 0) {
+            List<Role> roles = csvDataLoader.loadObjectList(Role.class, rolesFileName);
+
+            for (Role role : roles) {
+                role = new Role(role.getRole());
+
+                roleRepository.save(role);
+            }
+        }
     }
 
     private void seedSeedsTable() {
