@@ -4,6 +4,55 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
+.sunflower-wallet {
+    background: #000000;
+    width: 100px;
+}
+/* Side Widget */
+.side-widget.open {
+    margin-right: 0;
+}
+.side-widget {
+    width: 57px;
+    z-index: 9;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: fixed;
+    left: 8%;
+    top: 97%;
+    text-align: center;
+    margin-right: -45px;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+.side-widget:hover {
+    top: 95%;
+}
+.btn.btn-blue:hover {
+    background-color: #d2691e;
+}
+.btn.btn-blue {
+    background-color: #d2691e;
+}
+.btn.btn-blue {
+    background-color: #d2691e;
+    color: #fff;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+a:hover, a:focus, a:active {
+    text-decoration: none;
+}
+.btn {
+    font-family: 'proxima-nova', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 12px 35px;
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
 h4, h5, h6,
 h1, h2, h3 {margin: 0;}
 ul, ol {margin: 0;}

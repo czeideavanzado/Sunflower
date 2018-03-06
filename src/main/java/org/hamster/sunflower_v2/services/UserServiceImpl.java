@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         user.setUsername(accountDto.getUsername());
         user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByRole("BUYER"), roleRepository.findByRole("SELLER"))));
+        user.setWallet(new Wallet(CustomKeyGenerator.generateWallet()));
         return userRepository.save(user);
     }
 
