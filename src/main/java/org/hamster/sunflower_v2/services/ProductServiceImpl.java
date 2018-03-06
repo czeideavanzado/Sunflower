@@ -40,6 +40,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product sellMockProduct(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setPrice(productDTO.getPrice());
+        product.setDescription(productDTO.getDescription());
+        product.setPhoto(productDTO.getPhoto());
+        User seller = getSellerById(productDTO.getSeller_id());
+        product.setSeller(seller);
+        return productRepository.save(product);
+    }
+
+    @Override
     public void orderProduct(Long id) {
         String buyer = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.addProductToOrders(productRepository.findOne(id), buyer);
@@ -83,5 +95,9 @@ public class ProductServiceImpl implements ProductService {
 
     private User getSeller(String username) {
         return userService.findByUsername(username);
+    }
+
+    private User getSellerById(Long id) {
+        return userService.findById(id);
     }
 }

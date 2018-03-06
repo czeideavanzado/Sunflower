@@ -13,6 +13,7 @@ import java.util.List;
 public interface ProductService {
 
     Product sellProduct(ProductDTO productDTO);
+    Product sellMockProduct(ProductDTO productDTO);
     void orderProduct(Long id);
     void updateProduct(Product product, Long id);
     void removeProduct(Long id);

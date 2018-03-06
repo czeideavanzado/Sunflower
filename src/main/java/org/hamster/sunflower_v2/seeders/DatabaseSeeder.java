@@ -1,10 +1,8 @@
 package org.hamster.sunflower_v2.seeders;
 
-import org.hamster.sunflower_v2.domain.models.Role;
-import org.hamster.sunflower_v2.domain.models.RoleRepository;
-import org.hamster.sunflower_v2.domain.models.SeedDTO;
-import org.hamster.sunflower_v2.domain.models.UserDTO;
+import org.hamster.sunflower_v2.domain.models.*;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
+import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.SeedService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +20,19 @@ public class DatabaseSeeder {
 
     private UserService userService;
     private SeedService seedService;
+    private ProductService productService;
     private RoleRepository roleRepository;
     private CSVLoader csvDataLoader;
 
     private static final String usersFileName = "csv/USERS.csv";
     private static final String seedsFileName = "csv/SEEDS.csv";
     private static final String rolesFileName = "csv/ROLES.csv";
+    private static final String productsFileName = "csv/PRODUCTS.csv";
 
-    @Autowired
-    public DatabaseSeeder(UserService userService, SeedService seedService, RoleRepository roleRepository, CSVLoader csvDataLoader) {
+    public DatabaseSeeder(UserService userService, SeedService seedService, ProductService productService, RoleRepository roleRepository, CSVLoader csvDataLoader) {
         this.userService = userService;
         this.seedService = seedService;
+        this.productService = productService;
         this.roleRepository = roleRepository;
         this.csvDataLoader = csvDataLoader;
     }
@@ -43,6 +43,20 @@ public class DatabaseSeeder {
         seedRolesTable();
         seedUsersTable();
         seedSeedsTable();
+        seedProductsTable();
+    }
+
+    private void seedProductsTable() {
+        if (productService.findAll().size() <= 0) {
+            List<ProductDTO> products = csvDataLoader.loadObjectList(ProductDTO.class, productsFileName);
+
+            for (ProductDTO product : products) {
+                ProductDTO productDTO = new ProductDTO(product.getName(), product.getPrice(),
+                        product.getDescription(), null, product.getSeller_id());
+
+                productService.sellMockProduct(productDTO);
+            }
+        }
     }
 
     private void seedRolesTable() {

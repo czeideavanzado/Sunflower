@@ -20,7 +20,17 @@ public class ProductDTO {
     private String description;
     private String photo;
 
+    private Long seller_id;
+
     public ProductDTO() {
+    }
+
+    public ProductDTO(String name, BigDecimal price, String description, String photo, Long seller_id) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.photo = photo;
+        this.seller_id = seller_id;
     }
 
     public String getName() {
@@ -53,5 +63,13 @@ public class ProductDTO {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public void setSeller_id(Long seller_id) {
+        this.seller_id = seller_id;
+    }
+
+    public Long getSeller_id() {
+        return seller_id;
     }
 }
