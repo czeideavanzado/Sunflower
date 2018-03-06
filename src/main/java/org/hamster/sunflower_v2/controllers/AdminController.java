@@ -3,7 +3,6 @@ package org.hamster.sunflower_v2.controllers;
 import org.hamster.sunflower_v2.domain.models.Seed;
 import org.hamster.sunflower_v2.domain.models.SeedDTO;
 import org.hamster.sunflower_v2.domain.models.User;
-import org.hamster.sunflower_v2.exceptions.SeedExistsException;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.SeedService;
 import org.hamster.sunflower_v2.services.UserService;
@@ -66,13 +65,13 @@ public class AdminController {
     }
 
     @PostMapping(value = "/addSeed")
-    public ModelAndView addSeed(@ModelAttribute("product") @Valid SeedDTO seedDTO, BindingResult result,
+    public ModelAndView addSeed(@ModelAttribute("seedDTO") @Valid SeedDTO seedDTO, BindingResult result,
                                     WebRequest request, Errors errors) {
 
         Seed seed = new Seed();
 
         if (!result.hasErrors()) {
-            seed = createSeed(seedDTO, result);
+            seed = seedService.registerSeed(seedDTO);
         }
 
         if (seed == null) {
@@ -84,17 +83,5 @@ public class AdminController {
         } else {
             return new ModelAndView(ADMIN_PATH + SEED_PATH + "add", "seed", seedDTO);
         }
-    }
-
-    private Seed createSeed(SeedDTO seedDTO, BindingResult result) {
-        Seed seed;
-
-        try {
-            seed = seedService.registerSeed(seedDTO);
-        } catch (SeedExistsException e) {
-            return null;
-        }
-
-        return seed;
     }
 }

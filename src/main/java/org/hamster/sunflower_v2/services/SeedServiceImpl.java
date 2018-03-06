@@ -2,11 +2,13 @@ package org.hamster.sunflower_v2.services;
 
 import org.hamster.sunflower_v2.domain.models.Seed;
 import org.hamster.sunflower_v2.domain.models.SeedDTO;
+import org.hamster.sunflower_v2.domain.models.SeedId;
 import org.hamster.sunflower_v2.domain.models.SeedRepository;
-import org.hamster.sunflower_v2.exceptions.SeedExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 /**
  * Created by ONB-CZEIDE on 03/05/2018
@@ -23,27 +25,28 @@ public class SeedServiceImpl implements SeedService {
 
     @Transactional
     @Override
-    public Seed registerSeed(SeedDTO seedDTO) throws SeedExistsException {
-        if (seedExist(seedDTO.getSerial_code())) {
-            throw new SeedExistsException("There is an account with that email address:"
-                    + seedDTO.getSerial_code());
-        }
-
+    public Seed registerSeed(SeedDTO seedDTO) {
         Seed seed = new Seed();
-        seed.setSerialCode(seedDTO.getSerial_code());
-        seed.setSerialPin(seedDTO.getSerial_pin());
+        seed.setId(new SeedId(generate(), generate()));
         seed.setValue(seedDTO.getValue());
+        seed.setActive(true);
 
         return seedRepository.save(seed);
     }
 
-    private boolean seedExist(String serial_code) {
-        Seed seed = seedRepository.findBySerialCode(serial_code);
+    private String generate() {
+        StringBuilder id = new StringBuilder();
+        id.append(UUID.randomUUID().toString().replace("-", "").toUpperCase());
+        id.setLength(16);
 
-        if (seed != null) {
-            return true;
+        for (int i = 0, j = 0; i < id.length(); i++, j++) {
+            if (j % 3 == 0 && j != 0 && i != id.length() - 1) {
+                id.insert(i + 1, "-");
+                i++;
+                j = -1;
+            }
         }
 
-        return false;
+        return id.toString();
     }
 }

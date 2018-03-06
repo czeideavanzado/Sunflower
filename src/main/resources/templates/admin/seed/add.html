@@ -21,17 +21,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                     <div class="signup-block">
                         <form th:action="@{/admin/addSeed}" th:object="${seedDTO}" method="POST" enctype="multipart/form-data">
-                            <input th:field="*{serial_code}" type="text" placeholder="Seed Code" required="" maxlength="19" />
-                            <input th:field="*{serial_pin}" type="text" placeholder="Seed Pin" required="" maxlength="19" />
                             <div class="input-group">
                                 <span class="input-group-addon">&#8369;</span>
-                                <input th:field="*{value}" type="number" placeholder="0" min="0" step="50" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" />
+                                <input th:field="*{value}" type="number" required="" placeholder="0" min="0" step="50" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" />
                             </div>
                             <br />
 
                             <!--<input th:field="*{photo}" type="file" accept="image/*" name="file" id="file" required="" />-->
 
-                            <input type="submit" value="Add Seed" />
+                            <input type="submit" value="Generate Seed" />
                         </form>
                         <!--<div class="sign-down">-->
                         <!--<h4>Already have an account? <a th:href="@{/login}"> Login here.</a></h4>-->

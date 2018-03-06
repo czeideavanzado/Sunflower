@@ -10,40 +10,35 @@ import java.math.BigDecimal;
 @Table(name = "seeds")
 public class Seed {
 
-    @Id
-    @Column(name = "serialCode")
-    private String serialCode;
-
-    @Column(name = "serialPin")
-    private String serialPin;
+    @EmbeddedId
+    private SeedId id;
 
     @Column(name = "value")
     private BigDecimal value;
 
+    @Column(name = "active")
+    private boolean active;
+
     public Seed() {
     }
 
-    public void setSerialCode(String serialCode) {
-        this.serialCode = serialCode;
-    }
-
-    public void setSerialPin(String serialPin) {
-        this.serialPin = serialPin;
+    public void setId(SeedId id) {
+        this.id = id;
     }
 
     public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public String getSerialCode() {
-        return serialCode;
-    }
-
-    public String getSerialPin() {
-        return serialPin;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 }
