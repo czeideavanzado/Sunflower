@@ -65,6 +65,16 @@ public class CartController {
         return "redirect:../../cart";
     }
 
+    @GetMapping(value = "remove/{id}")
+    public String remove(@PathVariable("id") Long id, HttpSession session) {
+        cart = (HashMap) session.getAttribute("cart");
+
+        cart.remove(id);
+        session.setAttribute("cart", cart);
+
+        return "redirect:../../cart";
+    }
+
     private BigDecimal total(HttpSession session) {
         cart = (HashMap) session.getAttribute("cart");
         BigDecimal total = BigDecimal.ZERO;
