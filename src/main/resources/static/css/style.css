@@ -954,6 +954,19 @@ ul.dropdown-menu.drp-mnu li {
     -o-border-radius:49px;
     line-height: 1.7em;
 }
+.market-update-right i.glyphicon.glyphicon-asterisk {
+    font-size:3em;
+    color:#FC8213;
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    text-align: center;
+    border-radius: 49px;
+    -webkit-border-radius: 49px;
+    -moz-border-radius:49px;
+    -o-border-radius:49px;
+    line-height: 1.7em;
+}
 .market-update-left {
     padding: 0px;
 }
@@ -3327,6 +3340,12 @@ li.dropdown.head-dpdn a.dropdown-toggle {
     height: 60px;
     margin-top: 0.7em;
 }
+.market-update-right i.glyphicon.glyphicon-asterisk {
+    font-size: 2em;
+    width: 60px;
+    height: 60px;
+    margin-top: 0.7em;
+}
 .malorm-bottom p {
     font-size: 0.8em;
 }
@@ -3589,6 +3608,13 @@ li.dropdown.head-dpdn a.dropdown-toggle {
     margin-top: 0px;
 }
 .market-update-right i.fa.fa-users {
+    font-size: 2em;
+    width: 60px;
+    height: 60px;
+    line-height: 1.9em;
+    margin-top: 0px;
+}
+.market-update-right i.glyphicon.glyphicon-asterisk {
     font-size: 2em;
     width: 60px;
     height: 60px;

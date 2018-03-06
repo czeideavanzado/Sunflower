@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by ONB-CZEIDE on 03/05/2018
@@ -29,9 +33,21 @@ public class SeedServiceImpl implements SeedService {
         Seed seed = new Seed();
         seed.setId(new SeedId(generate(), generate()));
         seed.setValue(seedDTO.getValue());
-        seed.setActive(true);
+        seed.setActive(false);
 
         return seedRepository.save(seed);
+    }
+
+    @Override
+    public Map<String, BigDecimal> findActiveSeeds() {
+        Map<String, BigDecimal> seeds  = new HashMap<>();
+        for (Seed seed : seedRepository.findAll()) {
+            if (seed.isActive()) {
+                seeds.put(seed.getId().getSerialCode(), seed.getValue());
+            }
+        }
+
+        return seeds;
     }
 
     private String generate() {

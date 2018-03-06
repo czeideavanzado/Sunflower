@@ -51,6 +51,7 @@ public class AdminController {
 
         modelMap.put("users", users);
         modelMap.put("products", productService.findAll());
+        modelMap.put("seeds", seedService.findActiveSeeds());
         modelMap.put("loggedUser", loggedUser);
 
         return ADMIN_PATH + "index";
