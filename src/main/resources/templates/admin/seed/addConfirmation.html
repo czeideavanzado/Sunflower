@@ -17,6 +17,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         <div class="signup-block">
             <div class="sign-down">
+                <h4>Serial Code: <p th:text="${seed.id.getSerialCode()}"></p></h4>
+                <h4>Serial Pin: <p th:text="${seed.id.getSerialPin()}"></p></h4>
                 <h4>Seed registered. <a th:href="@{/}"> Go back to Home.</a></h4>
             </div>
         </div>

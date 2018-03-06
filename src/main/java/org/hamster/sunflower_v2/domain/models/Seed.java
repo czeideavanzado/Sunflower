@@ -34,6 +34,10 @@ public class Seed {
         this.active = active;
     }
 
+    public SeedId getId() {
+        return id;
+    }
+
     public BigDecimal getValue() {
         return value;
     }

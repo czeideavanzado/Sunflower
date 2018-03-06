@@ -58,8 +58,10 @@ public class AdminController {
 
     @GetMapping(value = "/addSeed")
     public String addSeedForm(ModelMap modelMap) {
+        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         SeedDTO seedDTO = new SeedDTO();
 
+        modelMap.put("loggedUser", loggedUser);
         modelMap.put("seedDTO", seedDTO);
         return ADMIN_PATH + "seed/add";
     }
@@ -79,9 +81,9 @@ public class AdminController {
         }
 
         if(!result.hasErrors()) {
-            return new ModelAndView(ADMIN_PATH + SEED_PATH + "addConfirmation", "seed", seedDTO);
+            return new ModelAndView(ADMIN_PATH + SEED_PATH + "addConfirmation", "seed", seed);
         } else {
-            return new ModelAndView(ADMIN_PATH + SEED_PATH + "add", "seed", seedDTO);
+            return new ModelAndView(ADMIN_PATH + SEED_PATH + "add", "seedDTO", seedDTO);
         }
     }
 }
