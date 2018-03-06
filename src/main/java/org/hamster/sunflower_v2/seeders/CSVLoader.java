@@ -26,7 +26,7 @@ public class CSVLoader {
             CsvMapper mapper = new CsvMapper();
             File file = new ClassPathResource(fileName).getFile();
             MappingIterator<T> readValues =
-                    mapper.reader(type).with(bootstrapSchema).readValues(file);
+                    mapper.readerFor(type).with(bootstrapSchema).readValues(file);
             return readValues.readAll();
         } catch (Exception e) {
             logger.error("Error occurred while loading object list from file " + fileName, e);

@@ -74,7 +74,7 @@ public class DatabaseSeeder {
             List<UserDTO> users = csvDataLoader.loadObjectList(UserDTO.class, usersFileName);
 
             for (UserDTO user : users) {
-                UserDTO userDTO = new UserDTO(user.getUsername(),
+                UserDTO userDTO = new UserDTO(user.getUsername().replace(" ", "").replace("'", ""),
                         user.getPassword(), user.getPasswordConfirm(),
                         user.getFirst_name(), user.getLast_name());
                 try {

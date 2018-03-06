@@ -49,7 +49,7 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(anonymousResources).permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/product/**").hasAuthority("BUYER")
+                .antMatchers("/product/**", "/cart/**").hasAuthority("BUYER")
                 .anyRequest().authenticated()
                     .and()
                 .formLogin().loginPage("/login").permitAll()
