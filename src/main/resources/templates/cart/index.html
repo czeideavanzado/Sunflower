@@ -23,13 +23,13 @@
 
                     <div class="product" th:each="product : ${session.cart}">
                         <div class="product-image">
-                            <img th:src="${product.photo != null} ? ${'/images/' + product.photo} : ${'/images/no_image.jpg'}" />
+                            <img th:src="${product.value.photo != null} ? ${'/images/' + product.value.photo} : ${'/images/no_image.jpg'}" />
                         </div>
                         <div class="product-details">
-                            <div class="product-title" th:text="${product.name}"></div>
-                            <p class="product-description" th:text="${product.description}"></p>
+                            <div class="product-title" th:text="${product.value.name}"></div>
+                            <p class="product-description" th:text="${product.value.description}"></p>
                         </div>
-                        <div class="product-price" th:text="${product.price}"></div>
+                        <div class="product-price" th:text="${product.value.price}"></div>
                         <!--<div class="product-quantity">-->
                             <!--<input type="number" value="2" min="1" />-->
                         <!--</div>-->

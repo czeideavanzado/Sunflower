@@ -1,5 +1,6 @@
 package org.hamster.sunflower_v2.controllers;
 
+import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
 import org.hamster.sunflower_v2.services.ProductService;
@@ -14,6 +15,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
@@ -34,6 +37,7 @@ public class SunflowerController {
     @GetMapping
     public String index(ModelMap modelMap) {
         User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
         modelMap.put("products", productService.findAll());
         modelMap.put("loggedUser", loggedUser);
         return "index";

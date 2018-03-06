@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -45,6 +46,23 @@ public class CartController {
         }
         modelMap.put("loggedUser", loggedUser);
         return CART_PATH + "index";
+    }
+
+    @GetMapping(value = "buy/{id}")
+    public String buy(@PathVariable("id") Long id, HttpSession session) {
+        if(session.getAttribute("cart") == null) {
+            cart = new HashMap<>();
+            cart.put(id, productService.find(id));
+            session.setAttribute("cart", cart);
+        } else {
+            cart = (HashMap) session.getAttribute("cart");
+
+            if(!cart.containsKey(id)) {
+                cart.put(id, productService.find(id));
+            }
+        }
+
+        return "redirect:../../cart";
     }
 
     private BigDecimal total(HttpSession session) {
