@@ -31,12 +31,13 @@ public class UserController {
     public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid UserDTO accountDto, BindingResult result,
                                             WebRequest request, Errors errors) {
         User registered = new User();
+
         if (!result.hasErrors()) {
             registered = createUserAccount(accountDto, result);
         }
 
         if (registered == null) {
-            result.rejectValue("username", "message.regError");
+            result.rejectValue("username", "error.user", "An account already exists for this email");
         }
 
         if (result.hasErrors()) {

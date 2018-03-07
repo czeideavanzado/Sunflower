@@ -52,17 +52,22 @@ public class ProductController {
                                     WebRequest request, Errors errors) {
         if(!result.hasErrors()) {
             productService.sellProduct(productDTO);
-            return new ModelAndView(PRODUCT_PATH + "sellConfirmation", "product", productDTO);
+            return new ModelAndView("redirect:/product/sellConfirmation");
         } else {
             return new ModelAndView(PRODUCT_PATH + "sell", "product", productDTO);
         }
+    }
+
+    @GetMapping(value = "/sellConfirmation")
+    public String sellConfirmed() {
+        return PRODUCT_PATH + "sellConfirmation";
     }
 
     @GetMapping(value = "/edit/{id}")
     public String editProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
         User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        if (!loggedUser.getUsername().equals(productService.find(id).getSeller())) {
+        if (loggedUser != (productService.find(id).getSeller())) {
             return "redirect:/error/403";
         }
 
@@ -84,9 +89,9 @@ public class ProductController {
 
     @GetMapping(value = "/remove/{id}")
     public ModelAndView removeProduct(@PathVariable("id") Long id) {
-        User user = productService.find(id).getSeller();
+        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        if (!user.getUsername().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+        if (loggedUser != (productService.find(id).getSeller())) {
             return new ModelAndView("redirect:/error/403");
         }
 

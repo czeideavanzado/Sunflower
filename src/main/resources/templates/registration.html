@@ -16,18 +16,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         <div class="signup-block">
             <form th:action="@{/registration}" th:object="${user}" method="POST">
+                <div class="alert alert-danger alert-dismissable error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button></div>
                 <input th:field="*{first_name}" type="text" placeholder="First Name" required="" />
-                <p th:each="error: ${#fields.errors('first_name')}"
-                   th:text="${error}">Validation error</p>
                 <input th:field="*{last_name}" type="text" placeholder="Last Name" required="" />
-                <p th:each="error : ${#fields.errors('last_name')}"
-                   th:text="${error}">Validation error</p>
                 <input th:field="*{username}" type="text" placeholder="Email" required="" />
-                <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid Email</p>
-                <input type="password" th:field="*{password}" name="password" class="lock" placeholder="Password" required="" autocomplete="off" />
-                <p th:each="error : ${#fields.errors('password')}"
-                   th:text="${error}">Validation error</p>
-                <input type="password" th:field="*{passwordConfirm}" name="passwordConfirm" class="lock" placeholder="Confirm Password" autocomplete="off" />
+                <input id="password" type="password" th:field="*{password}" name="password" class="lock" placeholder="Password" required="" autocomplete="off" />
+                <input id="passwordConfirm" type="password" th:field="*{passwordConfirm}" name="passwordConfirm" class="lock" placeholder="Confirm Password" autocomplete="off" />
                 <div class="forgot-top-grids">
                     <div class="forgot-grid">
                         <ul>
@@ -55,7 +50,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
 </div>
 <!--COPY rights end here-->
+<script>
+    $(document).ready(function () {
+        $("#password, #passwordConfirm").keyup(checkPasswordMatch);
+    });
 
+    function checkPasswordMatch() {
+        var password = $("#password").val();
+        var confirmPassword = $("#passwordConfirm").val();
+
+        if (password == confirmPassword) {
+            document.getElementById('password').style.background = "#a0ed80";
+            document.getElementById('passwordConfirm').style.background = "#a0ed80";
+        } else {
+            document.getElementById('password').style.background = "#ed8080";
+            document.getElementById('passwordConfirm').style.background = "#ed8080";
+        }
+
+    }
+</script>
 <div th:replace="/fragments/footer :: footer"></div>
 
 </body>

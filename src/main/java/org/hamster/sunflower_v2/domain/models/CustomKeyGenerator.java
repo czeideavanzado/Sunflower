@@ -1,4 +1,4 @@
-package org.hamster.sunflower_v2.services;
+package org.hamster.sunflower_v2.domain.models;
 
 import java.util.UUID;
 

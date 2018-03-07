@@ -1,0 +1,125 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/header :: head('Wallet')">
+</head>
+<body>
+<div class="page-container">
+    <div>
+        <div class="mother-grid-inner">
+            <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
+            <!--inner block start here-->
+            <div class="inner-block">
+                <div class="price-block-main">
+                    <div class="price-tables">
+                        <div class="col-md-12 price-grid user-marorm signup-block">
+                            <div class="malorm-bottom">
+                                <h2>Seed Conversion</h2>
+                                <p>₱1 = <i class="fa fa-sun-o"></i> 1 seed</p>
+                                <br />
+                                <form th:action="@{/wallet/add}" th:object="${seedDTO}" method="POST" enctype="multipart/form-data">
+                                    <div class="alert alert-danger alert-dismissable error" th:if="${#fields.hasErrors('serialCode')}" th:errors="*{serialCode}">
+                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button></div>
+                                    <input th:field="*{serialCode}" type="text" placeholder="Serial Code" autocomplete="off" />
+                                    <input th:field="*{serialPin}" type="text" placeholder="Serial Pin" autocomplete="off" />
+                                    <input type="submit" value="Add to wallet" />
+                                </form>
+                                <!--<ul class="malorum-icons">-->
+                                    <!--<li><a href="#"><i class="fa fa-facebook"> </i>-->
+                                        <!--<div class="tooltip"><span>Facebook</span></div>-->
+                                    <!--</a></li>-->
+                                    <!--<li><a href="#"><i class="fa fa-twitter"> </i>-->
+                                        <!--<div class="tooltip"><span>Twitter</span></div>-->
+                                    <!--</a></li>-->
+                                    <!--<li><a href="#"><i class="fa fa-google-plus"> </i>-->
+                                        <!--<div class="tooltip"><span>Google</span></div>-->
+                                    <!--</a></li>-->
+                                <!--</ul>-->
+                            </div>
+                        </div>
+                        <div class="prices-head">
+                            <h2>Prices</h2>
+                        </div>
+                        <div class="col-md-4 price-grid">
+                            <div class="price-block">
+                                <div class="price-gd-top pric-clr1">
+                                    <!--<h4>Low</h4>-->
+                                    <h3><span class="usa-dollar">₱</span>50.00</h3>
+                                </div>
+                                <div class="price-selet pric-clr1">
+                                    <a class="popup-with-zoom-anim" href="#small-dialog">Select Plan</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 price-grid">
+                            <div class="price-block">
+                                <div class="price-gd-top pric-clr2">
+                                    <!--<h4>Professional</h4>-->
+                                    <h3><span class="usa-dollar">₱</span>100.00</h3>
+                                </div>
+                                <div class="price-selet pric-clr2">
+                                    <a class="popup-with-zoom-anim" href="#small-dialog">Select Plan</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 price-grid">
+                            <div class="price-block">
+                                <div class="price-gd-top pric-clr3">
+                                    <!--<h4>Premium</h4>-->
+                                    <h3><span class="usa-dollar">₱</span>200.00</h3>
+                                </div>
+                                <div class="price-selet pric-clr3">
+                                    <a class="popup-with-zoom-anim" href="#small-dialog">Select Plan</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 price-grid">
+                            <div class="price-block">
+                                <div class="price-gd-top pric-clr1">
+                                    <!--<h4>Basic</h4>-->
+                                    <h3><span class="usa-dollar">₱</span>500.00</h3>
+                                </div>
+                                <div class="price-selet pric-clr1">
+                                    <a class="popup-with-zoom-anim" href="#small-dialog">Select Plan</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 price-grid">
+                            <div class="price-block">
+                                <div class="price-gd-top pric-clr2">
+                                    <!--<h4>Professional</h4>-->
+                                    <h3><span class="usa-dollar">₱</span>1000.00</h3>
+                                </div>
+                                <div class="price-selet pric-clr2">
+                                    <a class="popup-with-zoom-anim" href="#small-dialog">Select Plan</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+            </div>
+            <!--inner block end here-->
+            <!--copy rights start here-->
+            <div class="copyrights">
+                <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+            </div>
+            <!--COPY rights end here-->
+        </div>
+    </div>
+    <div class="clearfix"> </div>
+</div>
+
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>
+
+
+
+
