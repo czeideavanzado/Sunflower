@@ -34,7 +34,7 @@ public class SunflowerController {
         this.productService = productService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping
     public String index(ModelMap modelMap) {
         User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
