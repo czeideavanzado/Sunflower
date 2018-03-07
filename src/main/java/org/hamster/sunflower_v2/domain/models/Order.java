@@ -11,12 +11,7 @@ import java.util.Date;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
-    @SequenceGenerator(
-            name = "order_sequence",
-            sequenceName = "ORDER_SEQUENCE",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

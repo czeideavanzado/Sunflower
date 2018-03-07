@@ -11,12 +11,7 @@ import java.math.BigDecimal;
 public class OrderDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_details_sequence")
-    @SequenceGenerator(
-            name = "order_details_sequence",
-            sequenceName = "ORDER_DETAILS_SEQUENCE",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

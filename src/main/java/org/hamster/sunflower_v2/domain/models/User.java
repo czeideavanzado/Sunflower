@@ -3,7 +3,6 @@ package org.hamster.sunflower_v2.domain.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -11,15 +10,10 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
-public class User implements Serializable {
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "USER_SEQUENCE",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
