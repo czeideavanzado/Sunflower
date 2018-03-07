@@ -12,7 +12,12 @@ import java.util.Objects;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_sequence")
+    @SequenceGenerator(
+            name = "product_sequence",
+            sequenceName = "PRODUCT_SEQUENCE",
+            allocationSize = 1
+    )
     @Column(name = "id")
     private Long id;
 

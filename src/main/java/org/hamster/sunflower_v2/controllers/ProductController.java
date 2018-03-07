@@ -61,6 +61,11 @@ public class ProductController {
     @GetMapping(value = "/edit/{id}")
     public String editProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
         User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if (!loggedUser.getUsername().equals(productService.find(id).getSeller())) {
+            return "redirect:/error/403";
+        }
+
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("product", productService.find(id));
         return PRODUCT_PATH + "edit";
@@ -79,6 +84,12 @@ public class ProductController {
 
     @GetMapping(value = "/remove/{id}")
     public ModelAndView removeProduct(@PathVariable("id") Long id) {
+        User user = productService.find(id).getSeller();
+
+        if (!user.getUsername().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+            return new ModelAndView("redirect:/error/403");
+        }
+
         productService.removeProduct(id);
         return new ModelAndView(PRODUCT_PATH + "removeConfirmation", "", "");
     }
