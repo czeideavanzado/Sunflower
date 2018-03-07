@@ -1,5 +1,7 @@
 package org.hamster.sunflower_v2.domain.models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -11,7 +13,16 @@ import java.math.BigDecimal;
 public class OrderDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "order_details_sequence")
+    @GenericGenerator(
+            name = "order_details_sequence",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "ORDER_DETAILS_SEQUENCE"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Column(name = "id")
     private Long id;
 
