@@ -1,6 +1,8 @@
 package org.hamster.sunflower_v2.domain.models;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -42,6 +44,14 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", nullable = false)
     private User seller;
+
+    @CreationTimestamp
+    @Column(name = "created_date")
+    private java.sql.Timestamp createdDate;
+
+    @UpdateTimestamp
+    @Column(name = "modified_date")
+    private java.sql.Timestamp modifiedDate;
 
     public Long getId() {
         return id;

@@ -48,6 +48,18 @@ public class CartController {
         return CART_PATH + "index";
     }
 
+    @GetMapping(value = "checkout")
+    public String checkout(ModelMap modelMap, HttpSession session) {
+        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if(session.getAttribute("cart") != null) {
+            modelMap.put("total", total(session));
+        }
+
+        modelMap.put("loggedUser", loggedUser);
+        return CART_PATH + "checkout";
+    }
+
     @GetMapping(value = "buy/{id}")
     public String buy(@PathVariable("id") Long id, HttpSession session) {
         if(session.getAttribute("cart") == null) {

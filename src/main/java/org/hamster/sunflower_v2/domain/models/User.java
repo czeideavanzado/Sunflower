@@ -1,7 +1,9 @@
 package org.hamster.sunflower_v2.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -47,6 +49,9 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "information_id", cascade = CascadeType.ALL)
+    private UserInformation userInformation;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "seller", cascade = CascadeType.ALL)
     private Set<Product> products;
 
@@ -56,6 +61,15 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_wallet", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "wallet_id"))
     private Wallet wallet;
+
+
+    @CreationTimestamp
+    @Column(name = "created_date")
+    private java.sql.Timestamp createdDate;
+
+    @UpdateTimestamp
+    @Column(name = "modified_date")
+    private java.sql.Timestamp modifiedDate;
 
     public User() {
     }
