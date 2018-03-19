@@ -83,6 +83,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findByKeyword(String keyword) {
+        return productRepository.findByNameContaining(keyword);
+    }
+
+    @Override
     public BigDecimal findPrice(Long id) {
         Product product = productRepository.findOne(id);
         return product.getPrice();

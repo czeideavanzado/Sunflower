@@ -19,8 +19,8 @@ public interface ProductService {
     void removeProduct(Long id);
     List<Product> findAll();
     Product find(Long id);
+    List<Product> findByKeyword(String keyword);
     BigDecimal findPrice(Long id);
-
 
     User findByUserByUsername(String username);
 }

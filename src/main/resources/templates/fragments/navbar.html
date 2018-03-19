@@ -10,7 +10,7 @@
         <div class="search-box">
             <form>
                 <input id="search" type="text" placeholder="Search..." required="" />
-                <input type="submit" value="" />
+                <!--<input type="submit" value="" />-->
             </form>
         </div><!--//end-search-box-->
         <div class="clearfix"> </div>
@@ -193,7 +193,7 @@
                         <li> <a th:href="@{/product/myProducts}"><i class="fa fa-list"></i>My Products</a> </li>
                         <li> <a th:href="@{/product/myOrders}"><i class="fa fa-clipboard"></i>My Transactions</a> </li>
                         <li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li>
-                        <li> <a th:href="${'/profile/' + loggedUser.id}"><i class="fa fa-user"></i> Profile</a> </li>
+                        <li> <a th:if="${loggedUser != null}" th:href="${'/profile/' + loggedUser.id}"><i class="fa fa-user"></i> Profile</a> </li>
                         <li> <a href="#" onclick="document.getElementById('logout').submit();"><i class="fa fa-sign-out"></i> Logout</a> </li>
                     </ul>
                     <form id="logout" th:action="@{/logout}" method="POST">
