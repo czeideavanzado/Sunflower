@@ -22,7 +22,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="product-items">
                             <div class="project-eff">
                                 <div id="nivo-lightbox-demo">
-                                    <!--<p><a href="images/pro1.jpg" data-lightbox-gallery="gallery1" id="nivo-lightbox-demo-img"><span class="rollover1"></span> </a></p>-->
+                                    <p><a th:href="${product.photo != null} ? ${'/images/' + product.photo} : ${'/images/no_image.jpg'}"><span class="rollover1"></span></a></p>
                                     <img class="img-responsive" th:src="${product.photo != null} ? ${'/images/' + product.photo} : ${'/images/no_image.jpg'}" />
                                 </div>
                             </div>
@@ -38,13 +38,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
             </div>
             <!--inner block end here-->
-            <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" />
-            <!--<script type="text/javascript" src="js/nivo-lightbox.min.js"></script>-->
-            <!--<script type="text/javascript">-->
-                <!--$(document).ready(function(){-->
-                    <!--$('#nivo-lightbox-demo a').nivoLightbox({ effect: 'fade' });-->
-                <!--});-->
-            <!--</script>-->
+            <script type="text/javascript" src="/js/nivo-lightbox.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="/css/magnific-popup.css" />
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('#nivo-lightbox-demo a').nivoLightbox({ effect: 'fade' });
+                });
+            </script>
 
             <!--copy rights start here-->
             <div class="copyrights">

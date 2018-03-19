@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
@@ -69,5 +70,15 @@ public class SunflowerController {
         UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
         return "registration";
+    }
+
+    @GetMapping(value = "profile/{id}")
+    public String profile(@PathVariable("id") Long id, ModelMap modelMap) {
+        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User user = userService.findById(id);
+
+        modelMap.put("loggedUser", loggedUser);
+        modelMap.put("user", user);
+        return "profile";
     }
 }
