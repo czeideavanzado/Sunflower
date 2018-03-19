@@ -25,6 +25,10 @@
                 <button th:text="View"></button>
             </div>
         </div>
+
+    </div>
+    <div th:if="${#lists.isEmpty(results)}">
+        No results found...
     </div>
 </div>
 </body>
