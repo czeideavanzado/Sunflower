@@ -1,7 +1,11 @@
 package org.hamster.sunflower_v2.domain.models;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
@@ -20,31 +24,56 @@ public class Seed {
     @Column(name = "active")
     private boolean active;
 
+    @CreationTimestamp
+    @Column(name = "created_date")
+    private java.sql.Timestamp createdDate;
+
+    @UpdateTimestamp
+    @Column(name = "modified_date")
+    private java.sql.Timestamp modifiedDate;
+
+
     public Seed() {
-    }
-
-    public void setId(SeedId id) {
-        this.id = id;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public SeedId getId() {
         return id;
     }
 
+    public void setId(SeedId id) {
+        this.id = id;
+    }
+
     public BigDecimal getValue() {
         return value;
     }
 
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
     public boolean isActive() {
         return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Timestamp getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Timestamp modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
     @Override
@@ -57,7 +86,6 @@ public class Seed {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 

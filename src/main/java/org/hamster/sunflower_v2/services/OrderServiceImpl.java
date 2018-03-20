@@ -27,7 +27,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
 
         order.setBuyer(userService.findById(id));
-        order.setDateOrdered(new Date());
         order.setTransactionStatus("PENDING");
 
         return orderRepository.save(order);

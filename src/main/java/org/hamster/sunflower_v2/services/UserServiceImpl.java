@@ -19,14 +19,14 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
-    private OrderDetailsService orderDetailsService;
+    private OrderDetailService orderDetailService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, @Lazy OrderDetailsService orderDetailsService) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, @Lazy OrderDetailService orderDetailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.orderDetailsService = orderDetailsService;
+        this.orderDetailService = orderDetailService;
     }
 
     @Transactional
@@ -67,10 +67,10 @@ public class UserServiceImpl implements UserService {
     public void addProductToOrders(Product product, String buyer) {
         User user = userRepository.findByUsername(buyer);
 
-        OrderDetails orderDetails = orderDetailsService.createOrderDetails(product.getId(), user.getId());
+        OrderDetail orderDetail = orderDetailService.createOrderDetails(product.getId(), user.getId());
 
         Set<Order> orders = new HashSet<>();
-        orders.add(orderDetails.getOrder());
+        orders.add(orderDetail.getOrder());
 
         user.setOrders(orders);
 

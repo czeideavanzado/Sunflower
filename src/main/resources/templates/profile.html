@@ -83,16 +83,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                             </li>
                                             <li>
                                                 <ul class="address-text">
-                                                    <li><b>ADDRESS </b></li>
-                                                    <li>: 22 Russell Street, AUSTRALIA.</li>
+                                                    <li><b>ADDRESS: </b></li>
+                                                    <li>22 Russell Street, AUSTRALIA.</li>
                                                 </ul>
                                             </li>
                                             <li>
                                                 <ul class="address-text">
-                                                    <li><b>E-MAIL </b></li>
-                                                    <li><a th:text="${': ' + user.username}"></a></li>
+                                                    <li><b>E-MAIL: </b></li>
+                                                    <li><a id="email" th:text="${user.username}"></a></li>
                                                 </ul>
-                                                <!--<input type="email" name="email" placeholder="E-MAIL" required="" />-->
                                             </li>
                                             <li>
                                                 <ul class="address-text">
@@ -172,10 +171,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         position: "top",
         contents: "Edit"
     }).on('click', function () {
-        console.log("hello");
+        // let $el = $('#username');
+        //
+        // let $input = $('<input type="email" name="email" placeholder="E-MAIL" required="" />').val( $el.text() );
+        // $el.replaceWith( $input );
+        //
+        // let save = function(){
+        //     <!-- var $p = $('<p data-editable />').text( $input.val() ); -->
+        //     <!-- $input.replaceWith( $p ); -->
+        //     let $a = $('<h3 id="username" />').text( $input.val() );
+        //     $input.replaceWith($a);
+        // };
+
+
+        /*
+         We're defining the callback with `one`, because we know that
+         the element will be gone just after that, and we don't want
+         any callbacks leftovers take memory.
+         Next time `p` turns into `input` this single callback
+         will be applied again.
+         */
+        // $input.one('blur', save).focus();
     });
 </script>
 <div th:replace="/fragments/footer :: footer"></div>
-
 </body>
 </html>

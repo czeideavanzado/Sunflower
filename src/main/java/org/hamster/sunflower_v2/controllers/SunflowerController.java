@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
@@ -45,13 +48,18 @@ public class SunflowerController {
     }
 
     @GetMapping(value = "/login")
-    public String loginForm() {
+    public String loginForm(HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
             /* The user is logged in :) */
             return "redirect: ";
+        }
+
+        if(session.getAttribute("cart") == null) {
+            Map<Long, Product> cart = new HashMap<>();
+            session.setAttribute("cart", cart);
         }
 
         return "login";

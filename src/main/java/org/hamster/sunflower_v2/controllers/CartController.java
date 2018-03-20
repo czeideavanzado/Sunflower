@@ -1,5 +1,6 @@
 package org.hamster.sunflower_v2.controllers;
 
+import org.hamster.sunflower_v2.domain.models.BillingInformationDTO;
 import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.services.ProductService;
@@ -8,14 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by ONB-CZEIDE on 03/01/2018
@@ -31,6 +36,8 @@ public class CartController {
 
     private Map<Long, Product> cart;
 
+    private Set<String> billingInformation;
+
     @Autowired
     public CartController(UserService userService, ProductService productService) {
         this.userService = userService;
@@ -44,12 +51,22 @@ public class CartController {
         if(session.getAttribute("cart") != null) {
             modelMap.put("total", total(session));
         }
+
         modelMap.put("loggedUser", loggedUser);
+
+        BillingInformationDTO billingInformationDTO = new BillingInformationDTO();
+        modelMap.put("billingInformationDto", billingInformationDTO);
         return CART_PATH + "index";
     }
 
-    @GetMapping(value = "checkout")
-    public String checkout(ModelMap modelMap, HttpSession session) {
+    @PostMapping(value = "processOrder")
+    public ModelAndView processOrder(@ModelAttribute("billingInformationDto") @Valid BillingInformationDTO billingInformationDTO, BindingResult result,
+                                     WebRequest request, Errors errors) {
+        return new ModelAndView(CART_PATH + "confirm", "billingInformationDto", billingInformationDTO);
+    }
+
+    @PostMapping(value = "confirm")
+    public String confirmForm(ModelMap modelMap, HttpSession session) {
         User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         if(session.getAttribute("cart") != null) {
@@ -57,21 +74,15 @@ public class CartController {
         }
 
         modelMap.put("loggedUser", loggedUser);
-        return CART_PATH + "checkout";
+        return CART_PATH + "confirm";
     }
 
     @GetMapping(value = "buy/{id}")
     public String buy(@PathVariable("id") Long id, HttpSession session) {
-        if(session.getAttribute("cart") == null) {
-            cart = new HashMap<>();
-            cart.put(id, productService.find(id));
-            session.setAttribute("cart", cart);
-        } else {
-            cart = (HashMap) session.getAttribute("cart");
+        cart = (HashMap) session.getAttribute("cart");
 
-            if(!cart.containsKey(id)) {
-                cart.put(id, productService.find(id));
-            }
+        if(!cart.containsKey(id)) {
+            cart.put(id, productService.find(id));
         }
 
         return "redirect:../../cart";

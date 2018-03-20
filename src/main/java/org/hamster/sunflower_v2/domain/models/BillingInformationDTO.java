@@ -5,9 +5,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by ONB-CZEIDE on 03/19/2018
+ * Created by ONB-CZEIDE on 03/20/2018
  */
-public class AddressDTO {
+public class BillingInformationDTO {
 
     @NotNull
     @NotEmpty
@@ -21,6 +21,8 @@ public class AddressDTO {
     @NotEmpty
     private String houseDetails;
 
+    @NotNull
+    @NotEmpty
     private String building;
 
     @NotNull
@@ -33,10 +35,14 @@ public class AddressDTO {
 
     private String landmark;
 
-    public AddressDTO() {
+    private String contactNumber;
+
+    private String shippingType;
+
+    public BillingInformationDTO() {
     }
 
-    public AddressDTO(String province, String city, String houseDetails, String building, String street, String subdivision, String barangay, String landmark) {
+    public BillingInformationDTO(String province, String city, String houseDetails, String building, String street, String subdivision, String barangay, String landmark, String contactNumber, String shippingType) {
         this.province = province;
         this.city = city;
         this.houseDetails = houseDetails;
@@ -45,6 +51,8 @@ public class AddressDTO {
         this.subdivision = subdivision;
         this.barangay = barangay;
         this.landmark = landmark;
+        this.contactNumber = contactNumber;
+        this.shippingType = shippingType;
     }
 
     public String getProvince() {
@@ -109,5 +117,21 @@ public class AddressDTO {
 
     public void setLandmark(String landmark) {
         this.landmark = landmark;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getShippingType() {
+        return shippingType;
+    }
+
+    public void setShippingType(String shippingType) {
+        this.shippingType = shippingType;
     }
 }

@@ -2714,7 +2714,7 @@ h4.payment-head{
 .payment-online-form-left form{
 	padding:0 3%;
 }
-.payment-online-form-left input[type="text"] {
+.payment-online-form-left input[type="text"], .payment-online-form-left select {
     padding: 0.7em 1em;
     color: #6B6B6A;
     width: 47%;
@@ -2744,7 +2744,7 @@ input#datepicker {
 	cursor:pointer;
 	position: relative;
 }
-.payment-online-form-left ul li:first-child input[type="text"]{
+.payment-online-form-left ul li:first-child input[type="text"], .payment-online-form-left ul li:first-child select{
 	margin-right: 5%;
 }
 .payment-online-form-left input[type="text"]:active, .payment-online-form-left input[type="text"]:hover {
@@ -2770,7 +2770,7 @@ input#datepicker {
 	float:right;
 	margin: 1.2em 0 1em;
 }
-.payment-sendbtns input[type="reset"]{
+.payment-sendbtns input[type="reset"] {
 	background:#68AE00;
 	padding:10px 25px;
 	border: none;
@@ -2806,9 +2806,30 @@ a.order {
     text-decoration: none;
     border-radius: 3px;
 }
+.order input[type="submit"] {
+    background:#FC8213;
+    padding: 10px 25px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size:0.95em;
+    display: inline-block;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    -webkit-appearance: none;
+    outline: none;
+    text-decoration: none;
+    border-radius: 3px;
+}
 a.order:hover{
 	color:#fff;
 	background:#68AE00;
+}
+.order input[type="submit"]:hover {
+    color:#fff;
+    background:#68AE00;
 }
 .payment-sendbtns li{
 	display:inline-block;
