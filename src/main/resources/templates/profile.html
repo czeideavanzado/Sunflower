@@ -49,18 +49,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <li>
                             <a href="#"><i class="fa fa-list" aria-hidden="true"></i><span>Products</span></a>
                         </li>
-                        <!--<li>-->
-                            <!--<a href="#"><i class="fa fa-envelope" aria-hidden="true"></i><span>Contact</span></a>-->
-                        <!--</li>-->
+                        <li>
+                            <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i><span>Contact</span></a>
+                        </li>
                     </ul>
                 </div>
                 <div id="wrapper" class="w3ls_wrapper w3layouts_wrapper">
                     <div id="steps" style="margin:0 auto;" class="agileits w3_steps">
                         <form id="formElem" name="formElem" action="#" method="post" class="w3_form w3l_form_fancy">
                             <fieldset class="step agileinfo w3ls_fancy_step">
-                                <legend>Profile</legend>
+                                <legend>Profile <i class="fa fa-edit hvr-bounce-in edit" th:if="${loggedUser.equals(user)}"></i></legend>
                                 <div class="abt-agile">
                                     <div class="abt-agile-left">
+
                                     </div>
                                     <div class="abt-agile-right">
                                         <h3 id="username" th:text="${user.firstName + ' ' + user.lastName}"></h3>
@@ -91,6 +92,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                     <li><b>E-MAIL </b></li>
                                                     <li><a th:text="${': ' + user.username}"></a></li>
                                                 </ul>
+                                                <!--<input type="email" name="email" placeholder="E-MAIL" required="" />-->
                                             </li>
                                             <li>
                                                 <ul class="address-text">
@@ -162,8 +164,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="clearfix"> </div>
 </div>
 
+<script src="/js/jquery.balloon.min.js"></script>
 <script type="text/javascript" src="/js/smoothbox.jquery2.js"></script>
-
+<script th:inline="javascript">
+    $('.edit').balloon({
+        html: true,
+        position: "top",
+        contents: "Edit"
+    }).on('click', function () {
+        console.log("hello");
+    });
+</script>
 <div th:replace="/fragments/footer :: footer"></div>
 
 </body>

@@ -326,6 +326,17 @@ ul.address li ul.address-text li {
     margin-top: 10px;
     color: #00e8ff;
 }
+.abt-agile-right input[type="text"], .abt-agile-right input[type="email"],.abt-agile-right textarea {
+    width: 93%;
+    padding: 10px;
+    border: 1px solid #AFAFAF;
+    color: #AFAFAF;
+    outline: none;
+    background: transparent;
+    border-radius: 0;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
 /*-- work --*/
 .w3ls_work_grids{
     margin-top:4em;
