@@ -1,25 +1,22 @@
 package org.hamster.sunflower_v2.controllers;
 
-import org.hamster.sunflower_v2.domain.models.BillingInformationDTO;
-import org.hamster.sunflower_v2.domain.models.Product;
-import org.hamster.sunflower_v2.domain.models.User;
+import org.hamster.sunflower_v2.domain.models.*;
+import org.hamster.sunflower_v2.services.OrderService;
 import org.hamster.sunflower_v2.services.ProductService;
+import org.hamster.sunflower_v2.services.TransactionService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,15 +31,17 @@ public class CartController {
 
     private UserService userService;
     private ProductService productService;
+    private OrderService orderService;
+    private TransactionService transactionService;
 
     private Map<Long, Product> cart;
 
-    private Set<String> billingInformation;
-
     @Autowired
-    public CartController(UserService userService, ProductService productService) {
+    public CartController(UserService userService, ProductService productService, OrderService orderService, TransactionService transactionService) {
         this.userService = userService;
         this.productService = productService;
+        this.orderService = orderService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping
@@ -81,9 +80,31 @@ public class CartController {
     }
 
     @GetMapping(value = "confirm")
-    public String confirm(ModelMap modelMap) {
+    public String confirm(ModelMap modelMap, HttpSession session) {
+        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        return CART_PATH + "confirm";
+        cart = (HashMap) session.getAttribute("cart");
+
+        if (cart.size() == 0) {
+            return  "/errors/404";
+        }
+
+        Set<Product> products = new HashSet<>(cart.values());
+
+        Order order = new Order(loggedUser, "PENDING");
+        orderService.saveOrder(order);
+        Set<OrderDetail> orderDetailSet = new HashSet<>();
+
+        for (Product product : products) {
+            OrderDetail orderDetail = new OrderDetail(order, product);
+            orderDetailSet.add(orderService.createOrderDetail(orderDetail));
+        }
+
+        order.setOrderDetails(orderDetailSet);
+        userService.addOrder(loggedUser, orderService.saveOrder(order));
+        transactionService.createTransaction(order);
+
+        return CART_PATH + "orderSuccess";
     }
 
     @GetMapping(value = "buy/{id}")

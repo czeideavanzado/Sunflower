@@ -61,8 +61,7 @@ public class User {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_wallet", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "wallet_id"))
-    private Wallet wallet;
-
+    private Wallet wallet;;
 
     @CreationTimestamp
     @Column(name = "created_date")

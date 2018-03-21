@@ -9,6 +9,5 @@ import java.util.List;
  */
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-//    @Query("Select p from products p where p.name like %:keyword%")
     List<Product> findByNameContaining(String keyword);
 }

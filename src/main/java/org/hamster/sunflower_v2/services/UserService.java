@@ -1,6 +1,6 @@
 package org.hamster.sunflower_v2.services;
 
-import org.hamster.sunflower_v2.domain.models.Product;
+import org.hamster.sunflower_v2.domain.models.Order;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
@@ -16,5 +16,5 @@ public interface UserService {
     User findByUsername(String username);
     List<User> findAll();
 
-    void addProductToOrders(Product product, String buyer);
+    void addOrder(User user, Order order);
 }

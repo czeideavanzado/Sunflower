@@ -38,6 +38,9 @@ public class Order {
     @JoinColumn(name = "buyer_id", nullable = false)
     private User buyer;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "transaction_order", cascade = CascadeType.ALL)
+    private Transaction transaction;
+
     @CreationTimestamp
     @Column(name = "created_date")
     private java.sql.Timestamp createdDate;
@@ -45,6 +48,11 @@ public class Order {
     @UpdateTimestamp
     @Column(name = "modified_date")
     private java.sql.Timestamp modifiedDate;
+
+    public Order(User buyer, String transactionStatus) {
+        this.transactionStatus = transactionStatus;
+        this.buyer = buyer;
+    }
 
     public Long getId() {
         return id;
@@ -58,7 +66,11 @@ public class Order {
         this.transactionStatus = transactionStatus;
     }
 
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }
