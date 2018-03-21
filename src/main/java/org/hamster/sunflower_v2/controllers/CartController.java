@@ -8,6 +8,7 @@ import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -60,20 +61,28 @@ public class CartController {
     }
 
     @PostMapping(value = "processOrder")
-    public ModelAndView processOrder(@ModelAttribute("billingInformationDto") @Valid BillingInformationDTO billingInformationDTO, BindingResult result,
-                                     WebRequest request, Errors errors) {
-        return new ModelAndView(CART_PATH + "confirm", "billingInformationDto", billingInformationDTO);
-    }
+    public ModelAndView processOrder(@ModelAttribute("billingInformationDto") @Valid BillingInformationDTO billingInformationDTO, ModelMap modelMap,
+                                     HttpSession session) {
+        cart = (HashMap) session.getAttribute("cart");
 
-    @PostMapping(value = "confirm")
-    public String confirmForm(ModelMap modelMap, HttpSession session) {
-        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        if(session.getAttribute("cart") != null) {
-            modelMap.put("total", total(session));
+        if (cart.size() == 0) {
+            return new ModelAndView( "redirect:/error/404");
         }
 
+        session.setAttribute("billingInformationDto", billingInformationDTO);
+
+        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
         modelMap.put("loggedUser", loggedUser);
+        modelMap.put("billingInformationDto", billingInformationDTO);
+        modelMap.put("total", total(session));
+
+        return new ModelAndView( CART_PATH + "confirm");
+    }
+
+    @GetMapping(value = "confirm")
+    public String confirm(ModelMap modelMap) {
+
         return CART_PATH + "confirm";
     }
 

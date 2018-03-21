@@ -2692,8 +2692,6 @@ a.popup-with-zoom-anim {
     border-radius: 5px;
 }
 /*---start-pricing-tabels-----*/
-.payment-online-form-left{
-}
 form li {
 	list-style: none;
 }
@@ -2707,12 +2705,18 @@ h4.payment-head{
 	text-align: left;
     float: left;
 }
+.payment-online-form-left{
+    height: 397px;
+    position:relative;
+}
 .payment-online-form-left span{
     vertical-align: sub;
 	margin-right:7px;
 }
 .payment-online-form-left form{
 	padding:0 3%;
+    max-height: 100%;
+    overflow: auto;
 }
 .payment-online-form-left input[type="text"], .payment-online-form-left select {
     padding: 0.7em 1em;
@@ -2751,7 +2755,7 @@ input#datepicker {
     border-color: #FC8213;
     color:#6B6B6A;
 }
-.shoppong-pay-1{
+.shopping-pay-1{
 	width: 32px;
 	height: 32px;
 	display: inline-block;
@@ -2828,6 +2832,27 @@ a.order:hover{
 	background:#68AE00;
 }
 .order input[type="submit"]:hover {
+    color:#fff;
+    background:#68AE00;
+}
+.order input[type="button"] {
+    background:#FC8213;
+    padding: 10px 25px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size:0.95em;
+    display: inline-block;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    -webkit-appearance: none;
+    outline: none;
+    text-decoration: none;
+    border-radius: 3px;
+}
+.order input[type="button"]:hover {
     color:#fff;
     background:#68AE00;
 }

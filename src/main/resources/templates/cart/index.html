@@ -30,12 +30,12 @@
             <div class="inner-block">
                 <div class="shopping-cart">
                     <div class="column-labels">
-                        <label class="product-image">Image</label>
+                        <label class="product-image">&nbsp;</label>
                         <label class="product-details">Product</label>
-                        <label class="product-price">Price</label>
-                        <!--<label class="product-quantity">Quantity</label>-->
-                        <label class="product-removal">Remove</label>
-                        <!--<label class="product-line-price">Total</label>-->
+                        <label class="product-price">&nbsp;</label>
+                        <label class="product-quantity">&nbsp;</label>
+                        <label class="product-removal">&nbsp;</label>
+                        <label class="product-line-price">Price</label>
                     </div>
 
                     <div class="product" th:each="product : ${session.cart}">
@@ -46,10 +46,11 @@
                             <div class="product-title" th:text="${product.value.name}"></div>
                             <p class="product-description" th:text="${product.value.description}"></p>
                         </div>
-                        <div class="product-price" th:text="${product.value.price}"></div>
-                        <!--<div class="product-quantity">-->
+                        <div class="product-price">&nbsp;</div>
+                        <div class="product-quantity">
                             <!--<input type="number" value="2" min="1" />-->
-                        <!--</div>-->
+                            &nbsp;
+                        </div>
                         <div class="product-removal">
                             <a th:href="${'/cart/remove/' + product.value.id}">
                                 <button class="remove-product">
@@ -57,22 +58,10 @@
                                 </button>
                             </a>
                         </div>
-                        <!--<div class="product-line-price">25.98</div>-->
+                        <div class="product-line-price" th:text="${product.value.price}"></div>
                     </div>
 
                     <div class="totals">
-                        <!--<div class="totals-item">-->
-                            <!--<label>Subtotal</label>-->
-                            <!--<div class="totals-value" id="cart-subtotal" th:text="${total != null} ? ${total} : ${''}"></div>-->
-                        <!--</div>-->
-                        <!--<div class="totals-item">-->
-                            <!--<label>Tax (5%)</label>-->
-                            <!--<div class="totals-value" id="cart-tax" th:text="${total != null} ? ${total * 0.05} : ${''}"></div>-->
-                        <!--</div>-->
-                        <!--<div class="totals-item">-->
-                            <!--<label>Shipping</label>-->
-                            <!--<div class="totals-value" id="cart-shipping" th:text="${total != null} ? ${'100'} : ${''}"></div>-->
-                        <!--</div>-->
                         <div class="totals-item totals-item-total">
                             <label>Total</label>
                             <div class="totals-value" id="cart-total" th:if="${total != 0}" th:text="${total != null} ? ${total} : ${''}"></div>
@@ -89,47 +78,50 @@
                 <div id="small-dialog" class="mfp-hide">
                     <div class="pop_up">
                         <div class="payment-online-form-left">
-                            <form th:action="${'/cart/processOrder'}" method="POST" th:object="${billingInformationDto}">
-                                <h4><span class="shoppong-pay-1"> </span>Shipping Details</h4>
-                                <br />
-                                <ul>
-                                    <li><input th:field="*{province}" class="text-box-dark" type="text" placeholder="Province" required="" /></li>
-                                    <li><input th:field="*{city}" class="text-box-dark" type="text" placeholder="City" required="" /></li>
-                                </ul>
-                                <ul>
-                                    <li><input th:field="*{houseDetails}" class="text-box-dark" type="text" placeholder="House No./Unit/Floor" required="" /></li>
-                                    <li><input th:field="*{building}" class="text-box-dark" type="text" placeholder="Building" required="" /></li>
-                                </ul>
-                                <ul>
-                                    <li><input th:field="*{street}" class="text-box-dark" type="text" placeholder="Street" required="" /></li>
-                                    <li><input th:field="*{subdivision}" class="text-box-dark" type="text" placeholder="Subdivision" /></li>
-                                </ul>
-                                <div class="clear"></div>
-                                <div class="clear"></div>
-                                <ul>
-                                    <li><input th:field="*{barangay}" class="text-box-dark" type="text" placeholder="Barangay" /></li>
-                                    <li><input th:field="*{landmark}" class="text-box-dark" type="text" placeholder="Landmark" /></li>
-                                </ul>
-                                <ul>
-                                    <li><input th:field="*{contactNumber}" class="text-box-dark" type="text" placeholder="Contact #" required="" /></li>
-                                    <li>
-                                        <select th:field="*{shippingType}">
-                                            <option value="Standard Shipping">Standard Shipping</option>
-                                            <option value="Express Shipping">Express Shipping</option>
-                                            <option value="Overnight Shipping">Overnight Shipping</option>
-                                        </select>
-                                    </li>
-                                </ul>
-                                <ul class="payment-sendbtns">
-                                    <li><input type="reset" value="Reset" /></li>
-                                    <li class="order"><input type="submit" value="Process Order" /></li>
-                                </ul>
-                                <div class="clear"></div>
-                            </form>
+                            <div id="paymentBlock">
+                                <h4><span class="shopping-pay-1"> </span>Shopping Details</h4>
+                                <form id="shoppingForm" th:action="${'/cart/processOrder'}" method="POST" th:object="${billingInformationDto}">
+                                    <br />
+                                    <ul>
+                                        <li><input th:field="*{province}" name="province" class="text-box-dark" type="text" placeholder="Province" required="" /></li>
+                                        <li><input th:field="*{city}" name="city" class="text-box-dark" type="text" placeholder="City" required="" /></li>
+                                    </ul>
+                                    <ul>
+                                        <li><input th:field="*{houseDetails}" name="houseDetails" class="text-box-dark" type="text" placeholder="House No./Unit/Floor" required="" /></li>
+                                        <li><input th:field="*{building}" name="building" class="text-box-dark" type="text" placeholder="Building" required="" /></li>
+                                    </ul>
+                                    <ul>
+                                        <li><input th:field="*{street}" name="street" class="text-box-dark" type="text" placeholder="Street" required="" /></li>
+                                        <li><input th:field="*{subdivision}" name="subdivision" class="text-box-dark" type="text" placeholder="Subdivision" /></li>
+                                    </ul>
+                                    <div class="clear"></div>
+                                    <div class="clear"></div>
+                                    <ul>
+                                        <li><input th:field="*{barangay}" name="barangay" class="text-box-dark" type="text" placeholder="Barangay" /></li>
+                                        <li><input th:field="*{landmark}" name="landmark" class="text-box-dark" type="text" placeholder="Landmark" /></li>
+                                    </ul>
+                                    <ul>
+                                        <li><input th:field="*{contactNumber}" name="contactNumber" class="text-box-dark" type="text" placeholder="Contact #" required="" /></li>
+                                        <li>
+                                            <select th:field="*{shippingType}" name="shippingType">
+                                                <option value="Standard Shipping">Standard Shipping &#8369;200</option>
+                                                <option value="Express Shipping">Express Shipping &#8369;500</option>
+                                                <option value="Overnight Shipping">Overnight Shipping &#8369;700</option>
+                                            </select>
+                                        </li>
+                                    </ul>
+                                    <ul class="payment-sendbtns">
+                                        <li><input type="reset" value="Reset" /></li>
+                                        <li class="order"><input type="submit" value="Process Order" /></li>
+                                    </ul>
+                                    <div class="clear"></div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <!--pop-up-grid-->
             <!--copy rights start here-->
             <div class="copyrights">
@@ -142,7 +134,6 @@
 </div>
 
 <div th:replace="/fragments/footer :: footer"></div>
-
 <script src="/js/shoppingcart.js"></script>
 </body>
 </html>

@@ -17,4 +17,9 @@ public class ErrorController {
     public String error403() {
         return ERROR_PATH + "403";
     }
+
+    @GetMapping("/404")
+    public String error404() {
+        return ERROR_PATH + "404";
+    }
 }

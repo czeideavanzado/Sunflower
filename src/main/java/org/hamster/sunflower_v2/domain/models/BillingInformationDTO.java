@@ -1,6 +1,7 @@
 package org.hamster.sunflower_v2.domain.models;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.thymeleaf.util.StringUtils;
 
 import javax.validation.constraints.NotNull;
 
@@ -133,5 +134,27 @@ public class BillingInformationDTO {
 
     public void setShippingType(String shippingType) {
         this.shippingType = shippingType;
+    }
+
+    public String getFullAddress() {
+        StringBuilder string = new StringBuilder();
+
+        if (!StringUtils.isEmpty(landmark)) {
+            string.append(landmark + ", ");
+        }
+
+        if (!StringUtils.isEmpty(barangay)) {
+            string.append(barangay + ", ");
+        }
+        if (!StringUtils.isEmpty(subdivision)) {
+            string.append(subdivision + ", ");
+        }
+
+        string.append(street + ", ");
+        string.append(building + ", ");
+        string.append(houseDetails + ", ");
+        string.append(city);
+
+        return string.toString();
     }
 }
