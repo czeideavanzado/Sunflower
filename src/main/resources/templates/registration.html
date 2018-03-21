@@ -27,7 +27,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="forgot-grid">
                         <ul>
                             <li>
-                                <input type="checkbox" id="brand1" value="" />
+                                <input type="checkbox" id="brand1" required="" />
                                 <label for="brand1"><span></span>I agree to the terms &amp; conditions</label>
                             </li>
                         </ul>
@@ -35,10 +35,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     <div class="clearfix"> </div>
                 </div>
-                <input type="submit" value="Register" />
+                <input id="register" type="submit" value="Register" />
             </form>
             <div class="sign-down">
-                <h4>Already have an account? <a th:href="@{/login}"> Login here.</a></h4>
+                <h4>Already have an account? <a th:href="@{/login}">Login here.</a></h4>
                 <h5><a th:href="@{/}">Go Back to Home</a></h5>
             </div>
         </div>

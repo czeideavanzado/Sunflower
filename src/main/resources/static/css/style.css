@@ -2089,7 +2089,7 @@ p.grid1 {
 }
 .sign-down h4 a {
     font-size: 1em;
-    color: #000;
+    color: #337AB7;
     text-align: center;
     margin-top: 1em;
     display: inline-block;;
@@ -2104,7 +2104,7 @@ p.grid1 {
     font-family: 'Carrois Gothic', sans-serif;
 }
 .sign-down h5 a {
-    color: #337AB7;
+    color: #FC8213;
     text-decoration: underline;
 }.sign-down h5 a:hover {
     color:#68AE00;
