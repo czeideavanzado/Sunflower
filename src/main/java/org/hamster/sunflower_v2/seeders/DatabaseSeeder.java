@@ -41,9 +41,9 @@ public class DatabaseSeeder {
     public void seed(ContextRefreshedEvent event) {
         // comment theses out to to stop mock data
         seedRolesTable();
-        seedUsersTable();
-        seedSeedsTable();
-        seedProductsTable();
+//        seedUsersTable();
+//        seedSeedsTable();
+//        seedProductsTable();
     }
 
     private void seedProductsTable() {

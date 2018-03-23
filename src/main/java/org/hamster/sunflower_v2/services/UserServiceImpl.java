@@ -1,5 +1,6 @@
 package org.hamster.sunflower_v2.services;
 
+import org.hamster.sunflower_v2.domain.SunflowerSmtpMailSender;
 import org.hamster.sunflower_v2.domain.models.CustomKeyGenerator;
 import org.hamster.sunflower_v2.domain.models.Order;
 import org.hamster.sunflower_v2.domain.models.RoleRepository;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -27,11 +30,14 @@ UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
+    private SunflowerSmtpMailSender sunflowerSmtpMailSender;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.sunflowerSmtpMailSender = sunflowerSmtpMailSender;
     }
 
     @Transactional
@@ -51,6 +57,13 @@ UserServiceImpl implements UserService {
         user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByRole("BUYER"), roleRepository.findByRole("SELLER"))));
         user.setWallet(new Wallet(CustomKeyGenerator.generateWallet()));
         user.setOrders(new HashSet<>());
+
+        try {
+            sunflowerSmtpMailSender.send(user.getUsername(), SunflowerSmtpMailSender.verificationSubject, SunflowerSmtpMailSender.verificationBody);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         return userRepository.save(user);
     }
 
