@@ -103,6 +103,9 @@ UserServiceImpl implements UserService {
     @Override
     public User getUserByToken(String token) {
         User user = getVerificationToken(token).getUser();
+
+        VerificationToken verificationToken = verificationTokenRepository.findByUser(user);
+        verificationTokenRepository.delete(verificationToken);
         return verifyUser(user);
     }
 
@@ -110,9 +113,6 @@ UserServiceImpl implements UserService {
     public User verifyUser(User user) {
         user.setWallet(new Wallet(CustomKeyGenerator.generateWallet(), user));
         user.setEnabled(true);
-
-        VerificationToken token = verificationTokenRepository.findByUser(user);
-        verificationTokenRepository.delete(token);
 
         return userRepository.save(user);
     }

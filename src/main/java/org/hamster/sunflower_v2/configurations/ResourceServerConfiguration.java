@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,12 +50,17 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(anonymousResources).permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/product/**", "/cart/**").hasAuthority("BUYER")
+                .antMatchers("/product/**").hasAnyAuthority("SELLER", "BUYER", "ADMIN")
+                .antMatchers("/cart/**").hasAnyAuthority("BUYER", "ADMIN")
                 .anyRequest().authenticated()
                     .and()
                 .formLogin().loginPage("/login").permitAll()
                     .and()
-                .logout().permitAll();
+                .logout().logoutUrl("/logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll()
+                    .and()
+                .rememberMe().key("AppKey").tokenValiditySeconds(604800);
+
+        http.sessionManagement().maximumSessions(1);
 
 //        http.authorizeRequests()
 //                .antMatchers("/", "/registration", "/oauth/authorize").permitAll()
