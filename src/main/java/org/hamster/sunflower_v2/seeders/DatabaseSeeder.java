@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by ONB-CZEIDE on 03/06/2018
@@ -41,7 +42,7 @@ public class DatabaseSeeder {
     public void seed(ContextRefreshedEvent event) {
         // comment theses out to to stop mock data
         seedRolesTable();
-//        seedUsersTable();
+        seedUsersTable();
 //        seedSeedsTable();
 //        seedProductsTable();
     }
@@ -92,7 +93,7 @@ public class DatabaseSeeder {
                         user.getPassword(), user.getPasswordConfirm(),
                         user.getFirst_name(), user.getLast_name());
                 try {
-                    userService.registerNewUserAccount(userDTO);
+                    userService.verifyUser(userService.registerNewUserAccount(userDTO));
                 } catch (EmailExistsException e) {
                     e.printStackTrace();
                 }
