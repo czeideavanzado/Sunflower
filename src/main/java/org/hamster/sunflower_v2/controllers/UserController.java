@@ -48,15 +48,6 @@ public class UserController {
         return new ModelAndView("successRegistration", "user", accountDto);
     }
 
-    @GetMapping(value = "/verifyAccount")
-    public String verifyAccount(@RequestParam(value = "token") String token, BindingResult result) {
-        if (userService.getUserByToken(token) != null) {
-            return "redirect:/login?verified=success";
-        }
-
-        return "redirect:/login?failed";
-    }
-
     private User createUserAccount(UserDTO accountDto, BindingResult result) {
         User registered;
 

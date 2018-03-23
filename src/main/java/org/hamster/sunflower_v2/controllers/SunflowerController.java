@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
@@ -78,6 +79,15 @@ public class SunflowerController {
         UserDTO userDto = new UserDTO();
         model.addAttribute("user", userDto);
         return "registration";
+    }
+
+    @GetMapping(value = "/verifyAccount")
+    public String verifyAccount(@RequestParam(value = "token") String token) {
+        if (userService.getUserByToken(token) != null) {
+            return "redirect:/login?verified=success";
+        }
+
+        return "redirect:/login?failed";
     }
 
     @GetMapping(value = "profile/{id}")

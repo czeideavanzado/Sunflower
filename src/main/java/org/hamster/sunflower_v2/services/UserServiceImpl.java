@@ -84,15 +84,15 @@ UserServiceImpl implements UserService {
         VerificationToken myToken = new VerificationToken(token, user);
         verificationTokenRepository.save(myToken);
 
-        String verificationLink = "<a href='https://localhost:8080/verifyAccount?token=" + token + "'>Verify my account</a>";
+        String verificationLink = "<a href='https://localhost:8443/verifyAccount?token=" + token + "'>Verify my account</a>";
 
-//        try {
-//            sunflowerSmtpMailSender.send(user.getUsername(),
-//                    SunflowerSmtpMailSender.verificationSubject,
-//                    SunflowerSmtpMailSender.verificationBody + verificationLink + SunflowerSmtpMailSender.signatureLine);
-//        } catch (MessagingException | UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            sunflowerSmtpMailSender.send(user.getUsername(),
+                    SunflowerSmtpMailSender.verificationSubject,
+                    SunflowerSmtpMailSender.verificationBody + verificationLink + SunflowerSmtpMailSender.signatureLine);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
