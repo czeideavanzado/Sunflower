@@ -59,9 +59,8 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "buyer", cascade = CascadeType.ALL)
     private Set<Order> orders;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_wallet", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "wallet_id"))
-    private Wallet wallet;;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+    private Wallet wallet;
 
     @CreationTimestamp
     @Column(name = "created_date")

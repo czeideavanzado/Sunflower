@@ -14,6 +14,10 @@ public class Wallet {
     @Column(name = "id")
     private String id;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User owner;
+
     @Column(name = "seeds")
     private BigDecimal seeds;
 

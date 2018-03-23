@@ -49,6 +49,9 @@ public class Order {
     @Column(name = "modified_date")
     private java.sql.Timestamp modifiedDate;
 
+    public Order() {
+    }
+
     public Order(User buyer, String transactionStatus) {
         this.transactionStatus = transactionStatus;
         this.buyer = buyer;
