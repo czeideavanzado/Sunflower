@@ -21,12 +21,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="alert alert-danger alert-dismissable error" th:if="${param.failed != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     Account verification unsuccessful! </div>
-                <div class="alert alert-danger alert-dismissable error" th:if="${param.error}">
+                <div class="alert alert-danger alert-dismissable error" th:if="${param.sessionExpired != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
-                    Incorrect username or password </div>
+                    <i class=" fa fa-exclamation-triangle"></i> Your session has expired</div>
                 <div class="alert alert-success alert-dismissable error" th:if="${param.logout != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     Logged out successfully </div>
+                <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'incorrect')}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Incorrect username or password </div>
                 <input type="text" id="username" name="username" placeholder="Username" required="" />
                 <input type="password" id="password" name="password" class="lock" placeholder="Password" autocomplete="off" />
                 <div class="forgot-top-grids">

@@ -54,13 +54,13 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/cart/**").hasAnyAuthority("BUYER", "ADMIN")
                 .anyRequest().authenticated()
                     .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/login").failureUrl("/login?error=incorrect").permitAll()
                     .and()
                 .logout().logoutUrl("/logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll()
                     .and()
                 .rememberMe().key("AppKey").tokenValiditySeconds(604800);
 
-        http.sessionManagement().maximumSessions(1);
+        http.sessionManagement().maximumSessions(1).expiredUrl("/login?sessionExpired");
 
 //        http.authorizeRequests()
 //                .antMatchers("/", "/registration", "/oauth/authorize").permitAll()
