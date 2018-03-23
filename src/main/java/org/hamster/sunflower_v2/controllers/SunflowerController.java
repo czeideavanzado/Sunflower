@@ -84,7 +84,7 @@ public class SunflowerController {
     @GetMapping(value = "/verifyAccount")
     public String verifyAccount(@RequestParam(value = "token") String token) {
         if (userService.getUserByToken(token) != null) {
-            return "redirect:/login?verified=success";
+            return "redirect:/login?verified";
         }
 
         return "redirect:/login?failed";
