@@ -71,6 +71,8 @@ public class User {
     private java.sql.Timestamp modifiedDate;
 
     public User() {
+        super();
+        this.enabled = false;
     }
 
     public User(User user) {

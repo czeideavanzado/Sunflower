@@ -15,6 +15,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         <div class="login-block">
             <form th:action="@{/login}" method="POST">
+                <div class="alert alert-success alert-dismissable error" th:if="${param.verified != null}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Account verification successful! </div>
+                <div class="alert alert-danger alert-dismissable error" th:if="${param.failed != null}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Account verification unsuccessful! </div>
                 <div class="alert alert-danger alert-dismissable error" th:if="${param.error}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     Incorrect username or password </div>

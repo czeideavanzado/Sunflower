@@ -13,6 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
@@ -38,13 +39,22 @@ public class UserController {
 
         if (registered == null) {
             result.rejectValue("username", "error.user", "An account already exists for this email");
+            return new ModelAndView("registration", "user", accountDto);
         }
 
-        if (result.hasErrors()) {
-            return new ModelAndView("registration", "user", accountDto);
-        } else {
-            return new ModelAndView("successRegistration", "user", accountDto);
+        String token = UUID.randomUUID().toString();
+        userService.createVerificationToken(registered, token);
+
+        return new ModelAndView("successRegistration", "user", accountDto);
+    }
+
+    @GetMapping(value = "/verifyAccount")
+    public String verifyAccount(@RequestParam(value = "token") String token, BindingResult result) {
+        if (userService.getUserByToken(token) != null) {
+            return "redirect:/login?verified=success";
         }
+
+        return "redirect:/login?failed";
     }
 
     private User createUserAccount(UserDTO accountDto, BindingResult result) {

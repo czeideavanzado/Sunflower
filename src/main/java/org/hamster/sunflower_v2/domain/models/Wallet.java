@@ -24,9 +24,10 @@ public class Wallet {
     public Wallet() {
     }
 
-    public Wallet(String id) {
+    public Wallet(String id, User user) {
         setId(id);
         seeds = BigDecimal.ZERO;
+        owner = user;
     }
 
     public String getId() {
@@ -43,5 +44,13 @@ public class Wallet {
 
     public BigDecimal getSeeds() {
         return seeds;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

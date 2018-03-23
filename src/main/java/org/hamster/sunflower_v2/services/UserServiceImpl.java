@@ -1,13 +1,7 @@
 package org.hamster.sunflower_v2.services;
 
 import org.hamster.sunflower_v2.domain.SunflowerSmtpMailSender;
-import org.hamster.sunflower_v2.domain.models.CustomKeyGenerator;
-import org.hamster.sunflower_v2.domain.models.Order;
-import org.hamster.sunflower_v2.domain.models.RoleRepository;
-import org.hamster.sunflower_v2.domain.models.User;
-import org.hamster.sunflower_v2.domain.models.UserDTO;
-import org.hamster.sunflower_v2.domain.models.UserRepository;
-import org.hamster.sunflower_v2.domain.models.Wallet;
+import org.hamster.sunflower_v2.domain.models.*;
 
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +25,15 @@ UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     private SunflowerSmtpMailSender sunflowerSmtpMailSender;
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender, VerificationTokenRepository verificationTokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.sunflowerSmtpMailSender = sunflowerSmtpMailSender;
+        this.verificationTokenRepository = verificationTokenRepository;
     }
 
     @Transactional
@@ -55,16 +51,7 @@ UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
         user.setUsername(accountDto.getUsername());
         user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByRole("BUYER"), roleRepository.findByRole("SELLER"))));
-        user.setWallet(new Wallet(CustomKeyGenerator.generateWallet()));
         user.setOrders(new HashSet<>());
-
-        try {
-            sunflowerSmtpMailSender.send(user.getUsername(),
-                    SunflowerSmtpMailSender.verificationSubject,
-                    SunflowerSmtpMailSender.verificationBody + SunflowerSmtpMailSender.signatureLine);
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
         return userRepository.save(user);
     }
@@ -90,6 +77,36 @@ UserServiceImpl implements UserService {
         orders.add(order);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        verificationTokenRepository.save(myToken);
+
+        String verificationLink = "<a href='https://localhost:8080/verifyAccount?token=" + token + "'>Verify my account</a>";
+
+//        try {
+//            sunflowerSmtpMailSender.send(user.getUsername(),
+//                    SunflowerSmtpMailSender.verificationSubject,
+//                    SunflowerSmtpMailSender.verificationBody + verificationLink + SunflowerSmtpMailSender.signatureLine);
+//        } catch (MessagingException | UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    @Override
+    public VerificationToken getVerificationToken(String token) {
+        return verificationTokenRepository.findByToken(token);
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        User user = getVerificationToken(token).getUser();
+        user.setWallet(new Wallet(CustomKeyGenerator.generateWallet(), user));
+        user.setEnabled(true);
+
+        return userRepository.save(user);
     }
 
     private boolean emailExist(String username) {
