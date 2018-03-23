@@ -59,7 +59,9 @@ UserServiceImpl implements UserService {
         user.setOrders(new HashSet<>());
 
         try {
-            sunflowerSmtpMailSender.send(user.getUsername(), SunflowerSmtpMailSender.verificationSubject, SunflowerSmtpMailSender.verificationBody);
+            sunflowerSmtpMailSender.send(user.getUsername(),
+                    SunflowerSmtpMailSender.verificationSubject,
+                    SunflowerSmtpMailSender.verificationBody + SunflowerSmtpMailSender.signatureLine);
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -93,10 +95,6 @@ UserServiceImpl implements UserService {
     private boolean emailExist(String username) {
         User user = userRepository.findByUsername(username);
 
-        if (user != null) {
-            return true;
-        }
-
-        return false;
+        return user != null;
     }
 }

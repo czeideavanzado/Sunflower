@@ -22,7 +22,14 @@ public class SunflowerSmtpMailSender {
     public static final String senderName = "Sunflower Team";
 
     public static final String verificationSubject = "Email Address Verification";
-    public static final String verificationBody = "Verification";
+    public static final String verificationBody =
+            "Thank you for signing up to Sunflower! <br />" +
+            "Please click this link to verify your email address and activate your account: <br /><br />";
+
+    public static final String signatureLine =
+            "<br /><br /><br />Thank you and welcome to Sunflower!<br /><br /><br />" +
+            "Sunflower team<br />" +
+            "P.S. Need help? <a href='mailto:sunflower.hamster.app@gmail.com'>Contact us</a> anytime with your questions and/or feedback. ";
 
     @Autowired
     public SunflowerSmtpMailSender(JavaMailSender javaMailSender) {
@@ -37,7 +44,7 @@ public class SunflowerSmtpMailSender {
             message.setFrom(senderEmail, senderName);
             message.setTo(to);
             message.setSubject(subject);
-            message.setText(body);
+            message.setText("", body);
         };
 
         javaMailSender.send(mailMessage);
