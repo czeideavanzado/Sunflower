@@ -4,6 +4,7 @@ import org.hamster.sunflower_v2.domain.models.Order;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
 import org.hamster.sunflower_v2.domain.models.VerificationToken;
+import org.hamster.sunflower_v2.exceptions.EmailDoesNotExistException;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UserService {
     VerificationToken getVerificationToken(String token);
     User getUserByToken(String token);
     User verifyUser(User user);
+
+    void createPasswordResetToken(User user, String token) throws EmailDoesNotExistException;
 }

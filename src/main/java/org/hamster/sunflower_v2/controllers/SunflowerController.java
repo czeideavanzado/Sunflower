@@ -3,6 +3,7 @@ package org.hamster.sunflower_v2.controllers;
 import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
+import org.hamster.sunflower_v2.exceptions.EmailDoesNotExistException;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +13,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by ONB-CZEIDE on 02/19/2018
@@ -90,6 +89,33 @@ public class SunflowerController {
         return "redirect:/login?failed";
     }
 
+    @GetMapping(value = "/forgotPassword")
+    public String forgotPasswordForm() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+
+            /* The user is logged in :) */
+            return "redirect: ";
+        }
+
+        return "forgotPassword";
+    }
+
+    @PostMapping(value = "/forgotPassword/resetPassword")
+    public String resetPassword(@RequestParam("email") String email) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+
+            /* The user is logged in :) */
+            return "redirect: ";
+        }
+
+        User user = userService.findByUsername(email);
+        return passwordReset(user);
+    }
+
     @GetMapping(value = "profile/{id}")
     public String profile(@PathVariable("id") Long id, ModelMap modelMap) {
         User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -98,5 +124,18 @@ public class SunflowerController {
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("user", user);
         return "profile";
+    }
+
+    private String passwordReset(User user) {
+        String token = UUID.randomUUID().toString();
+
+        try {
+            userService.createPasswordResetToken(user, token);
+        } catch (EmailDoesNotExistException e) {
+            e.printStackTrace();
+            return "redirect:/forgotPassword?failed";
+        }
+
+        return "redirect:/forgotPassword?success";
     }
 }

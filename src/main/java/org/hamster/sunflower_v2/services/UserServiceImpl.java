@@ -3,6 +3,7 @@ package org.hamster.sunflower_v2.services;
 import org.hamster.sunflower_v2.domain.SunflowerSmtpMailSender;
 import org.hamster.sunflower_v2.domain.models.*;
 
+import org.hamster.sunflower_v2.exceptions.EmailDoesNotExistException;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,8 +18,7 @@ import java.util.*;
  * Created by ONB-CZEIDE on 02/19/2018
  */
 @Service(value = "userService")
-public class
-UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -26,14 +26,16 @@ UserServiceImpl implements UserService {
 
     private SunflowerSmtpMailSender sunflowerSmtpMailSender;
     private VerificationTokenRepository verificationTokenRepository;
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender, VerificationTokenRepository verificationTokenRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender, VerificationTokenRepository verificationTokenRepository, PasswordResetTokenRepository passwordResetTokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.sunflowerSmtpMailSender = sunflowerSmtpMailSender;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     @Transactional
@@ -86,10 +88,17 @@ UserServiceImpl implements UserService {
 
         String verificationLink = "<a href='https://localhost:8443/verifyAccount?token=" + token + "'>Verify my account</a>";
 
+        String subject = "Email Address Verification";
+        String body =
+                "Thank you for signing up to Sunflower! <br />" +
+                "Please click the link below to verify your email address and activate your account: <br /><br />";
+
+        String welcomingRemarks = "<br /><br />Thank you and welcome to Sunflower!<br /><br />";
+
         try {
             sunflowerSmtpMailSender.send(user.getUsername(),
-                    SunflowerSmtpMailSender.verificationSubject,
-                    SunflowerSmtpMailSender.verificationBody + verificationLink + SunflowerSmtpMailSender.signatureLine);
+                    subject,
+                    body + verificationLink + welcomingRemarks + SunflowerSmtpMailSender.signatureLine);
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -115,6 +124,34 @@ UserServiceImpl implements UserService {
         user.setEnabled(true);
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public void createPasswordResetToken(User user, String token) throws EmailDoesNotExistException {
+        if (!emailExist(user.getUsername())) {
+            throw new EmailDoesNotExistException("There is no account with that email address:"
+                    + user.getUsername());
+        }
+
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(myToken);
+
+        String resetLink = "<a href='https://localhost:8443/passwordReset?token=" + token + "'>Reset my password</a>";
+
+        String subject = "Account Password Reset";
+        String body =
+                "Please click the link below to reset your password: <br /> <br />";
+
+        String warningBody =
+                "<br /> <br />Please disregard this message if you have not opted for a password reset.<br /><br />";
+
+        try {
+            sunflowerSmtpMailSender.send(user.getUsername(),
+                    subject,
+                    body + resetLink + warningBody + SunflowerSmtpMailSender.signatureLine);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean emailExist(String username) {
