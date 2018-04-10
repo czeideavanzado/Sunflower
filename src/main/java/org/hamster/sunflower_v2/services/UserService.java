@@ -17,11 +17,16 @@ public interface UserService {
 
     void addOrder(User user, Order order);
 
+
+
     void createVerificationToken(User user, String token);
     User getUserByVerificationToken(String token);
-    User verifyUser(User user);
+    void verifyUser(String token);
+    void verifyMockUser(User user);
+    boolean isVerificationTokenExpired(String token);
 
     void createPasswordResetToken(User user, String token) throws EmailDoesNotExistException;
     User getUserByPasswordResetToken(String token);
     User changeUserPassword(User user, String password);
+    boolean isPasswordResetTokenExpired(String token);
 }

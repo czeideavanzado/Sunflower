@@ -32,8 +32,8 @@ public class VerificationToken {
 
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Date expiryDate;
@@ -54,7 +54,15 @@ public class VerificationToken {
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public User getUser() {
         return user;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
     }
 }

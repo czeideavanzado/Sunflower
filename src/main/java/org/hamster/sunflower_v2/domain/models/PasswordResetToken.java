@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "password_tokens")
 public class PasswordResetToken {
 
-    private static final int EXPIRATION = 60 * 24;
+    private static final int EXPIRATION = 60 * 2;
 
     @Id
     @GeneratedValue(generator = "password_token_sequence")
@@ -32,7 +32,7 @@ public class PasswordResetToken {
 
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
@@ -56,5 +56,9 @@ public class PasswordResetToken {
 
     public User getUser() {
         return user;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
     }
 }

@@ -44,7 +44,7 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
 //                .logout().permitAll();
 
         String[] anonymousResources = new String[]{
-                "/", "/registration", "/verifyAccount",
+                "/", "/registration/**", "/verifyAccount",
                 "/forgotPassword/**", "/resetPassword/**", "/login",
                 "/profile/**", "/css/**", "/images/**",
                 "/js/**", "/fonts/**", "/search/**"

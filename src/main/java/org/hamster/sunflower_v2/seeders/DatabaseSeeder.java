@@ -93,7 +93,7 @@ public class DatabaseSeeder {
                         user.getPassword(), user.getPasswordConfirm(),
                         user.getFirst_name(), user.getLast_name());
                 try {
-                    userService.verifyUser(userService.registerNewUserAccount(userDTO));
+                    userService.verifyMockUser(userService.registerNewUserAccount(userDTO));
                 } catch (EmailExistsException e) {
                     e.printStackTrace();
                 }

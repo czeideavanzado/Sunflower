@@ -2,16 +2,21 @@ package org.hamster.sunflower_v2.controllers;
 
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
+import org.hamster.sunflower_v2.exceptions.EmailDoesNotExistException;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -48,6 +53,37 @@ public class UserController {
         return new ModelAndView("successRegistration", "user", accountDto);
     }
 
+    @GetMapping(value = "/registration/resend")
+    public ModelAndView resendVerificationLink(@RequestParam("token") String token) {
+        User registered = userService.getUserByVerificationToken(token);
+
+        String newToken = UUID.randomUUID().toString();
+        userService.createVerificationToken(registered, newToken);
+
+        return new ModelAndView("successRegistration");
+    }
+
+    @GetMapping(value = "/verifyAccount")
+    public ModelAndView verifyAccount(@RequestParam(required=false, value = "token") String token) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            /* The user is logged in :) */
+            return new ModelAndView("redirect: ");
+        }
+
+        if (StringUtils.isEmpty(token)) {
+            return new ModelAndView("redirect: ");
+        }
+
+        if (!userService.isVerificationTokenExpired(token)) {
+            userService.verifyUser(token);
+            return new ModelAndView("redirect:/login?verified");
+        }
+
+        return new ModelAndView("redirect:/login?expired=" + token);
+    }
+
     private User createUserAccount(UserDTO accountDto, BindingResult result) {
         User registered;
 
@@ -60,8 +96,89 @@ public class UserController {
         return registered;
     }
 
-    @GetMapping(value = "/getUsername")
-    public String getUsername() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    @PostMapping(value = "/forgotPassword/resetPassword")
+    public String resetPassword(@RequestParam("email") String email) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+
+            /* The user is logged in :) */
+            return "redirect: ";
+        }
+
+        User user = userService.findByUsername(email);
+        return passwordReset(user);
+    }
+
+    @GetMapping(value = "/forgotPassword/resetPassword")
+    public String retryResetPassword(@RequestParam("token") String token) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+
+            /* The user is logged in :) */
+            return "redirect: ";
+        }
+
+        User user = userService.getUserByPasswordResetToken(token);
+        return passwordReset(user);
+    }
+
+    private String passwordReset(User user) {
+        String token = UUID.randomUUID().toString();
+
+        try {
+            userService.createPasswordResetToken(user, token);
+        } catch (EmailDoesNotExistException e) {
+            e.printStackTrace();
+            return "redirect:/forgotPassword?failed";
+        }
+
+        return "redirect:/forgotPassword?success";
+    }
+
+    @GetMapping(value = "/resetPassword")
+    public String resetPasswordForm(@RequestParam(value = "token") String token, HttpSession session) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            /* The user is logged in :) */
+            return "redirect: ";
+        }
+
+        if (StringUtils.isEmpty(token)) {
+            return "redirect: ";
+        }
+
+        if(!userService.isPasswordResetTokenExpired(token)) {
+            session.setAttribute("username", userService.getUserByPasswordResetToken(token).getUsername());
+            return "resetPassword";
+        }
+
+        return "redirect:/forgotPassword?expired";
+    }
+
+    @PostMapping(value = "/resetPassword/confirmPassword")
+    public String confirmPassword(@RequestParam("password") String password, @RequestParam("passwordConfirm") String passwordConfirm, HttpSession session) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+
+            /* The user is logged in :) */
+            return "redirect: ";
+        }
+
+        if (!password.equals(passwordConfirm)) {
+            return "redirect:/resetPassword?invalid";
+        }
+
+        User updateUser = userService.findByUsername((String) session.getAttribute("username"));
+        session.removeAttribute("username");
+
+        if (userService.changeUserPassword(updateUser, password) != null) {
+            return "redirect:/login?resetPassword";
+        }
+
+        return "redirect:/resetPassword?error";
     }
 }

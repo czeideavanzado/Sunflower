@@ -18,9 +18,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="alert alert-success alert-dismissable error" th:if="${param.verified != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     Account verification successful! </div>
-                <div class="alert alert-danger alert-dismissable error" th:if="${param.failed != null}">
+                <div class="alert alert-warning alert-dismissable error" th:if="${param.expired != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
-                    Account verification unsuccessful! </div>
+                    The verification link has already expired! <br /> <a th:href="${'/registration/resend?token=' + param.expired[0]}"> Click here to resend the link </a> </div>
                 <div class="alert alert-success alert-dismissable error" th:if="${param.resetPassword != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     Your password has been reset! </div>
