@@ -97,31 +97,31 @@ public class UserController {
     }
 
     @PostMapping(value = "/forgotPassword/resetPassword")
-    public String resetPassword(@RequestParam("email") String email) {
+    public ModelAndView resetPassword(@RequestParam("email") String email) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
             /* The user is logged in :) */
-            return "redirect: ";
+            return new ModelAndView("redirect: ");
         }
 
         User user = userService.findByUsername(email);
-        return passwordReset(user);
+        return new ModelAndView(passwordReset(user));
     }
 
     @GetMapping(value = "/forgotPassword/resetPassword")
-    public String retryResetPassword(@RequestParam("token") String token) {
+    public ModelAndView retryResetPassword(@RequestParam("token") String token) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
             /* The user is logged in :) */
-            return "redirect: ";
+            return new ModelAndView("redirect: ");
         }
 
         User user = userService.getUserByPasswordResetToken(token);
-        return passwordReset(user);
+        return new ModelAndView(passwordReset(user));
     }
 
     private String passwordReset(User user) {
@@ -138,47 +138,47 @@ public class UserController {
     }
 
     @GetMapping(value = "/resetPassword")
-    public String resetPasswordForm(@RequestParam(value = "token") String token, HttpSession session) {
+    public ModelAndView resetPasswordForm(@RequestParam(value = "token") String token, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             /* The user is logged in :) */
-            return "redirect: ";
+            return new ModelAndView("redirect: ");
         }
 
         if (StringUtils.isEmpty(token)) {
-            return "redirect: ";
+            return new ModelAndView("redirect: ");
         }
 
         if(!userService.isPasswordResetTokenExpired(token)) {
             session.setAttribute("username", userService.getUserByPasswordResetToken(token).getUsername());
-            return "resetPassword";
+            return new ModelAndView("resetPassword");
         }
 
-        return "redirect:/forgotPassword?expired";
+        return new ModelAndView("redirect:/forgotPassword?expired");
     }
 
     @PostMapping(value = "/resetPassword/confirmPassword")
-    public String confirmPassword(@RequestParam("password") String password, @RequestParam("passwordConfirm") String passwordConfirm, HttpSession session) {
+    public ModelAndView confirmPassword(@RequestParam("password") String password, @RequestParam("passwordConfirm") String passwordConfirm, HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
             /* The user is logged in :) */
-            return "redirect: ";
+            return new ModelAndView("redirect: ");
         }
 
         if (!password.equals(passwordConfirm)) {
-            return "redirect:/resetPassword?invalid";
+            return new ModelAndView("redirect:/resetPassword?invalid");
         }
 
         User updateUser = userService.findByUsername((String) session.getAttribute("username"));
         session.removeAttribute("username");
 
         if (userService.changeUserPassword(updateUser, password) != null) {
-            return "redirect:/login?resetPassword";
+            return new ModelAndView("redirect:/login?resetPassword");
         }
 
-        return "redirect:/resetPassword?error";
+        return new ModelAndView("redirect:/resetPassword?error");
     }
 }
