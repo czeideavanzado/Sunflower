@@ -36,7 +36,7 @@ public class UserInformation {
     @Column(name = "mobile_number")
     private String mobileNumber;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User information_id;
 

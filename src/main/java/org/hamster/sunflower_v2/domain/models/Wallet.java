@@ -14,7 +14,7 @@ public class Wallet {
     @Column(name = "id")
     private String id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User owner;
 

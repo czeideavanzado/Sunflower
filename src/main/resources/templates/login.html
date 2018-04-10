@@ -21,6 +21,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="alert alert-danger alert-dismissable error" th:if="${param.failed != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     Account verification unsuccessful! </div>
+                <div class="alert alert-success alert-dismissable error" th:if="${param.resetPassword != null}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Your password has been reset! </div>
                 <div class="alert alert-danger alert-dismissable error" th:if="${param.sessionExpired != null}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     <i class=" fa fa-exclamation-triangle"></i> Your session has expired</div>

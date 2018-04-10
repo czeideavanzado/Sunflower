@@ -56,10 +56,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     });
 
     function checkPasswordMatch() {
-        var password = $("#password").val();
-        var confirmPassword = $("#passwordConfirm").val();
+        let password = $("#password").val();
+        let confirmPassword = $("#passwordConfirm").val();
 
-        if (password == confirmPassword) {
+        if (password === confirmPassword) {
             document.getElementById('password').style.background = "#a0ed80";
             document.getElementById('passwordConfirm').style.background = "#a0ed80";
         } else {

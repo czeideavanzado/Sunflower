@@ -45,9 +45,9 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
 
         String[] anonymousResources = new String[]{
                 "/", "/registration", "/verifyAccount",
-                "/forgotPassword/**", "/login", "/profile/**",
-                "/css/**", "/images/**","/js/**",
-                "/fonts/**", "/search/**"
+                "/forgotPassword/**", "/resetPassword/**", "/login",
+                "/profile/**", "/css/**", "/images/**",
+                "/js/**", "/fonts/**", "/search/**"
         };
 
         http.authorizeRequests()
@@ -70,7 +70,7 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
 //                    .antMatchers("/admin").hasRole("ADMIN")
 //                    .antMatchers("/product/**").hasRole("BUYER")
 //
-        http.exceptionHandling().accessDeniedPage("/403");
+//        http.exceptionHandling().accessDeniedPage("/");
     }
 
 

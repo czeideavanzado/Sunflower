@@ -21,13 +21,7 @@ public class SunflowerSmtpMailSender {
     public static final String senderEmail = "sunflower.hamster.apps@gmail.com";
     public static final String senderName = "Sunflower Team";
 
-    public static final String verificationSubject = "Email Address Verification";
-    public static final String verificationBody =
-            "Thank you for signing up to Sunflower! <br />" +
-            "Please click the link below to verify your email address and activate your account: <br /><br />";
-
     public static final String signatureLine =
-            "<br /><br />Thank you and welcome to Sunflower!<br /><br />" +
             "Sunflower Team<br />" +
             "P.S. Need help? <a href='mailto:sunflower.hamster.apps@gmail.com'>Contact us</a> anytime with your questions and/or feedback. ";
 

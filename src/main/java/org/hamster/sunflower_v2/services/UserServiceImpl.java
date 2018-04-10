@@ -5,7 +5,9 @@ import org.hamster.sunflower_v2.domain.models.*;
 
 import org.hamster.sunflower_v2.exceptions.EmailDoesNotExistException;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
+import org.hamster.sunflower_v2.exceptions.TokenDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,14 +106,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public VerificationToken getVerificationToken(String token) {
+    private VerificationToken getVerificationToken(String token) {
         return verificationTokenRepository.findByToken(token);
     }
 
     @Override
-    public User getUserByToken(String token) {
-        User user = getVerificationToken(token).getUser();
+    public User getUserByVerificationToken(String token) {
+        User user;
+
+        try {
+            user = getVerificationToken(token).getUser();
+        } catch (NullPointerException e) {
+            throw new TokenDoesNotExistException("Invalid token: " + token);
+        }
+
 
         VerificationToken verificationToken = verificationTokenRepository.findByUser(user);
         verificationTokenRepository.delete(verificationToken);
@@ -136,7 +144,7 @@ public class UserServiceImpl implements UserService {
         PasswordResetToken myToken = new PasswordResetToken(token, user);
         passwordResetTokenRepository.save(myToken);
 
-        String resetLink = "<a href='https://localhost:8443/passwordReset?token=" + token + "'>Reset my password</a>";
+        String resetLink = "<a href='https://localhost:8443/resetPassword?token=" + token + "'>Reset my password</a>";
 
         String subject = "Account Password Reset";
         String body =
@@ -152,6 +160,25 @@ public class UserServiceImpl implements UserService {
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    private PasswordResetToken getPasswordResetToken(String token) {
+        return passwordResetTokenRepository.findByToken(token);
+    }
+
+    @Override
+    public User getUserByPasswordResetToken(String token) {
+        try {
+            return getPasswordResetToken(token).getUser();
+        } catch (TokenDoesNotExistException e) {
+            throw new TokenDoesNotExistException("Invalid token: " + token);
+        }
+    }
+
+    @Override
+    public User changeUserPassword(User user, String password){
+        user.setPassword(passwordEncoder.encode(password));
+        return userRepository.save(user);
     }
 
     private boolean emailExist(String username) {
