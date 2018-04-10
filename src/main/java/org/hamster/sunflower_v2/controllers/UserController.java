@@ -36,6 +36,10 @@ public class UserController {
     @PostMapping(value = "/registration")
     public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid UserDTO accountDto, BindingResult result,
                                             WebRequest request, Errors errors) {
+        if (!accountDto.getPassword().equals(accountDto.getPasswordConfirm())) {
+            return new ModelAndView("redirect:/registration?password");
+        }
+
         User registered = new User();
 
         if (!result.hasErrors()) {

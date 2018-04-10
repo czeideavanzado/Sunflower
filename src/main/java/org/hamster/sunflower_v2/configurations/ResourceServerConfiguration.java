@@ -47,9 +47,8 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
                 "/", "/registration/**", "/verifyAccount",
                 "/forgotPassword/**", "/resetPassword/**", "/login",
                 "/profile/**", "/css/**", "/images/**",
-                "/js/**", "/fonts/**", "/search/**"
+                "/js/**", "/fonts/**", "/search/**",
         };
-
         http.authorizeRequests()
                 .antMatchers(anonymousResources).permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")

@@ -18,11 +18,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <form th:action="@{/registration}" th:object="${user}" method="POST">
                 <div class="alert alert-danger alert-dismissable error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button></div>
+                <div class="alert alert-danger alert-dismissable error" id="imageError" style="display: none;">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    <i class=" fa fa-exclamation-triangle"></i> Please upload images only</div>
+                <div class="alert alert-danger alert-dismissable error" th:if="${param.password != null}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Passwords must be matched to proceed </div>
                 <input th:field="*{first_name}" type="text" placeholder="First Name" required="" />
                 <input th:field="*{last_name}" type="text" placeholder="Last Name" required="" />
-                <input th:field="*{username}" type="text" placeholder="Email" required="" />
+                <input th:field="*{username}" id="username" type="text" placeholder="Email" required="" />
                 <input id="password" type="password" th:field="*{password}" name="password" class="lock" placeholder="Password" required="" autocomplete="off" />
-                <input id="passwordConfirm" type="password" th:field="*{passwordConfirm}" name="passwordConfirm" class="lock" placeholder="Confirm Password" autocomplete="off" />
+                <input id="passwordConfirm" type="password" th:field="*{passwordConfirm}" name="passwordConfirm" class="lock" placeholder="Confirm Password" autocomplete="off" oninput="check(this)" />
+                <!--<input type="file" id="image" accept="image/x-png,image/gif,image/jpeg" onchange="fileValidation()" />-->
                 <div class="forgot-top-grids">
                     <div class="forgot-grid">
                         <ul>
@@ -50,16 +57,46 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
 </div>
 <!--COPY rights end here-->
-<script>
+<script src="/js/pwstrength.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
     $(document).ready(function () {
+        let options = {
+            common: {
+                minChar: 8,
+                maxChar: 128,
+            },
+            ui: {
+                showProgressBar: true,
+                showErrors: true,
+                showVerdicts: false,
+                showPopover: true,
+                showStatus: true,
+            }
+        };
+
+        $('#password').pwstrength(options);
         $("#password, #passwordConfirm").keyup(checkPasswordMatch);
     });
+
+    function fileValidation(){
+        let fileInput = document.getElementById('image');
+        let filePath = fileInput.value;
+        let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+        if(!allowedExtensions.exec(filePath)){
+            document.getElementById("imageError").style.display = "block";
+            fileInput.value = '';
+        }
+
+        document.getElementById("imageError").style.display = "none";
+    }
 
     function checkPasswordMatch() {
         let password = $("#password").val();
         let confirmPassword = $("#passwordConfirm").val();
 
-        if (password === confirmPassword) {
+        if (password === confirmPassword && password.length >= 8) {
             document.getElementById('password').style.background = "#a0ed80";
             document.getElementById('passwordConfirm').style.background = "#a0ed80";
         } else {
@@ -68,6 +105,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         }
 
     }
+
+    function check(input) {
+        if (input.value !== document.getElementById('password').value) {
+            input.setCustomValidity('Passwords must be matched to proceed.');
+        } else {
+            // input is valid -- reset the error message
+            input.setCustomValidity('');
+        }
+    }
+    /*]]>*/
 </script>
 <div th:replace="/fragments/footer :: footer"></div>
 
