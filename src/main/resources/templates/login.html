@@ -33,6 +33,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'incorrect')}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
                     Incorrect username or password </div>
+                <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'locked')}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Your account has been locked until further notice </div>
+                <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'email')}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Email does not exist! </div>
                 <input type="text" id="username" name="username" placeholder="Username" required="" />
                 <input type="password" id="password" name="password" class="lock" placeholder="Password" autocomplete="off" />
                 <div class="forgot-top-grids">

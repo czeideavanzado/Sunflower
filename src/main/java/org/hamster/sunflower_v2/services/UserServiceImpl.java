@@ -30,15 +30,19 @@ public class UserServiceImpl implements UserService {
     private SunflowerSmtpMailSender sunflowerSmtpMailSender;
     private VerificationTokenRepository verificationTokenRepository;
     private PasswordResetTokenRepository passwordResetTokenRepository;
+    private UserAttemptRepository userAttemptRepository;
+
+    private final int MAX_ATTEMPTS = 3;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender, VerificationTokenRepository verificationTokenRepository, PasswordResetTokenRepository passwordResetTokenRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender, VerificationTokenRepository verificationTokenRepository, PasswordResetTokenRepository passwordResetTokenRepository, UserAttemptRepository userAttemptRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.sunflowerSmtpMailSender = sunflowerSmtpMailSender;
         this.verificationTokenRepository = verificationTokenRepository;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.userAttemptRepository = userAttemptRepository;
     }
 
     @Transactional
@@ -216,6 +220,50 @@ public class UserServiceImpl implements UserService {
         Calendar cal = Calendar.getInstance();
 
         return (passwordResetToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0;
+    }
+
+    @Transactional
+    @Override
+    public String updateFailedAttempt(String username) {
+        if (!emailExist(username)){
+            return "email";
+        }
+
+        UserAttempt userAttempt = getUserAttemptByUsername(username);
+
+        if (userAttempt.getAttempt() < 3) {
+            userAttempt.setAttempt(userAttempt.getAttempt() + 1);
+            userAttemptRepository.save(userAttempt);
+
+            if (userAttempt.getAttempt() == 3) {
+                User user = userAttempt.getLogger();
+                user.setAccountNonLocked(false);
+                userRepository.save(user);
+            }
+        }
+
+        return userAttempt.getAttempt() + 1 > 3 ? "locked" : "incorrect";
+    }
+
+    @Override
+    public void resetFailedAttempt(String username) {
+        UserAttempt userAttempt = getUserAttemptByUsername(username);
+
+        userAttempt.setAttempt(0);
+        userAttemptRepository.save(userAttempt);
+    }
+
+    @Override
+    public UserAttempt getUserAttemptByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+
+        UserAttempt userAttempt = userAttemptRepository.findByLogger(user);
+
+        if (userAttempt == null) {
+            return new UserAttempt(user);
+        }
+
+        return userAttempt;
     }
 
     private boolean emailExist(String username) {

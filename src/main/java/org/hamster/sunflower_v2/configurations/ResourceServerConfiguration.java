@@ -1,19 +1,24 @@
 package org.hamster.sunflower_v2.configurations;
 
+import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by ONB-CZEIDE on 03/02/2018
@@ -24,11 +29,13 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
 
     private AuthenticationManager authenticationManager;
     private UserDetailsService userDetailsService;
+    private UserService userService;
 
     @Autowired
-    public ResourceServerConfiguration(@Lazy AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public ResourceServerConfiguration(@Lazy AuthenticationManager authenticationManager, UserDetailsService userDetailsService, @Lazy UserService userService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @Override
@@ -56,7 +63,40 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/cart/**").hasAnyAuthority("BUYER", "ADMIN")
                 .anyRequest().authenticated()
                     .and()
-                .formLogin().loginPage("/login").failureUrl("/login?error=incorrect").permitAll()
+//                .formLogin().loginPage("/login").failureUrl("/login?error=incorrect").permitAll()
+                .formLogin().loginPage("/login").failureHandler((request, response, exception) -> {
+                    String username = request.getParameter("username");
+
+                    String error = "incorrect";
+
+                    error = userService.updateFailedAttempt(username);
+
+//                    if(exception.getClass().isAssignableFrom(BadCredentialsException.class)){
+//                        error = "email";
+//                    } else {
+//                        error = userService.updateFailedAttempt(username);
+//                    }
+
+                    response.sendRedirect("/login?error=" + error);
+                }).successHandler((request, response, authentication) -> {
+                    String username = request.getParameter("username");
+                    boolean isAdmin = false;
+
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    userService.resetFailedAttempt(username);
+
+                    for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
+                        if (grantedAuthority.getAuthority().equals("ADMIN")) {
+                            isAdmin = true;
+                        }
+                    }
+
+                    if (isAdmin) {
+                        response.sendRedirect("/admin");
+                    } else {
+                        response.sendRedirect("/");
+                    }
+                }).permitAll()
                     .and()
                 .logout().logoutUrl("/logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll()
                     .and()
@@ -93,9 +133,4 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    //    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(authProvider());
-//    }
 }

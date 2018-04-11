@@ -17,8 +17,6 @@ public interface UserService {
 
     void addOrder(User user, Order order);
 
-
-
     void createVerificationToken(User user, String token);
     User getUserByVerificationToken(String token);
     void verifyUser(String token);
@@ -29,4 +27,8 @@ public interface UserService {
     User getUserByPasswordResetToken(String token);
     User changeUserPassword(User user, String password);
     boolean isPasswordResetTokenExpired(String token);
+
+    String updateFailedAttempt(String username);
+    void resetFailedAttempt(String username);
+    UserAttempt getUserAttemptByUsername(String username);
 }

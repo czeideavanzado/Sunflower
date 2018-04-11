@@ -49,6 +49,9 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled = false;
 
+    @Column(name = "accountNonLocked")
+    private boolean accountNonLocked = true;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST})
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
@@ -65,6 +68,9 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
     private Wallet wallet;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "logger", cascade = CascadeType.ALL)
+    private UserAttempt userAttempt;
+
     @CreationTimestamp
     @Column(name = "created_date")
     private java.sql.Timestamp createdDate;
@@ -75,7 +81,6 @@ public class User {
 
     public User() {
         super();
-        this.enabled = false;
     }
 
     public User(User user) {
@@ -135,6 +140,14 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 
     public Set<Role> getRoles() {
