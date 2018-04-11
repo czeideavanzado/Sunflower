@@ -1,9 +1,6 @@
 package org.hamster.sunflower_v2.services;
 
-import org.hamster.sunflower_v2.domain.models.Order;
-import org.hamster.sunflower_v2.domain.models.User;
-import org.hamster.sunflower_v2.domain.models.UserDTO;
-import org.hamster.sunflower_v2.domain.models.VerificationToken;
+import org.hamster.sunflower_v2.domain.models.*;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
 
 import java.util.List;
@@ -23,4 +20,11 @@ public interface UserService {
     VerificationToken getVerificationToken(String token);
     User getUserByToken(String token);
     User verifyUser(User user);
+
+    void disableBuyer(Long id);
+    void disableSeller(Long id);
+    void disableAdmin(Long id);
+    void enableBuyer(Long id);
+    void enableSeller(Long id);
+    void enableAdmin(Long id);
 }

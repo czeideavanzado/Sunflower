@@ -22,6 +22,9 @@ public interface ProductService {
     Product find(Long id);
     List<Product> findByKeyword(String keyword);
     BigDecimal findPrice(Long id);
+    void archiveProduct(Long id);
+    void unarchiveProduct(Long id);
+    void archiveSellerProduct(Long userid);
 
     User findByUserByUsername(String username);
 }

@@ -97,4 +97,28 @@ public class ProductServiceImpl implements ProductService {
     private User getSellerById(Long id) {
         return userService.findById(id);
     }
+
+    @Override
+    public void archiveProduct(Long id){
+        Product product = productRepository.findOne(id);
+        product.setArchive(true);
+        productRepository.save(product);
+    }
+
+    @Override
+    public void archiveSellerProduct(Long userid){
+        for (Product product : productRepository.findAll()) {
+            if(product.getSeller().getId() == userid) {
+                product.setArchive(true);
+                productRepository.save(product);
+            }
+        }
+    }
+
+    @Override
+    public void unarchiveProduct(Long id){
+        Product product = productRepository.findOne(id);
+        product.setArchive(false);
+        productRepository.save(product);
+    }
 }

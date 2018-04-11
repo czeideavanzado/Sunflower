@@ -22,15 +22,17 @@ UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private TransactionRepository transactionRepository;
     private PasswordEncoder passwordEncoder;
 
     private SunflowerSmtpMailSender sunflowerSmtpMailSender;
     private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender, VerificationTokenRepository verificationTokenRepository) {
+    public UserServiceImpl(TransactionRepository transactionRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SunflowerSmtpMailSender sunflowerSmtpMailSender, VerificationTokenRepository verificationTokenRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.transactionRepository = transactionRepository;
         this.passwordEncoder = passwordEncoder;
         this.sunflowerSmtpMailSender = sunflowerSmtpMailSender;
         this.verificationTokenRepository = verificationTokenRepository;
@@ -121,5 +123,73 @@ UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(username);
 
         return user != null;
+    }
+
+    @Override
+    public void disableBuyer(Long id) {
+        User user1 = userRepository.findOne(id);
+        Set<Role> roles = user1.getRoles();
+        for (Role role : roles) {
+            if(role.getRole().equalsIgnoreCase("buyer"))
+                roles.remove(role);
+        }
+        user1.setRoles(roles);
+        userRepository.save(user1);
+
+
+    }
+
+    @Override
+    public void disableSeller(Long id) {
+        User user1 = userRepository.findOne(id);
+        Set<Role> roles = user1.getRoles();
+        for (Role role : roles) {
+            if(role.getRole().equalsIgnoreCase("seller"))
+                roles.remove(role);
+        }
+        user1.setRoles(roles);
+        userRepository.save(user1);
+    }
+
+    @Override
+    public void disableAdmin(Long id) {
+        User user1 = userRepository.findOne(id);
+        Set<Role> roles = user1.getRoles();
+        for (Role role : roles) {
+            if(role.getRole().equalsIgnoreCase("admin"))
+                roles.remove(role);
+        }
+        user1.setRoles(roles);
+        userRepository.save(user1);
+    }
+
+    @Override
+    public void enableBuyer(Long id) {
+        User user1 = userRepository.findOne(id);
+        Role role = roleRepository.findByRole("BUYER");
+        Set<Role> roles = user1.getRoles();
+        roles.add(role);
+        user1.setRoles(roles);
+        userRepository.save(user1);
+    }
+
+    @Override
+    public void enableSeller(Long id) {
+        User user1 = userRepository.findOne(id);
+        Role role = roleRepository.findByRole("SELLER");
+        Set<Role> roles = user1.getRoles();
+        roles.add(role);
+        user1.setRoles(roles);
+        userRepository.save(user1);
+    }
+
+    @Override
+    public void enableAdmin(Long id) {
+        User user1 = userRepository.findOne(id);
+        Role role = roleRepository.findByRole("ADMIN");
+        Set<Role> roles = user1.getRoles();
+        roles.add(role);
+        user1.setRoles(roles);
+        userRepository.save(user1);
     }
 }

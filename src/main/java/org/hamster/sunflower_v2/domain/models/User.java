@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -128,6 +129,14 @@ public class User {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public Set<String> getStringRoles(){
+        Set<String> names = new HashSet<String>();
+        for (Role role : roles) {
+            names.add(role.getRole());
+        }
+        return names;
     }
 
     public void setRoles(Set<Role> roles) {

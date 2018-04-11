@@ -76,4 +76,8 @@ public class Order {
     public void setOrderDetails(Set<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
+
+    public Set<OrderDetail> getOrderDetails() {
+        return this.orderDetails;
+    }
 }

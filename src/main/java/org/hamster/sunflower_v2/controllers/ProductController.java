@@ -57,6 +57,15 @@ public class ProductController {
         return PRODUCT_PATH + "sellConfirmation";
     }
 
+    @GetMapping(value = "/view/{id}")
+    public String viewProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
+        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        modelMap.put("loggedUser", loggedUser);
+        modelMap.put("product", productService.find(id));
+        return PRODUCT_PATH + "view";
+    }
+
     @GetMapping(value = "/edit/{id}")
     public String editProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
         User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());

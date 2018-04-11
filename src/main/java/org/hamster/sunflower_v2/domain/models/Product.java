@@ -53,6 +53,17 @@ public class Product {
     @Column(name = "modified_date")
     private java.sql.Timestamp modifiedDate;
 
+    @Column(name = "archived")
+    private boolean archived = false;
+
+    public boolean getArchive() {
+        return archived;
+    }
+
+    public void setArchive(boolean archived) {
+        this.archived = archived;
+    }
+
     public Long getId() {
         return id;
     }

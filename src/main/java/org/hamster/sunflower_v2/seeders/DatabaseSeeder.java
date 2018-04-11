@@ -43,7 +43,7 @@ public class DatabaseSeeder {
         // comment theses out to to stop mock data
         seedRolesTable();
         seedUsersTable();
-//        seedSeedsTable();
+        seedSeedsTable();
 //        seedProductsTable();
     }
 

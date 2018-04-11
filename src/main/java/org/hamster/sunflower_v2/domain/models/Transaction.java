@@ -40,7 +40,11 @@ public class Transaction {
     @Column(name = "modified_date")
     private java.sql.Timestamp modifiedDate;
 
-    public Order getTransaction_order() {
+    public Long getId() {
+        return id;
+    }
+
+    public Order getTransactionOrder() {
         return transaction_order;
     }
 
