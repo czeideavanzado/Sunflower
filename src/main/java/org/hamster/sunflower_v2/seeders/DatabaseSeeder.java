@@ -89,9 +89,9 @@ public class DatabaseSeeder {
             List<UserDTO> users = csvDataLoader.loadObjectList(UserDTO.class, usersFileName);
 
             for (UserDTO user : users) {
-                UserDTO userDTO = new UserDTO(user.getUsername().replace(" ", "").replace("'", ""),
-                        user.getPassword(), user.getPasswordConfirm(),
-                        user.getFirst_name(), user.getLast_name());
+                UserDTO userDTO = new UserDTO(user.getFirst_name(), user.getLast_name(),
+                        user.getUsername().replace(" ", "").replace("'", ""),
+                        user.getPassword(), user.getPasswordConfirm(), "");
                 try {
                     userService.verifyMockUser(userService.registerNewUserAccount(userDTO));
                 } catch (EmailExistsException e) {

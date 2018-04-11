@@ -4,6 +4,7 @@ import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.domain.models.ProductDTO;
 import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.services.ProductService;
+import org.hamster.sunflower_v2.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -24,12 +26,14 @@ import javax.validation.Valid;
 public class ProductController {
 
     private ProductService productService;
+    private StorageService storageService;
 
     private static String PRODUCT_PATH = "product/";
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, StorageService storageService) {
         this.productService = productService;
+        this.storageService = storageService;
     }
 
     @GetMapping(value = "/sell")
@@ -43,8 +47,12 @@ public class ProductController {
 
     @PostMapping(value = "/sell")
     public ModelAndView sellProduct(@ModelAttribute("product") @Valid ProductDTO productDTO, BindingResult result,
-                                    WebRequest request, Errors errors) {
+                                    WebRequest request, Errors errors, @RequestParam("file") MultipartFile file) {
         if(!result.hasErrors()) {
+            if (!file.isEmpty()) {
+                productDTO.setPhoto(storageService.storeProduct(file));
+            }
+
             productService.sellProduct(productDTO);
             return new ModelAndView("redirect:/product/sellConfirmation");
         } else {

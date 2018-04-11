@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
         product.setDescription(productDTO.getDescription());
-//        product.setPhoto(productDTO.getPhoto());
+        product.setPhoto(productDTO.getPhoto());
         User seller = getSeller(SecurityContextHolder.getContext().getAuthentication().getName());
         product.setSeller(seller);
         return productRepository.save(product);
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
         product.setDescription(productDTO.getDescription());
-        product.setPhoto(productDTO.getPhoto());
+//        product.setPhoto(productDTO.getPhoto());
         User seller = getSellerById(productDTO.getSeller_id());
         product.setSeller(seller);
         return productRepository.save(product);

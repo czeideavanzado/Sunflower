@@ -21,6 +21,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                     <div class="signup-block">
                         <form th:action="@{/product/sell}" th:object="${product}" method="POST" enctype="multipart/form-data">
+                            <div class="alert alert-danger alert-dismissable error" id="imageError" style="display: none;">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                                <i class=" fa fa-exclamation-triangle"></i> Please upload images only</div>
                             <input th:field="*{name}" type="text" placeholder="Product Name" required="" />
                             <div class="input-group">
                                 <span class="input-group-addon">&#8369;</span>
@@ -30,8 +33,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <label for="description">Description:</label>
                                 <textarea th:field="*{description}" placeholder="Minimum of 250 characters" class="form-control" rows="5" id="description" maxlength="250"></textarea>
                             </div>
-
-                            <!--<input th:field="*{photo}" type="file" accept="image/*" name="file" id="file" required="" />-->
+                            <input type="file" name="file" id="image" accept="image/x-png,image/gif,image/jpeg" onchange="fileValidation()" />
 
                             <input type="submit" value="Sell Product" />
                         </form>
@@ -54,6 +56,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </div>
 
 <div th:replace="/fragments/footer :: footer"></div>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
 
+    function fileValidation(){
+        let fileInput = document.getElementById('image');
+        let filePath = fileInput.value;
+        let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+        if(!allowedExtensions.exec(filePath)){
+            document.getElementById("imageError").style.display = "block";
+            fileInput.value = '';
+        }
+
+        document.getElementById("imageError").style.display = "none";
+    }
+    /*]]>*/
+</script>
 </body>
 </html>

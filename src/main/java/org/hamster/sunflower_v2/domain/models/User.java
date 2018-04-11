@@ -43,6 +43,9 @@ public class User {
     @Column(name = "last_name")
     private String last_name;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "enabled")
     private boolean enabled = false;
 
@@ -116,6 +119,14 @@ public class User {
 
     public void setLastName(String last_name) {
         this.last_name = last_name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public boolean isEnabled() {

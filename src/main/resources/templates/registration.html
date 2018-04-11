@@ -15,7 +15,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <h1>Sign Up</h1>
         </div>
         <div class="signup-block">
-            <form th:action="@{/registration}" th:object="${user}" method="POST">
+            <form th:action="@{/registration}" th:object="${user}" method="POST" enctype="multipart/form-data">
                 <div class="alert alert-danger alert-dismissable error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button></div>
                 <div class="alert alert-danger alert-dismissable error" id="imageError" style="display: none;">
@@ -29,7 +29,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <input th:field="*{username}" id="username" type="text" placeholder="Email" required="" />
                 <input id="password" type="password" th:field="*{password}" name="password" class="lock" placeholder="Password" required="" autocomplete="off" />
                 <input id="passwordConfirm" type="password" th:field="*{passwordConfirm}" name="passwordConfirm" class="lock" placeholder="Confirm Password" autocomplete="off" oninput="check(this)" />
-                <!--<input type="file" id="image" accept="image/x-png,image/gif,image/jpeg" onchange="fileValidation()" />-->
+                <input type="file" name="file" id="image" accept="image/x-png,image/gif,image/jpeg" onchange="fileValidation()" />
                 <div class="forgot-top-grids">
                     <div class="forgot-grid">
                         <ul>
@@ -64,14 +64,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         let options = {
             common: {
                 minChar: 8,
-                maxChar: 128,
+                maxChar: 128
             },
             ui: {
                 showProgressBar: true,
                 showErrors: true,
                 showVerdicts: false,
                 showPopover: true,
-                showStatus: true,
+                showStatus: true
             }
         };
 

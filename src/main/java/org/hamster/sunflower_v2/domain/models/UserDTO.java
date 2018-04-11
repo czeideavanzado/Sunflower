@@ -31,16 +31,19 @@ public class UserDTO {
     private String password;
     private String passwordConfirm;
 
+    private String image;
+
     public UserDTO() {
 
     }
 
-    public UserDTO(String username, String password, String passwordConfirm, String first_name, String last_name) {
+    public UserDTO(String first_name, String last_name, String username, String password, String passwordConfirm, String image) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.username = username;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
+        this.image = image;
     }
 
     public String getFirst_name() {
@@ -81,5 +84,13 @@ public class UserDTO {
 
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

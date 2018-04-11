@@ -179,7 +179,7 @@
                 <li class="dropdown profile_details_drop">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <div class="profile_img">
-                            <span class="prfil-img"><img src="/images/visit.png" alt="" /> </span>
+                            <span class="prfil-img"><img th:if="${loggedUser != null}" th:src="${loggedUser.getImage() == null || loggedUser.getImage().equals('')} ? '/images/visit.png' : ${'/images/client/' + loggedUser.getImage()}" alt="" /> </span>
                             <div class="user-name">
                                 <p th:if="${loggedUser != null}" th:text="${loggedUser.getFirstName()}"></p>
                             </div>

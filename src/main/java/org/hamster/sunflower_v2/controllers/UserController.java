@@ -4,6 +4,7 @@ import org.hamster.sunflower_v2.domain.models.User;
 import org.hamster.sunflower_v2.domain.models.UserDTO;
 import org.hamster.sunflower_v2.exceptions.EmailDoesNotExistException;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
+import org.hamster.sunflower_v2.services.StorageService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
@@ -27,17 +29,23 @@ import java.util.UUID;
 public class UserController {
 
     private UserService userService;
+    private StorageService storageService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, StorageService storageService) {
         this.userService = userService;
+        this.storageService = storageService;
     }
 
     @PostMapping(value = "/registration")
     public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid UserDTO accountDto, BindingResult result,
-                                            WebRequest request, Errors errors) {
+                                            WebRequest request, Errors errors, @RequestParam("file") MultipartFile file) {
         if (!accountDto.getPassword().equals(accountDto.getPasswordConfirm())) {
             return new ModelAndView("redirect:/registration?password");
+        }
+
+        if (!file.isEmpty()) {
+             accountDto.setImage(storageService.store(file));
         }
 
         User registered = new User();
@@ -50,9 +58,8 @@ public class UserController {
             result.rejectValue("username", "error.user", "An account already exists for this email");
             return new ModelAndView("registration", "user", accountDto);
         }
-
-        String token = UUID.randomUUID().toString();
-        userService.createVerificationToken(registered, token);
+//        String token = UUID.randomUUID().toString();
+//        userService.createVerificationToken(registered, token);
 
         return new ModelAndView("successRegistration", "user", accountDto);
     }

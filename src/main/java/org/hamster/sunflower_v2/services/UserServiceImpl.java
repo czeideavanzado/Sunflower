@@ -11,6 +11,7 @@ import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
@@ -56,6 +57,10 @@ public class UserServiceImpl implements UserService {
         user.setUsername(accountDto.getUsername());
         user.setRoles(new HashSet<>(Arrays.asList(roleRepository.findByRole("BUYER"), roleRepository.findByRole("SELLER"))));
         user.setOrders(new HashSet<>());
+
+        if(!StringUtils.isEmpty(accountDto.getImage())) {
+            user.setImage(accountDto.getImage());
+        }
 
         return userRepository.save(user);
     }
