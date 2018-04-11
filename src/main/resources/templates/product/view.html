@@ -30,7 +30,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                         <h4 th:if="${product.getArchive() == true}" th:text="'This Product is Archived by the Administrators. User cannot sell, edit, nor delete this product until further notice.'"></h4>
 
-                        <a th:each="role : ${loggedUser.roles}" th:if="${role.role == 'BUYER'}" th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null}">Add to Cart</button></a>
+                        <a th:each="role : ${loggedUser.roles}" th:if="${role.role == 'BUYER'}" th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null || product.getPrice() > loggedUser.getWallet().getSeeds()}">Add to Cart</button></a>
+                        <a th:each="role : ${loggedUser.roles}" th:if="${role.role == 'BUYER'}"><h5 th:unless="${product.getSeller() == loggedUser || loggedUser == null || !(product.getPrice() > loggedUser.getWallet().getSeeds())}">Not enough seeds!</h5></a>
                         <!--<div class="sign-down">-->
                         <!--<h4>Already have an account? <a th:href="@{/login}"> Login here.</a></h4>-->
                         <!--<h5><a th:href="@{/}">Go Back to Home</a></h5>-->

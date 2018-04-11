@@ -31,7 +31,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <div class="produ-cost">
                                     <h4 th:text="${product.name}"></h4>
                                     <h5 th:text="'&#8369;' + ${product.price}"></h5>
-                                    <a th:each="role : ${loggedUser.roles}" th:if="${role.role == 'BUYER'}" th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null}">Add to Cart</button></a>
+                                    <a th:each="role : ${loggedUser.roles}" th:if="${role.role == 'BUYER'}" th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null || product.getPrice() > loggedUser.getWallet().getSeeds()}">Add to Cart</button></a>
                                     <a th:href="${'/product/view/' + product.id}"><button th:text="View"></button></a>
                                 </div>
                             </div>
