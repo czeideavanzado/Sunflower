@@ -189,7 +189,7 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu drp-mnu">
-                        <!--<li th:unless="${}> <a href="#"><i class="fa fa-cog"></i>Admin Page</a> </li>-->
+                        <li th:each="role : ${loggedUser.roles}" th:if="${role.role == 'ADMIN'}"> <a href="/admin"><i class="fa fa-cog"></i>Admin Page</a> </li>
                         <li> <a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i>My Cart</a></li>
                         <li> <a th:href="@{/product/myProducts}"><i class="fa fa-list"></i>My Products</a> </li>
                         <li> <a th:href="@{/product/myOrders}"><i class="fa fa-clipboard"></i>My Transactions</a> </li>

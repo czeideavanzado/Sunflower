@@ -328,22 +328,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <tr>
                                         <th>#</th>
                                         <th>Buyer</th>
+                                        <th>Products</th>
                                         <th>Status</th>
                                     </tr>
                                     </thead>
                                     <tbody th:each="transaction: ${transactions}">
                                     <tr>
-                                        <td th:text="${transaction.id}"></td>
+                                        <td th:text="${transaction.getId()}"></td>
                                         <td th:text="${transaction.getTransactionOrder().buyer.firstName}"></td>
+                                        <td>
+                                            <ul>
+                                                <li th:each="detail : ${details}" th:if="${detail.order == transaction.getTransactionOrder()}">
+                                                    <a th:href="${'/product/view/' + detail.getProduct().id}" th:text="${detail.getProduct().name}"></a>
+                                                </li>
+                                            </ul>
+                                        </td>
                                         <td th:text="${transaction.getTransactionOrder().transactionStatus}"></td>
-                                        <!--<td th:each="order: ${transaction.getTransactionOrder().getOrderDetails()}">-->
-                                            <!--<li th:text="${order.price}"></li>-->
-                                        <!--</td>-->
+
                                         <!--cancel transaction-->
                                         <td>
-                                            <form th:if="${transaction.getTransactionOrder().transactionStatus != 'CANCELLED'}" th:action="@{'/admin/cancel/' + ${transaction.id}}" th:object="${transaction}" th:method="POST" enctype="multipart/form-data">
+                                            <form th:if="${transaction.getTransactionOrder().transactionStatus != 'CANCELLED'}" th:action="@{'/admin/cancel/' + ${transaction.getId()}}" th:object="${transaction}" th:method="POST" enctype="multipart/form-data">
                                             <button>CANCEL</button>
-                                        </form>
+                                            </form>
                                         </td>
                                     </tr>
                                     </tbody>

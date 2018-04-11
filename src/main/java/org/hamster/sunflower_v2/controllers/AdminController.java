@@ -1,10 +1,7 @@
 package org.hamster.sunflower_v2.controllers;
 
 import org.hamster.sunflower_v2.domain.models.*;
-import org.hamster.sunflower_v2.services.ProductService;
-import org.hamster.sunflower_v2.services.SeedService;
-import org.hamster.sunflower_v2.services.TransactionService;
-import org.hamster.sunflower_v2.services.UserService;
+import org.hamster.sunflower_v2.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,16 +26,18 @@ public class AdminController {
     private ProductService productService;
     private SeedService seedService;
     private TransactionService transactionService;
+    private OrderService orderService;
 
     private static String ADMIN_PATH = "admin/";
     private static String SEED_PATH = "seed/";
 
     @Autowired
-    public AdminController(UserService userService, ProductService productService, SeedService seedService, TransactionService transactionService) {
+    public AdminController(OrderService orderService, UserService userService, ProductService productService, SeedService seedService, TransactionService transactionService) {
         this.userService = userService;
         this.productService = productService;
         this.seedService = seedService;
         this.transactionService = transactionService;
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -51,6 +50,7 @@ public class AdminController {
         modelMap.put("products", productService.findAll());
         modelMap.put("seeds", seedService.findActiveSeeds());
         modelMap.put("transactions", transactionService.findAll());
+        modelMap.put("details", orderService.findAllDetails());
         modelMap.put("loggedUser", loggedUser);
 
 
@@ -168,6 +168,11 @@ public class AdminController {
 
         if(!result.hasErrors()) {
             transactionService.cancelTransaction(id);
+            List<OrderDetail> details = orderService.findAllDetails();
+            for(OrderDetail detail:details){
+                if(detail.getOrder() == transactionService.findById(id).getTransactionOrder())
+                    productService.setOpen(detail.getProduct().getId());
+            }
             return new ModelAndView("redirect:/admin");
         } else {
             return new ModelAndView("redirect:/admin");

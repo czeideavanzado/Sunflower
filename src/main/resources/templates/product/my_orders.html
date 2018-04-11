@@ -25,18 +25,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Date Ordered</th>
+                                        <!--<th>Date Ordered</th>-->
                                         <th>Transaction Status</th>
-                                        <!--<th>Progress</th>-->
+                                        <th>Products Ordered</th>
                                     </tr>
                                     </thead>
                                     <tbody th:each="order: ${orders}">
                                     <tr>
                                         <td th:text="${order.id}"></td>
-                                        <td th:text="${order.dateOrdered}"></td>
+                                        <!--<td th:text="${order.createdDate}"></td>-->
                                         <td th:text="${order.transactionStatus}"></td>
                                         <td>
-                                            <button>View</button>
+                                            <ul>
+                                                <li th:each="detail : ${details}" th:if="${detail.order == order}">
+                                                    <a th:href="${'/product/view/' + detail.getProduct().id}" th:text="${detail.getProduct().name}"></a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <form th:if="${order.transactionStatus != 'CANCELLED'}" th:action="@{'/product/cancel/' + ${order.getId()}}" th:method="POST" enctype="multipart/form-data">
+                                                <button>CANCEL</button>
+                                            </form>
                                         </td>
                                     </tr>
                                     </tbody>

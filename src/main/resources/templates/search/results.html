@@ -10,7 +10,8 @@
     <div class="pro-head">
         <h2>Products</h2>
     </div>
-    <div class="col-md-3 product-grid" th:each="product : ${results}">
+    <span th:each="product : ${results}">
+    <div class="col-md-3 product-grid" th:if="${product.getArchive() == false}">
         <div class="product-items">
             <div class="project-eff">
                 <div id="nivo-lightbox-demo">
@@ -21,12 +22,12 @@
             <div class="produ-cost">
                 <h4 th:text="${product.name}"></h4>
                 <h5 th:text="'&#8369;' + ${product.price}"></h5>
-                <a th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null}">Add to Cart</button></a>
-                <button th:text="View"></button>
+                <a th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null }">Add to Cart</button></a>
+                <a th:href="${'/product/view/' + product.id}"><button th:text="View"></button></a>
             </div>
         </div>
-
     </div>
+    </span>
     <div th:if="${#lists.isEmpty(results)}">
         No results found...
     </div>

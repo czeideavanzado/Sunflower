@@ -1,8 +1,7 @@
 package org.hamster.sunflower_v2.controllers;
 
-import org.hamster.sunflower_v2.domain.models.Product;
-import org.hamster.sunflower_v2.domain.models.ProductDTO;
-import org.hamster.sunflower_v2.domain.models.User;
+import org.hamster.sunflower_v2.domain.models.*;
+import org.hamster.sunflower_v2.services.OrderService;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ONB-CZEIDE on 02/28/2018
@@ -27,13 +28,15 @@ public class ProductController {
 
     private ProductService productService;
     private StorageService storageService;
+    private OrderService orderService;
 
     private static String PRODUCT_PATH = "product/";
 
     @Autowired
-    public ProductController(ProductService productService, StorageService storageService) {
+    public ProductController(OrderService orderdetailService, ProductService productService, StorageService storageService) {
         this.productService = productService;
         this.storageService = storageService;
+        this.orderService = orderdetailService;
     }
 
     @GetMapping(value = "/sell")
@@ -123,6 +126,24 @@ public class ProductController {
         User buyer = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         modelMap.put("loggedUser", buyer);
         modelMap.put("orders", buyer.getOrders());
+        modelMap.put("details", orderService.findAllDetails());
         return PRODUCT_PATH + "my_orders";
+    }
+
+    @PostMapping(value = "/cancel/{id}")
+    public ModelAndView cancelTransaction(@PathVariable("id") Long id, @ModelAttribute("transaction") @Valid Transaction transaction, BindingResult result,
+                                          WebRequest request, Errors errors) {
+
+        if(!result.hasErrors()) {
+            orderService.cancelTransaction(id);
+            List<OrderDetail> details = orderService.findAllDetails();
+            for(OrderDetail detail:details){
+                if(detail.getOrder().getId() == id)
+                    productService.setOpen(detail.getProduct().getId());
+            }
+            return new ModelAndView("redirect:/product/myOrders");
+        } else {
+            return new ModelAndView("redirect:/product/myOrders");
+        }
     }
 }
