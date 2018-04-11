@@ -121,4 +121,18 @@ public class ProductServiceImpl implements ProductService {
         product.setArchive(false);
         productRepository.save(product);
     }
+
+    @Override
+    public void setPending(Long id){
+        Product product = productRepository.findOne(id);
+        product.setStatus("PENDING");
+        productRepository.save(product);
+    }
+
+    @Override
+    public void setOpen(Long id){
+        Product product = productRepository.findOne(id);
+        product.setStatus("OPEN");
+        productRepository.save(product);
+    }
 }

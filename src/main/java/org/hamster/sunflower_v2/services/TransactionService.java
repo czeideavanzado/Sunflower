@@ -15,4 +15,5 @@ public interface TransactionService {
     List<Transaction> findAll();
     void cancelTransaction(Long id);
     void cancelBuyerTransaction(Long userid);
+    Transaction findById(Long id);
 }

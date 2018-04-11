@@ -1,9 +1,6 @@
 package org.hamster.sunflower_v2.controllers;
 
-import org.hamster.sunflower_v2.domain.models.Product;
-import org.hamster.sunflower_v2.domain.models.ProductDTO;
-import org.hamster.sunflower_v2.domain.models.Transaction;
-import org.hamster.sunflower_v2.domain.models.User;
+import org.hamster.sunflower_v2.domain.models.*;
 import org.hamster.sunflower_v2.services.OrderService;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.StorageService;
@@ -19,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ONB-CZEIDE on 02/28/2018
@@ -137,6 +136,11 @@ public class ProductController {
 
         if(!result.hasErrors()) {
             orderService.cancelTransaction(id);
+            List<OrderDetail> details = orderService.findAllDetails();
+            for(OrderDetail detail:details){
+                if(detail.getOrder().getId() == id)
+                    productService.setOpen(detail.getProduct().getId());
+            }
             return new ModelAndView("redirect:/product/myOrders");
         } else {
             return new ModelAndView("redirect:/product/myOrders");

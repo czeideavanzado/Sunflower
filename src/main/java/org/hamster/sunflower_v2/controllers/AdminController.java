@@ -168,6 +168,11 @@ public class AdminController {
 
         if(!result.hasErrors()) {
             transactionService.cancelTransaction(id);
+            List<OrderDetail> details = orderService.findAllDetails();
+            for(OrderDetail detail:details){
+                if(detail.getOrder() == transactionService.findById(id).getTransactionOrder())
+                    productService.setOpen(detail.getProduct().getId());
+            }
             return new ModelAndView("redirect:/admin");
         } else {
             return new ModelAndView("redirect:/admin");

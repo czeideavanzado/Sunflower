@@ -34,6 +34,10 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findAll();
     }
 
+    @Override
+    public Transaction findById(Long id) {
+        return transactionRepository.findOne(id);
+    }
 
     @Override
     public void cancelTransaction(Long id) {

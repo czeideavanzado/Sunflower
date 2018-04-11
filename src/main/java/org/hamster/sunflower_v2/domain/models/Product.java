@@ -41,6 +41,10 @@ public class Product {
     @Column(name = "photo")
     private String photo;
 
+    @Column(name = "status")
+    private String status = "OPEN";
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
     private User seller;
@@ -108,6 +112,13 @@ public class Product {
         this.seller = seller;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

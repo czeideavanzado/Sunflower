@@ -98,6 +98,7 @@ public class CartController {
         for (Product product : products) {
             OrderDetail orderDetail = new OrderDetail(order, product);
             orderDetailSet.add(orderService.createOrderDetail(orderDetail));
+            productService.setPending(product.getId());
         }
 
         order.setOrderDetails(orderDetailSet);
@@ -113,6 +114,7 @@ public class CartController {
 
         if(!cart.containsKey(id)) {
             cart.put(id, productService.find(id));
+
         }
 
         return "redirect:../../cart";
