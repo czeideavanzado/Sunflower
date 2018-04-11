@@ -279,7 +279,7 @@ public class UserServiceImpl implements UserService {
         User user1 = userRepository.findOne(id);
         Set<Role> roles = user1.getRoles();
         for (Role role : roles) {
-            if(role.getRole().equalsIgnoreCase("buyer"))
+            if(role.getRole().equalsIgnoreCase("BUYER"))
                 roles.remove(role);
         }
         user1.setRoles(roles);
@@ -293,7 +293,7 @@ public class UserServiceImpl implements UserService {
         User user1 = userRepository.findOne(id);
         Set<Role> roles = user1.getRoles();
         for (Role role : roles) {
-            if(role.getRole().equalsIgnoreCase("seller"))
+            if(role.getRole().equalsIgnoreCase("SELLER"))
                 roles.remove(role);
         }
         user1.setRoles(roles);
@@ -305,7 +305,7 @@ public class UserServiceImpl implements UserService {
         User user1 = userRepository.findOne(id);
         Set<Role> roles = user1.getRoles();
         for (Role role : roles) {
-            if(role.getRole().equalsIgnoreCase("admin"))
+            if(role.getRole().equalsIgnoreCase("ADMIN"))
                 roles.remove(role);
         }
         user1.setRoles(roles);
