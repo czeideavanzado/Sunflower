@@ -4,6 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by ONB-CZEIDE on 02/28/2018
@@ -40,6 +42,8 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    public OrderDetail() {
+    }
     public OrderDetail(Order order, Product product) {
         this.order = order;
         this.product = product;
@@ -49,6 +53,10 @@ public class OrderDetail {
 
     public Order getOrder() {
         return order;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     public void setPrice(BigDecimal price) {
@@ -66,4 +74,5 @@ public class OrderDetail {
     public void setProduct(Product product) {
         this.product = product;
     }
+
 }

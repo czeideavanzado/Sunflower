@@ -1,11 +1,11 @@
 package org.hamster.sunflower_v2.services;
 
-import org.hamster.sunflower_v2.domain.models.Order;
-import org.hamster.sunflower_v2.domain.models.OrderDetail;
-import org.hamster.sunflower_v2.domain.models.OrderDetailRepository;
-import org.hamster.sunflower_v2.domain.models.OrderRepository;
+import org.hamster.sunflower_v2.domain.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ONB-CZEIDE on 03/01/2018
@@ -23,8 +23,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void cancelTransaction(Long id) {
+        Order order = orderRepository.findOne(id);
+        order.setTransactionStatus("CANCELLED");
+        orderRepository.save(order);
+    }
+
+    @Override
     public Order saveOrder(Order order) {
         return orderRepository.save(order);
+    }
+
+    @Override
+    public List<OrderDetail> findAllDetails() {
+        return new ArrayList<>(orderDetailRepository.findAll());
     }
 
     @Override

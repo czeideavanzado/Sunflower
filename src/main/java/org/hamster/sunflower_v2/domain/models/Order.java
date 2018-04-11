@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -78,6 +79,13 @@ public class Order {
     }
 
     public Set<OrderDetail> getOrderDetails() {
+//        OrderDetailRepository o;
+//        Set<OrderDetail> orders = new HashSet<OrderDetail>();
+//        for (OrderDetail order : o.findAll()) {
+//            if(order.getOrder().getId() == this.id)
+//                orders.add(order);
+//        }
+//        return orders;
         return this.orderDetails;
     }
 }

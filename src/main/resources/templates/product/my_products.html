@@ -29,8 +29,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div class="produ-cost">
                                 <a th:href="${'/product/view/' + product.id}"><h4 th:text="${product.name}"></h4></a>
                                 <h5 th:text="'&#8369;' + ${product.price}"></h5>
-                                <a th:href="${'/product/edit/' + product.id}" class="edit"><i class="fa fa-edit hvr-bounce-in"></i></a>
-                                <a th:href="${'/product/remove/' + product.id}" class="remove" ><i class="fa fa-trash hvr-bob"></i></a>
+                                <a th:if="${product.getArchive() == false}" th:href="${'/product/edit/' + product.id}" class="edit"><i class="fa fa-edit hvr-bounce-in"></i></a>
+                                <a th:if="${product.getArchive() == false}" th:href="${'/product/remove/' + product.id}" class="remove" ><i class="fa fa-trash hvr-bob"></i></a>
+                                <h5 th:if="${product.getArchive() == true}" th:text="'ARCHIVED'"></h5>
                             </div>
                         </div>
                     </div>
