@@ -16,42 +16,31 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
             <!--inner block start here-->
             <div class="inner-block">
-                <!--market updates updates-->
                 <div class="market-updates">
+                    <!--users header-->
                     <div class="col-md-6 market-update-gd">
                         <div class="market-update-block clr-block-3">
                             <div class="col-md-8 market-update-left">
-                                <h3 th:text="${users.size()}"></h3>
-                                <h4 th:text="${users.size() > 1} ? ${'Users'} : ${'User'}"></h4>
-                            </div>
-                            <div class="col-md-4 market-update-right">
-                                <i class="fa fa-users"></i>
+                                <h4 th:text="${'Users'}"></h4>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                     </div>
+                    <!--admins header-->
                     <div class="col-md-6 market-update-gd">
                         <div class="market-update-block clr-block-1">
                             <div class="col-md-8 market-update-left">
-                                <h3 th:text="${products.size()}"></h3>
-                                <h4 th:text="${products.size() > 1} ? ${'Products'} : ${'Product'}"></h4>
-                            </div>
-                            <div class="col-md-4 market-update-right">
-                                <i class="fa fa-product-hunt"></i>
+                                <h4 th:text="${'Admins'}"></h4>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                     </div>
                     <div class="clearfix"> </div>
                 </div>
-                <!--market updates end here-->
-                <!--mainpage chit-chating-->
                 <div class="chit-chat-layer1">
                     <div class="col-md-6 chit-chat-layer1-left">
                         <div class="work-progres">
-                            <!--<div class="chit-chat-heading">-->
-                                <!--Users-->
-                            <!--</div>-->
+                            <!--user display-->
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -67,16 +56,132 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <tbody th:each="user: ${users}">
                                     <tr>
                                         <td th:text="${user.id}"></td>
-                                        <td th:text="${user.firstName}"></td>
+                                        <td><a th:href="${'/profile/' + user.id}" th:text="${user.firstName}"></a></td>
                                         <td th:text="${user.username}"></td>
                                         <td th:text="${user.enabled}"></td>
                                         <td>
-                                            <select>
-                                                <option th:each="role : ${user.roles}" th:value="${role.id}" th:text="${role.role}"></option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-xs btn-danger">Deactivate</button>
+                                            <ul th:if="${user.getRoles().size() == 3}">
+                                                <li th:each="role : ${user.roles}" th:value="${role.id}">
+                                                    <span th:if="${role.role == 'BUYER'}">BUYER</span>
+                                                    <!--remove buyer-->
+                                                    <form th:if="${role.role == 'BUYER'}" th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+
+                                                    <span th:if="${role.role == 'SELLER'}">SELLER</span>
+                                                    <!--remove seller-->
+                                                    <form th:if="${role.role == 'SELLER'}" th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+
+                                                    <span th:if="${role.role == 'ADMIN'}">ADMIN</span>
+                                                    <!--remove admin-->
+                                                    <form th:if="${role.role == 'ADMIN'}" th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                            <ul th:if="${user.getRoles().size() == 0}">
+
+                                                <li>BUYER</li>
+                                                <!--enable buyer-->
+                                                <form th:action="@{'/admin/enableb/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>+</button>
+                                                </form>
+
+                                                <li>SELLER</li>
+                                                <!--enable seller-->
+                                                <form th:action="@{'/admin/enables/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                <button>+</button>
+                                                </form>
+
+                                                <li>ADMIN</li>
+                                                <!--enable admin-->
+                                                <form th:action="@{'/admin/admine/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>+</button>
+                                                </form>
+                                            </ul>
+                                            <ul th:if="${user.getRoles().size() == 2 &amp;&amp; !user.getStringRoles().contains('ADMIN')}">
+                                                <li th:each="role : ${user.roles}" th:value="${role.id}">
+                                                    <span th:if="${role.role == 'BUYER'}">BUYER</span>
+                                                    <!--remove buyer-->
+                                                    <form th:if="${role.role == 'BUYER'}" th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+
+                                                    <span th:if="${role.role == 'SELLER'}">SELLER</span>
+                                                    <!--remove seller-->
+                                                    <form th:if="${role.role == 'SELLER'}" th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+                                                </li>
+                                                <li>ADMIN</li>
+                                                <!--enable admin-->
+                                                <form th:action="@{'/admin/admine/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>+</button>
+                                                </form>
+                                            </ul>
+                                            <ul th:if="${user.getRoles().size() == 2 &amp;&amp; user.getStringRoles().contains('ADMIN')}" th:each="role : ${user.roles}" th:value="${role.id}">
+
+                                                <li th:unless="${role.role == 'ADMIN'}">BUYER</li>
+                                                <!--remove buyer-->
+                                                <form th:unless="${role.role == 'ADMIN'}" th:if="${role.role == 'BUYER'}" th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>x</button>
+                                                </form>
+                                                <!--enable buyer-->
+                                                <form th:unless="${role.role == 'ADMIN'}" th:if="${role.role != 'BUYER'}" th:action="@{'/admin/enableb/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>+</button>
+                                                </form>
+
+                                                <li th:unless="${role.role == 'ADMIN'}">SELLER</li>
+                                                <!--remove seller-->
+                                                <form th:unless="${role.role == 'ADMIN'}" th:if="${role.role == 'SELLER'}" th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>x</button>
+                                                </form>
+                                                <!--enable seller-->
+                                                <form th:unless="${role.role == 'ADMIN'}" th:if="${role.role != 'SELLER'}" th:action="@{'/admin/enables/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>+</button>
+                                                </form>
+
+                                                <li th:unless="${role.role != 'ADMIN'}">ADMIN</li>
+                                                <!--disable admin-->
+                                                <form th:unless="${role.role != 'ADMIN'}" th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>x</button>
+                                                </form>
+                                            </ul>
+
+                                            <ul th:if="${user.getRoles().size() == 1}" th:each="role : ${user.roles}" th:value="${role.id}">
+
+                                                    <li>BUYER</li>
+                                                    <!--remove buyer-->
+                                                    <form th:if="${role.role == 'BUYER'}" th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+                                                    <!--enable buyer-->
+                                                    <form th:if="${role.role != 'BUYER'}" th:action="@{'/admin/enableb/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>+</button>
+                                                    </form>
+
+                                                    <li>SELLER</li>
+                                                    <!--remove seller-->
+                                                    <form th:if="${role.role == 'SELLER'}" th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+                                                    <!--enable seller-->
+                                                    <form th:if="${role.role != 'SELLER'}" th:action="@{'/admin/enables/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <button>+</button>
+                                                    </form>
+
+                                                    <li>ADMIN</li>
+                                                    <!--remove seller-->
+                                                    <form th:if="${role.role == 'ADMIN'}" th:action="@{'/admin/diablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>x</button>
+                                                    </form>
+                                                    <!--enable seller-->
+                                                    <form th:if="${role.role != 'ADMIN'}" th:action="@{'/admin/admine/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                        <button>+</button>
+                                                    </form>
+                                            </ul>
                                         </td>
                                         <!--<td th:text=""></td>-->
                                     </tr>
@@ -87,24 +192,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                     <div class="col-md-6 chit-chat-layer1-left">
                         <div class="work-progres">
-                            <!--<div class="chit-chat-heading">-->
-                                <!--Products-->
-                            <!--</div>-->
+                            <!--user display-->
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Product Name</th>
-                                        <th>Price</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Active</th>
                                         <!--<th>Progress</th>-->
                                     </tr>
                                     </thead>
-                                    <tbody th:each="product: ${products}">
-                                    <tr>
-                                        <td th:text="${product.id}"></td>
-                                        <td th:text="${product.name}"></td>
-                                        <td th:text="${product.price}"></td>
+                                    <tbody th:each="user: ${users}">
+                                    <tr th:each="role : ${user.roles}" th:unless="${role.id != 3}">
+                                        <td th:text="${user.id}"></td>
+                                        <td><a th:href="${'/profile/' + user.id}" th:text="${user.firstName}"></a></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.enabled}"></td>
                                         <!--<td th:text=""></td>-->
                                     </tr>
                                     </tbody>
@@ -115,45 +220,132 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="clearfix"> </div>
                 </div>
                 <div class="market-updates">
-                    <div class="col-md-12 market-update-gd">
-                        <div class="market-update-block clr-block-2">
+                    <!--seeds-->
+                    <div class="col-md-6 market-update-gd">
+                        <div class="market-update-block clr-block-3">
                             <div class="col-md-8 market-update-left">
                                 <h3 th:text="${seeds.size()}"></h3>
                                 <h4 th:text="${seeds.size() > 1} ? ${'Seeds in Circulation'} : ${'Seed in Circulation'}"></h4>
                             </div>
-                            <div class="col-md-4 market-update-right">
-                                <i class="glyphicon glyphicon-asterisk"></i>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                    <!--products-->
+                    <div class="col-md-6 market-update-gd">
+                        <div class="market-update-block clr-block-1">
+                            <div class="col-md-8 market-update-left">
+                                <h3 th:text="${products.size()}"></h3>
+                                <h4 th:text="${products.size() > 1} ? ${'Products'} : ${'Product'}"></h4>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                     </div>
+
                     <div class="clearfix"> </div>
                 </div>
                 <div class="chit-chat-layer1">
-                    <div class="col-md-12 chit-chat-layer1-left">
+                    <div class="col-md-6 chit-chat-layer1-left">
                         <div class="work-progres">
-                            <!--<div class="chit-chat-heading">-->
-                                <!--Seeds in circulation-->
-                            <!--</div>-->
                             <div class="table-responsive">
                                 <table class="table table-hover table-striped table-bordered" width="100%" cellspacing="0" id="seedsTable">
                                     <thead>
-                                        <tr>
-                                            <th>Serial Code</th>
-                                            <th>Value</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Serial Code</th>
+                                        <th>Value</th>
+                                    </tr>
                                     </thead>
                                     <tfoot>
-                                        <tr>
-                                            <th>Serial Code</th>
-                                            <th>Value</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Serial Code</th>
+                                        <th>Value</th>
+                                    </tr>
                                     </tfoot>
                                     <tbody th:each="seed: ${seeds.entrySet()}">
-                                        <tr>
-                                            <td th:text="${seed.getKey()}"></td>
-                                            <td th:text="${seed.getValue()}"></td>
-                                        </tr>
+                                    <tr>
+                                        <td th:text="${seed.getKey()}"></td>
+                                        <td th:text="${seed.getValue()}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 chit-chat-layer1-left">
+                        <div class="work-progres">
+                            <!--<div class="chit-chat-heading">-->
+                            <!--Products-->
+                            <!--</div>-->
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product Name</th>
+                                        <th>Price</th>
+                                        <th>Seller</th>
+                                        <th>Archived</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="product: ${products}">
+                                    <tr>
+                                        <td th:text="${product.id}"></td>
+                                        <td><a th:href="${'/product/view/' + product.id}" th:text="${product.name}"></a></td>
+                                        <td th:text="${product.price}"></td>
+                                        <td th:text="${product.getSeller().firstName}"></td>
+                                        <td th:text="${product.getArchive()}"></td>
+                                        <td>
+                                            <form th:if="${product.getArchive() == false}" th:action="@{'/admin/archive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
+                                                <button>ARCHIVE</button>
+                                            </form>
+                                            <form th:unless="${product.getSeller().getStringRoles().contains('SELLER') == false}" th:if="${product.getArchive() == true}" th:action="@{'/admin/unarchive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
+                                                <button>UN-ARCHIVE</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--TRANSACTIONS-->
+                    <div class="col-md-6 market-update-gd">
+                        <div class="market-update-block clr-block-1">
+                            <div class="col-md-8 market-update-left">
+                                <h3 th:text="${transactions.size()}"></h3>
+                                <h4 th:text="${transactions.size() > 1} ? ${'Transactions'} : ${'Transaction'}"></h4>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 chit-chat-layer1-left">
+                        <div class="work-progres">
+                            <!--<div class="chit-chat-heading">-->
+                            <!--Products-->
+                            <!--</div>-->
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Buyer</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="transaction: ${transactions}">
+                                    <tr>
+                                        <td th:text="${transaction.id}"></td>
+                                        <td th:text="${transaction.getTransactionOrder().buyer.firstName}"></td>
+                                        <td th:text="${transaction.getTransactionOrder().transactionStatus}"></td>
+                                        <!--<td th:each="order: ${transaction.getTransactionOrder().getOrderDetails()}">-->
+                                            <!--<li th:text="${order.price}"></li>-->
+                                        <!--</td>-->
+                                        <!--cancel transaction-->
+                                        <td>
+                                            <form th:if="${transaction.getTransactionOrder().transactionStatus != 'CANCELLED'}" th:action="@{'/admin/cancel/' + ${transaction.id}}" th:object="${transaction}" th:method="POST" enctype="multipart/form-data">
+                                            <button>CANCEL</button>
+                                        </form>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>

@@ -31,4 +31,11 @@ public interface UserService {
     String updateFailedAttempt(String username);
     void resetFailedAttempt(String username);
     UserAttempt getUserAttemptByUsername(String username);
+
+    void disableBuyer(Long id);
+    void disableSeller(Long id);
+    void disableAdmin(Long id);
+    void enableBuyer(Long id);
+    void enableSeller(Long id);
+    void enableAdmin(Long id);
 }
