@@ -23,18 +23,19 @@ public class GlobalExceptionHandler {
     @Autowired
     private UserService userService;
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public void handleAll(HttpServletResponse response, Exception e) {
 //        log.error("Unhandled exception occurred", e);
         try {
-//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//
-//            if (!(auth instanceof AnonymousAuthenticationToken)) {
-//
-//                response.sendRedirect("/error/500");
-//            }
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (auth instanceof AnonymousAuthenticationToken) {
+
+                response.sendRedirect("/error/500");
+                return;
+            }
 
             response.sendRedirect("/admin");
         } catch (IOException e1) {
