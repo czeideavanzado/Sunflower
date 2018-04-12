@@ -76,7 +76,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                                                     <span>ADMIN</span>
                                                     <!--remove admin-->
-                                                    <form th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <form th:unless="${loggedUser == user}" th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
                                                         <button>x</button>
                                                     </form>
                                                 </li>
@@ -102,15 +102,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             </ul>
                                             <ul th:if="${user.getRoles().size() == 2 &amp;&amp; !user.getStringRoles().contains('ADMIN')}">
                                                 <li th:each="role : ${user.roles}" th:value="${role.id}">
-                                                    <span>BUYER</span>
+                                                    <span th:if="${role.role == 'BUYER'}">BUYER</span>
                                                     <!--remove buyer-->
-                                                    <form th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <form th:if="${role.role == 'BUYER'}" th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
                                                         <button>x</button>
                                                     </form>
 
-                                                    <span>SELLER</span>
+                                                    <span th:if="${role.role == 'SELLER'}">SELLER</span>
                                                     <!--remove seller-->
-                                                    <form th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <form th:if="${role.role == 'SELLER'}" th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
                                                         <button>x</button>
                                                     </form>
                                                 </li>
@@ -144,7 +144,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                                                 <li th:unless="${role.role != 'ADMIN'}">ADMIN</li>
                                                 <!--disable admin-->
-                                                <form th:unless="${role.role != 'ADMIN'}" th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                <form th:unless="${role.role != 'ADMIN' || loggedUser == user}" th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
                                                     <button>x</button>
                                                 </form>
                                             </ul>
@@ -172,11 +172,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     </form>
 
                                                     <li>ADMIN</li>
-                                                    <!--remove seller-->
-                                                    <form th:if="${role.role == 'ADMIN'}" th:action="@{'/admin/diablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                    <!--remove admin-->
+                                                    <form th:unless="${loggedUser == user}" th:if="${role.role == 'ADMIN'}" th:action="@{'/admin/diablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
                                                         <button>x</button>
                                                     </form>
-                                                    <!--enable seller-->
+                                                    <!--enable admin-->
                                                     <form th:if="${role.role != 'ADMIN'}" th:action="@{'/admin/admine/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
                                                         <button>+</button>
                                                     </form>
