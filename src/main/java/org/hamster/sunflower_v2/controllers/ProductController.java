@@ -133,6 +133,12 @@ public class ProductController {
     @PostMapping(value = "/cancel/{id}")
     public ModelAndView cancelTransaction(@PathVariable("id") Long id, @ModelAttribute("transaction") @Valid Transaction transaction, BindingResult result,
                                           WebRequest request, Errors errors) {
+        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if (loggedUser != (productService.find(id).getSeller())) {
+            return new ModelAndView("redirect:/error/403");
+        }
+
 
         if(!result.hasErrors()) {
             orderService.cancelTransaction(id);
