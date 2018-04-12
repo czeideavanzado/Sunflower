@@ -23,9 +23,13 @@ public class CustomErrorController implements ErrorController {
         // Here we just define response body.
         if (response.getStatus() == 403) {
             return "errors/403";
+        } else if (response.getStatus() == 404) {
+            return  "errors/404";
+        } else if (response.getStatus() == 500){
+            return  "errors/500";
         }
 
-        return "";
+        return "errors/404";
     }
 
     @Override
