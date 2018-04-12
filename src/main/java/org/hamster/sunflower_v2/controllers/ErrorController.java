@@ -22,4 +22,9 @@ public class ErrorController {
     public String error404() {
         return ERROR_PATH + "404";
     }
+
+    @GetMapping("/500")
+    public String error500() {
+        return ERROR_PATH + "500";
+    }
 }
