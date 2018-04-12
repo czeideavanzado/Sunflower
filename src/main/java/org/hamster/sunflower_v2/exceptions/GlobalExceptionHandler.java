@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,10 +27,10 @@ public class GlobalExceptionHandler {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public void handleAll(HttpServletResponse response, Exception e) {
+    public void handleInternalServer(HttpServletResponse response, Exception e) {
 //        log.error("Unhandled exception occurred", e);
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -37,10 +41,26 @@ public class GlobalExceptionHandler {
                 return;
             }
 
-            response.sendRedirect("/admin");
+            for (GrantedAuthority authority : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+                if (authority.getAuthority().equals("ADMIN")) {
+                    response.sendRedirect("/admin");
+                    return;
+                }
+            }
+
+            response.sendRedirect("/");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(Exception.class)
+    public void handleForbiddenAccess(HttpServletResponse response, Exception e) {
+        try {
+            response.sendRedirect("/error/403");
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
 }
