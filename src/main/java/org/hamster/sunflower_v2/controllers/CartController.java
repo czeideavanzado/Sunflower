@@ -80,7 +80,7 @@ public class CartController {
     }
 
     @GetMapping(value = "confirm")
-    public String confirm(ModelMap modelMap, HttpSession session) {
+    public String confirm(HttpSession session) {
         User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         cart = (HashMap) session.getAttribute("cart");

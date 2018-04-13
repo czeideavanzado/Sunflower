@@ -7,13 +7,15 @@ import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -29,14 +31,20 @@ public class SunflowerController {
     private ProductService productService;
 
     @Autowired
-    public SunflowerController(UserService userService, ProductService productService) {
+    private AuthenticationManager authenticationManager;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public SunflowerController(UserService userService, ProductService productService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.productService = productService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
-    public String index(ModelMap modelMap) {
-        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    public String index(ModelMap modelMap, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        User loggedUser = userService.findByUsername(authentication.getName());
 
         modelMap.put("products", productService.findAll());
         modelMap.put("loggedUser", loggedUser);
@@ -44,8 +52,8 @@ public class SunflowerController {
     }
 
     @GetMapping(value = "/login")
-    public String loginForm(HttpSession session) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public String loginForm(HttpSession session, Authentication auth) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
@@ -62,8 +70,8 @@ public class SunflowerController {
     }
 
     @GetMapping(value = "/registration")
-    public String showRegistrationForm(WebRequest request, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public String showRegistrationForm(Model model, Authentication auth) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
@@ -77,8 +85,8 @@ public class SunflowerController {
     }
 
     @GetMapping(value = "/forgotPassword")
-    public String forgotPasswordForm() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public String forgotPasswordForm(Authentication auth) {
+        auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
@@ -90,12 +98,38 @@ public class SunflowerController {
     }
 
     @GetMapping(value = "profile/{id}")
-    public String profile(@PathVariable("id") Long id, ModelMap modelMap) {
-        User loggedUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    public String profile(@PathVariable("id") Long id, ModelMap modelMap, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        User loggedUser = userService.findByUsername(authentication.getName());
         User user = userService.findById(id);
 
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("user", user);
         return "profile";
+    }
+
+    @GetMapping(value = "/reauthorize")
+    public String reAuthorize(ModelMap modelMap, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        User loggedUser = userService.findByUsername(authentication.getName());
+
+        modelMap.put("loggedUser", loggedUser);
+        return "reAuthorize";
+    }
+
+    @PostMapping(value = "/reauthorize")
+    public String reAuthorizePOST(@RequestParam("password") String password, Authentication authentication) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authentication.getName(), password);
+        Authentication authenticate = authenticationManager.authenticate(token);
+
+        if(authenticate.isAuthenticated() && isCurrentUser(authentication, authenticate)) {
+            return "redirect:/cart/confirm";
+        }
+
+        return "/reauthorize?invalid";
+    }
+
+    private boolean isCurrentUser(Authentication left, Authentication right) {
+        return left.getPrincipal().equals(right.getPrincipal());
     }
 }

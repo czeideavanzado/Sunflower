@@ -1,0 +1,40 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/header :: head('Confirm Password')">
+</head>
+<body>
+<div class="login-page">
+    <div class="login-main">
+        <div class="login-head">
+            <h1>Confirm Password</h1>
+        </div>
+        <div class="login-block">
+            <form th:action="@{/reauthorize}" method="POST">
+                <div class="alert alert-info alert-dismissable error" th:if="${param.info != null}">
+                    Input your password to complete the order </div>
+                <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'locked')}">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
+                    Your account has been locked until further notice </div>
+                <input type="password" id="password" name="password" class="lock" placeholder="Password" autocomplete="off" />
+                <input type="submit" name="Sign In" value="Submit" />
+            </form>
+            <h5><a th:href="@{/cart}">Go Back to Cart</a></h5>
+        </div>
+    </div>
+</div>
+<!--inner block end here-->
+<!--copy rights start here-->
+<div class="copyrights">
+    <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+</div>
+<!--COPY rights end here-->
+
+<div th:replace="/fragments/footer :: footer"></div>
+
+</body>
+</html>
