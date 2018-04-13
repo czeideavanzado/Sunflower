@@ -143,7 +143,7 @@ public class AdminController {
                                      WebRequest request, Errors errors) {
 
         if(!result.hasErrors()) {
-            userService.disableAdmin(id);
+            userService.disableMod(id);
             return new ModelAndView("redirect:/admin");
         } else {
             return new ModelAndView("redirect:/admin");
@@ -155,7 +155,7 @@ public class AdminController {
                                      WebRequest request, Errors errors) {
 
         if(!result.hasErrors()) {
-            userService.enableAdmin(id);
+            userService.enableMod(id);
             return new ModelAndView("redirect:/admin");
         } else {
             return new ModelAndView("redirect:/admin");

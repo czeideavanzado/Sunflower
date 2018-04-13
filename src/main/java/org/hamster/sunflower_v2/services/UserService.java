@@ -34,8 +34,8 @@ public interface UserService {
 
     void disableBuyer(Long id);
     void disableSeller(Long id);
-    void disableAdmin(Long id);
+    void disableMod(Long id);
     void enableBuyer(Long id);
     void enableSeller(Long id);
-    void enableAdmin(Long id);
+    void enableMod(Long id);
 }
