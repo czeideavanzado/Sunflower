@@ -200,4 +200,15 @@ public class AdminController {
             return new ModelAndView("redirect:/admin");
         }
     }
+
+    @PostMapping(value = "/remove/{id}")
+    public ModelAndView deleteProduct(@PathVariable("id") Long id, @ModelAttribute("product") @Valid Product product, BindingResult result,
+                                         WebRequest request, Errors errors) {
+        if(!result.hasErrors()) {
+            productService.removeProduct(id);
+            return new ModelAndView("redirect:/admin");
+        } else {
+            return new ModelAndView("redirect:/admin");
+        }
+    }
 }

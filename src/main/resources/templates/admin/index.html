@@ -212,6 +212,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             <form th:unless="${product.getSeller().getStringRoles().contains('SELLER') == false}" th:if="${product.getArchive() == true}" th:action="@{'/admin/unarchive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
                                                 <button>UN-ARCHIVE</button>
                                             </form>
+                                            <form th:if="${product.getStatus() != 'PENDING'}" th:action="@{'/admin/remove/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
+                                                <button>DELETE</button>
+                                            </form>
                                         </td>
                                     </tr>
                                     </tbody>
