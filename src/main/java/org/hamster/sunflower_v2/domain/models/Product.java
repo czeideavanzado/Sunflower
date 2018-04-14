@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
@@ -119,6 +120,11 @@ public class Product {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

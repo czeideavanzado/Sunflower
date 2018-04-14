@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -46,7 +47,36 @@ public class SunflowerController {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser = userService.findByUsername(authentication.getName());
 
-        modelMap.put("products", productService.findAll());
+        List<Product> products = productService.findAll();
+
+        List<Product> items = new ArrayList<>();
+        List<List<Product>> pages = new ArrayList<>();
+
+        for (Product product : products) {
+            long milliseconds1 = product.getCreatedDate().getTime();
+            long milliseconds2 = new Timestamp(System.currentTimeMillis()).getTime();
+
+            long diff = milliseconds2 - milliseconds1;
+            long diffHours = diff / (60 * 60 * 1000);
+
+            if (diffHours > 1 && diffHours < 23) {
+                items.add(product);
+            }
+
+            if (items.size() == 4) {
+                pages.add(items);
+                items = new ArrayList<>();
+            }
+
+            if (pages.size() == 3) {
+                break;
+            }
+        }
+
+        System.out.println(pages.get(0).get(0));
+
+        modelMap.put("pages", pages);
+        modelMap.put("currentTime", new Timestamp(System.currentTimeMillis()).getTime());
         modelMap.put("loggedUser", loggedUser);
         return "index";
     }
