@@ -73,8 +73,6 @@ public class SunflowerController {
             }
         }
 
-        System.out.println(pages.get(0).get(0));
-
         modelMap.put("pages", pages);
         modelMap.put("currentTime", new Timestamp(System.currentTimeMillis()).getTime());
         modelMap.put("loggedUser", loggedUser);

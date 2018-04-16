@@ -2,6 +2,7 @@ package org.hamster.sunflower_v2.seeders;
 
 import org.hamster.sunflower_v2.domain.models.*;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
+import org.hamster.sunflower_v2.services.CategoryService;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.SeedService;
 import org.hamster.sunflower_v2.services.UserService;
@@ -21,6 +22,7 @@ public class DatabaseSeeder {
 
     private UserService userService;
     private SeedService seedService;
+    private CategoryService categoryService;
     private ProductService productService;
     private RoleRepository roleRepository;
     private CSVLoader csvDataLoader;
@@ -29,10 +31,12 @@ public class DatabaseSeeder {
     private static final String seedsFileName = "csv/SEEDS.csv";
     private static final String rolesFileName = "csv/ROLES.csv";
     private static final String productsFileName = "csv/PRODUCTS.csv";
+    private static final String categoriesFileName = "csv/CATEGORIES.csv";
 
-    public DatabaseSeeder(UserService userService, SeedService seedService, ProductService productService, RoleRepository roleRepository, CSVLoader csvDataLoader) {
+    public DatabaseSeeder(UserService userService, SeedService seedService, CategoryService categoryService, ProductService productService, RoleRepository roleRepository, CSVLoader csvDataLoader) {
         this.userService = userService;
         this.seedService = seedService;
+        this.categoryService = categoryService;
         this.productService = productService;
         this.roleRepository = roleRepository;
         this.csvDataLoader = csvDataLoader;
@@ -45,6 +49,19 @@ public class DatabaseSeeder {
         seedUsersTable();
         seedSeedsTable();
 //        seedProductsTable();
+        seedCategoriesTable();
+    }
+
+    private void seedCategoriesTable() {
+        if (categoryService.findAll().size() <= 0) {
+            List<Category> categories = csvDataLoader.loadObjectList(Category.class, categoriesFileName);
+
+            for (Category category : categories) {
+                Category newCategory = new Category(category.getName());
+
+                categoryService.save(newCategory);
+            }
+        }
     }
 
     private void seedProductsTable() {

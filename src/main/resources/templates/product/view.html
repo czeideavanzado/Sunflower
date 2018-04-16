@@ -1,56 +1,121 @@
-<!--Author: W3layouts
+<!--
+Author: W3layouts
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/header :: head('Sell Product')">
+<head th:replace="/fragments/header :: head('Home')">
 </head>
 <body>
+<div class="header">
+    <div th:replace="/fragments/navbar">
+    </div>
+</div>
+<div class="banner text-center">
+    <div class="container">
+        <h1>Sell or Advertise   <span class="segment-heading">    anything online </span> with Resale</h1>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+        <!--<a href="post-ad.html">Post Free Ad</a>-->
+    </div>
+</div>
+<!--single-page-->
+<div class="single-page main-grid-border">
+    <div class="container">
+        <ol class="breadcrumb" style="margin-bottom: 5px;">
+            <li><a th:href="${'/'}">Home</a></li>
+            <li><a th:href="${'/category/all'}">All</a></li>
+            <li class="active">
+                <a th:if="${product.category.name == 'Electronics &amp; Appliances'}" th:href="${'/category/electronics+appliances'}">Electronics &amp; Appliances</a>
+                <a th:unless="${product.category.name == 'Electronics &amp; Appliances'}" th:href="${'/category/' + product.category.name}" th:text="${product.category.name}"></a>
+            </li>
+            <li class="active">Mobile Phone</li>
+        </ol>
+        <div class="product-desc">
+            <div class="col-md-7 product-view">
+                <h2 th:text="${product.name}">Lorem Ipsum is simply dummy text of the printing and typesetting industry</h2>
+                <p> <i class="glyphicon glyphicon-map-marker"></i><a href="#">state</a>, <a href="#">city</a>| Posted on <th:block th:text="${#dates.format(product.createdDate, 'MMMM dd, yyyy hh:mm')}"></th:block>, Product ID: <th:block th:text="${product.id}"></th:block></p>
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li data-thumb="images/ss1.jpg">
+                            <img th:src="${'/images/client/product/' + product.photo}" />
+                        </li>
+                        <!--<li data-thumb="images/ss2.jpg">-->
+                            <!--<img src="images/ss2.jpg" />-->
+                        <!--</li>-->
+                        <!--<li data-thumb="images/ss3.jpg">-->
+                            <!--<img src="images/ss3.jpg" />-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+                <!-- FlexSlider -->
+                <script defer="" src="/js/jquery.flexslider.js"></script>
+                <link rel="stylesheet" href="/css/flexslider.css" type="text/css" media="screen" />
 
-<div class="page-container">
-    <div>
-        <div class="mother-grid-inner">
-            <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
-            <!--inner block start here-->
-            <div class="signup-page-main">
-                <div class="signup-main">
-                    <div class="signup-head">
-                        <h1 th:text="${product.name}"></h1>
-                    </div>
-                    <div class="signup-block">
-                        <h4 th:text="&#8369;+${product.price}"></h4>
-                        <h5 th:text="${product.description}"></h5>
-
-                        <a th:if="${product.getSeller() == loggedUser &amp;&amp; product.getArchive() == false}" th:href="${'/product/edit/' + product.id}" class="edit"><i class="fa fa-edit hvr-bounce-in"></i></a>
-                        <a th:if="${product.getSeller() == loggedUser &amp;&amp; product.getStatus() == 'OPEN' &amp;&amp; product.getArchive() == false}" th:href="${'/product/remove/' + product.id}" class="remove" ><i class="fa fa-trash hvr-bob"></i></a>
-
-                        <h5 th:if="${product.getSeller() == loggedUser &amp;&amp; product.getStatus() != 'OPEN' &amp;&amp; product.getArchive() == false}" th:href="${'/product/remove/' + product.id}" class="remove">Item is currently in pending transaction.</h5>
-
-                        <h4 th:if="${product.getArchive() == true}" th:text="'This Product is Archived by the Administrators. User cannot sell, edit, nor delete this product until further notice.'"></h4>
-
-                        <a th:each="role : ${loggedUser.roles}" th:if="${role.role == 'BUYER'}" th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null || product.getPrice() > loggedUser.getWallet().getSeeds()}">Add to Cart</button></a>
-                        <a th:each="role : ${loggedUser.roles}" th:if="${role.role == 'BUYER'}"><h5 th:unless="${product.getSeller() == loggedUser || loggedUser == null || !(product.getPrice() > loggedUser.getWallet().getSeeds())}">Not enough seeds!</h5></a>
-                        <!--<div class="sign-down">-->
-                        <!--<h4>Already have an account? <a th:href="@{/login}"> Login here.</a></h4>-->
-                        <!--<h5><a th:href="@{/}">Go Back to Home</a></h5>-->
-                        <!--</div>-->
-                    </div>
+                <script>
+                    // Can also be used with $(document).ready()
+                    $(window).load(function() {
+                        $('.flexslider').flexslider({
+                            animation: "slide",
+                            controlNav: "thumbnails"
+                        });
+                    });
+                </script>
+                <!-- //FlexSlider -->
+                <div class="product-details">
+                    <h5 th:if="${product.archived == true}">Archived</h5>
+                    <!--<h4>Views : <strong>150</strong></h4>-->
+                    <!--<p><strong>Display </strong>: 1.5 inch HD LCD Touch Screen</p>-->
+                    <p><strong>Summary : </strong><th:block th:text="${product.description}"></th:block></p>
                 </div>
             </div>
-            <!--inner block end here-->
-            <!--copy rights start here-->
-            <div class="copyrights">
-                <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+            <div class="col-md-5 product-details-grid">
+                <div class="item-price">
+                    <div class="product-price">
+                        <p class="p-price">Price</p>
+                        <h3 class="rate" th:text="${'&#8369;' + product.price}"></h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!--<div class="condition">-->
+                        <!--<p class="p-price">Condition</p>-->
+                        <!--<h4>Good</h4>-->
+                        <!--<div class="clearfix"></div>-->
+                    <!--</div>-->
+                    <div class="itemtype">
+                        <p class="p-price">Item Type</p>
+                        <h5 th:if="${product.category.name == 'Electronics &amp; Appliances'}" th:text="${product.category.name}"></h5>
+                        <h4 th:unless="${product.category.name == 'Electronics &amp; Appliances'}" th:text="${product.category.name}"></h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="interested text-center">
+                    <h4>Interested in this product?</h4><!--<small> Add it to your cart!</small>-->
+                    <!--<p><i class="glyphicon glyphicon-earphone"></i>00-85-9875462655</p>-->
+                </div>
+                <!--<div class="tips">-->
+                    <!--<h4>Safety Tips for Buyers</h4>-->
+                    <!--<ol>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                        <!--<li><a href="#">Contrary to popular belief.</a></li>-->
+                    <!--</ol>-->
+                <!--</div>-->
             </div>
-            <!--COPY rights end here-->
+            <div class="clearfix"></div>
         </div>
     </div>
-    <div class="clearfix"> </div>
 </div>
-
-<div th:replace="/fragments/footer :: footer"></div>
-
+<!--//single-page-->
+<!--footer section start-->
+<footer th:replace="/fragments/footer">
+</footer>
+<!--footer section end-->
 </body>
 </html>

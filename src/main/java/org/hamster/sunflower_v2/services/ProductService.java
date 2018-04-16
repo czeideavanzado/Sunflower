@@ -1,9 +1,6 @@
 package org.hamster.sunflower_v2.services;
 
-import org.hamster.sunflower_v2.domain.models.Order;
-import org.hamster.sunflower_v2.domain.models.Product;
-import org.hamster.sunflower_v2.domain.models.ProductDTO;
-import org.hamster.sunflower_v2.domain.models.User;
+import org.hamster.sunflower_v2.domain.models.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,10 +15,13 @@ public interface ProductService {
     Product sellMockProduct(ProductDTO productDTO);
     void updateProduct(Product product, Long id);
     void removeProduct(Long id);
+
     List<Product> findAll();
+    List<Product> findByCategory(Category category);
     Product find(Long id);
     List<Product> findByKeyword(String keyword);
     BigDecimal findPrice(Long id);
+
     void archiveProduct(Long id);
     void unarchiveProduct(Long id);
     void archiveSellerProduct(Long userid);

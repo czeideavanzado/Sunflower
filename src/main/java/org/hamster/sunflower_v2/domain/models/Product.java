@@ -61,6 +61,10 @@ public class Product {
     @Column(name = "archived")
     private boolean archived = false;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Category category;
+
     public boolean getArchive() {
         return archived;
     }
@@ -123,6 +127,22 @@ public class Product {
 
     public Timestamp getCreatedDate() {
         return createdDate;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     @Override

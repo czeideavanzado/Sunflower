@@ -18,11 +18,13 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
     private UserService userService;
+    private CategoryService categoryService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, UserService userService) {
+    public ProductServiceImpl(ProductRepository productRepository, UserService userService, CategoryService categoryService) {
         this.productRepository = productRepository;
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -32,8 +34,12 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDTO.getPrice());
         product.setDescription(productDTO.getDescription());
         product.setPhoto(productDTO.getPhoto());
+
         User seller = getSeller(SecurityContextHolder.getContext().getAuthentication().getName());
         product.setSeller(seller);
+
+        Category category = categoryService.findById(productDTO.getCategory_id());
+        product.setCategory(category);
         return productRepository.save(product);
     }
 
@@ -67,6 +73,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findByCategory(Category category) {
+        return productRepository.findByCategory(category);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package org.hamster.sunflower_v2.controllers;
 
 import org.hamster.sunflower_v2.domain.models.*;
+import org.hamster.sunflower_v2.services.CategoryService;
 import org.hamster.sunflower_v2.services.OrderService;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +28,7 @@ import java.util.Set;
 @RequestMapping(value = "product")
 public class ProductController {
 
+    private CategoryService categoryService;
     private ProductService productService;
     private StorageService storageService;
     private OrderService orderService;
@@ -33,33 +36,40 @@ public class ProductController {
     private static String PRODUCT_PATH = "product/";
 
     @Autowired
-    public ProductController(OrderService orderdetailService, ProductService productService, StorageService storageService) {
+    public ProductController(CategoryService categoryService, ProductService productService, StorageService storageService, OrderService orderService) {
+        this.categoryService = categoryService;
         this.productService = productService;
         this.storageService = storageService;
-        this.orderService = orderdetailService;
+        this.orderService = orderService;
     }
 
     @GetMapping(value = "/sell")
-    public String sellProductForm(ModelMap modelMap) {
+    public String sellProductForm(ModelMap modelMap, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        List<Category> categories = categoryService.findAll();
         ProductDTO product = new ProductDTO();
-        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        modelMap.put("loggedUser", loggedUser);
+
+        modelMap.put("loggedUser", productService.findByUserByUsername(authentication.getName()));
         modelMap.put("product", product);
+        modelMap.put("categories", categories);
         return PRODUCT_PATH + "sell";
     }
 
     @PostMapping(value = "/sell")
     public ModelAndView sellProduct(@ModelAttribute("product") @Valid ProductDTO productDTO, BindingResult result,
-                                    WebRequest request, Errors errors, @RequestParam("file") MultipartFile file) {
+                                    WebRequest request, Errors errors,
+                                    @RequestParam("file") MultipartFile file, @RequestParam("category") Long category_id) {
         if(!result.hasErrors()) {
             if (!file.isEmpty()) {
                 productDTO.setPhoto(storageService.storeProduct(file));
             }
 
+            productDTO.setCategory_id(category_id);
             productService.sellProduct(productDTO);
-            return new ModelAndView("redirect:/product/sellConfirmation");
+            return new ModelAndView("redirect:/product/sell?success");
         } else {
-            return new ModelAndView(PRODUCT_PATH + "sell", "product", productDTO);
+            return new ModelAndView(PRODUCT_PATH + "redirect:/product/sell?error", "product", productDTO);
         }
     }
 

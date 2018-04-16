@@ -1,77 +1,109 @@
-<!--Author: W3layouts
+<!--
+Author: W3layouts
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="/fragments/header :: head('Sell Product')">
 </head>
 <body>
-
-<div class="page-container">
-    <div>
-        <div class="mother-grid-inner">
-            <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
-            <!--inner block start here-->
-            <div class="signup-page-main">
-                <div class="signup-main">
-                    <div class="signup-head">
-                        <h1>Sell Product</h1>
-                    </div>
-                    <div class="signup-block">
-                        <form th:action="@{/product/sell}" th:object="${product}" method="POST" enctype="multipart/form-data">
-                            <div class="alert alert-danger alert-dismissable error" id="imageError" style="display: none;">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>
-                                <i class=" fa fa-exclamation-triangle"></i> Please upload images only</div>
-                            <input th:field="*{name}" type="text" placeholder="Product Name" required="" />
-                            <div class="input-group">
-                                <span class="input-group-addon">&#8369;</span>
-                                <input th:field="*{price}" required="" type="number" placeholder="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" />
+<div class="header">
+    <div th:replace="/fragments/navbar">
+    </div>
+</div>
+<div class="banner text-center">
+    <div class="container">
+        <!--<h1>Sell or Advertise   <span class="segment-heading">    anything online </span> with Resale</h1>-->
+        <!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>-->
+        <!--<a href="post-ad.html">Post Free Ad</a>-->
+    </div>
+</div>
+<!-- Submit Ad -->
+<div class="submit-ad main-grid-border">
+    <div class="container">
+        <h2 class="head">Sell a Product</h2>
+        <div class="post-ad-form">
+            <div class="alert alert-success alert-dismissable error" th:if="${param.success != null}">
+                Your product was successfully posted!</div>
+            <div class="alert alert-danger alert-dismissable error" th:if="${param.error != null}">
+                Something went wrong while posting your product! Try again</div>
+            <form th:action="${'/product/sell'}" method="POST" th:object="${product}" enctype="multipart/form-data">
+                <label>Select Category <span>*</span></label>
+                <select id="category" name="category">
+                    <option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.id}" ></option>
+                </select>
+                <div class="clearfix"></div>
+                <label>Name <span>*</span></label>
+                <input type="text" class="phone" th:field="*{name}" />
+                <div class="clearfix"></div>
+                <label>Description <span>*</span></label>
+                <textarea th:field="*{description}" class="mess" placeholder="Write few lines about your product" rows="5" id="description" maxlength="250">
+                </textarea>
+                <div class="clearfix"></div>
+                <label>Price <span>*</span></label>
+                <input th:field="*{price}" type="number" class="phone" required="" placeholder="0.00" min="0" step="10.00" data-number-to-fixed="2" data-number-stepfactor="10.00" />
+                <div class="clearfix"></div>
+                <div class="upload-ad-photos">
+                    <label>Photo for your product:</label>
+                    <div class="photos-upload-view">
+                        <div id="upload">
+                            <div>
+                                <input type="file" id="image" name="file" accept="image/x-png,image/gif,image/jpeg" onchange="fileValidation()" />
                             </div>
-                            <div class="form-group">
-                                <label for="description">Description:</label>
-                                <textarea th:field="*{description}" placeholder="Minimum of 250 characters" class="form-control" rows="5" id="description" maxlength="250"></textarea>
-                            </div>
-                            <input type="file" name="file" id="image" accept="image/x-png,image/gif,image/jpeg" onchange="fileValidation()" />
-
-                            <input type="submit" value="Sell Product" />
-                        </form>
-                        <!--<div class="sign-down">-->
-                        <!--<h4>Already have an account? <a th:href="@{/login}"> Login here.</a></h4>-->
-                        <!--<h5><a th:href="@{/}">Go Back to Home</a></h5>-->
-                        <!--</div>-->
+                        </div>
                     </div>
+                    <div class="clearfix"></div>
                 </div>
-            </div>
-            <!--inner block end here-->
-            <!--copy rights start here-->
-            <div class="copyrights">
-                <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
-            </div>
-            <!--COPY rights end here-->
+                <!--<div class="personal-details">-->
+                    <!--<form>-->
+                        <!--<label>Your Name <span>*</span></label>-->
+                        <!--<input type="text" class="name" placeholder="" />-->
+                        <!--<div class="clearfix"></div>-->
+                        <!--<label>Your Mobile No <span>*</span></label>-->
+                        <!--<input type="text" class="phone" placeholder="" />-->
+                        <!--<div class="clearfix"></div>-->
+                        <!--<label>Your Email Address<span>*</span></label>-->
+                        <!--<input type="text" class="email" placeholder="" />-->
+                        <!--<div class="clearfix"></div>-->
+                        <!--<p class="post-terms">By clicking <strong>post Button</strong> you accept our <a href="terms.html" target="_blank">Terms of Use </a> and <a href="privacy.html" target="_blank">Privacy Policy</a></p>-->
+                        <!--<input type="submit" value="Post" />-->
+                        <!--<div class="clearfix"></div>-->
+                    <!--</form>-->
+                <!--</div>-->
+                <input type="submit" value="Post" />
+                <div class="clearfix"></div>
+            </form>
         </div>
     </div>
-    <div class="clearfix"> </div>
 </div>
-
-<div th:replace="/fragments/footer :: footer"></div>
+<!-- // Submit Ad -->
+<!--footer section start-->
+<footer th:replace="/fragments/footer">
+</footer>
+<!--footer section end-->
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
 
+    $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500);
+    });
+
     function fileValidation(){
-        let fileInput = document.getElementById('image');
+        let fileInput = document.getElementById('file');
         let filePath = fileInput.value;
         let allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
 
         if(!allowedExtensions.exec(filePath)){
-            document.getElementById("imageError").style.display = "block";
             fileInput.value = '';
+            // document.getElementById("imageError").style.display = "block";
         }
 
         document.getElementById("imageError").style.display = "none";
     }
     /*]]>*/
 </script>
+
 </body>
 </html>

@@ -22,6 +22,8 @@ public class ProductDTO {
 
     private Long seller_id;
 
+    private Long category_id;
+
     public ProductDTO() {
     }
 
@@ -71,5 +73,13 @@ public class ProductDTO {
 
     public Long getSeller_id() {
         return seller_id;
+    }
+
+    public Long getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(Long category_id) {
+        this.category_id = category_id;
     }
 }

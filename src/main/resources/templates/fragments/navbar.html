@@ -11,6 +11,7 @@
         <div class="header-right" th:if="${loggedUser != null}">
             <a class="account" th:href="${'/wallet'}" th:text="${'0.00'}"></a>
             <span class="active uls-trigger" th:text="${loggedUser.firstName}"></span>
+            <a th:href="${'/product/sell'}"><span class="active uls-trigger">Sell Product</span></a>
             <span class="active uls-trigger" th:text="${'Logout'}" onclick="document.getElementById('logout').submit();"></span>
             <form id="logout" th:action="@{/logout}" method="POST"></form>
         </div>
