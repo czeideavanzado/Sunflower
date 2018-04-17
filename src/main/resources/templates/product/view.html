@@ -107,12 +107,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <a th:href="${'/product/edit/' + product.id}"><p><i class="glyphicon glyphicon-pencil"></i>Edit your product</p></a>
                     </th:block>
 
-                    <th:block th:if="${session.cart.size() == 0 &amp;&amp; loggedUser.id != product.seller.id}">
+                    <th:block th:unless="${!loggedUser.getStringRoles().contains('BUYER')}" th:if="${session.cart.size() == 0 &amp;&amp; loggedUser.id != product.seller.id}">
                         <h4>Interested in this product?</h4><!--<small> Add it to your cart!</small>-->
                         <p><i id="add" class="glyphicon glyphicon-shopping-cart"></i>&lt;- Add it to your cart!</p>
                     </th:block>
 
-                    <th:block th:each="item : ${session.cart}" th:if="${loggedUser.id != product.seller.id}">
+                    <th:block th:unless="${!loggedUser.getStringRoles().contains('BUYER')}" th:each="item : ${session.cart}" th:if="${loggedUser.id != product.seller.id}">
                         <th:block th:if="${item.key == product.id}">
                             <div class="alert alert-info alert-dismissable error">
                                 This was already added to your cart!</div>

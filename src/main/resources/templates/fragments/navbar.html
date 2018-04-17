@@ -10,7 +10,7 @@
         </div>
         <div class="header-right" th:if="${loggedUser != null}">
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <span class="cart active uls-trigger collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <span th:if="${loggedUser.getStringRoles().contains('BUYER')}" class="cart active uls-trigger collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -39,10 +39,11 @@
                     </li>
                 </ul>
             </span><!-- navbar-collapse -->
-            <a class="account" th:href="${'/wallet'}" th:text="${loggedUser.wallet.seeds}"></a>
+            <a class="account" th:href="${'/wallet'}" th:if="${loggedUser.getStringRoles().contains('BUYER')}" th:text="${loggedUser.wallet.seeds}"></a>
             <span class="active uls-trigger" th:text="${loggedUser.firstName}"></span>
-            <a th:href="${'/product/myProducts'}"><span class="active uls-trigger">My Products</span></a>
-            <a th:href="${'/product/sell'}"><span class="active uls-trigger">Sell Product</span></a>
+            <a th:if="${loggedUser.getStringRoles().contains('SELLER')}" th:href="${'/product/myProducts'}"><span class="active uls-trigger">My Products</span></a>
+            <a th:if="${loggedUser.getStringRoles().contains('SELLER')}" th:href="${'/product/sell'}"><span class="active uls-trigger">Sell Product</span></a>
+            <a th:if="${loggedUser.getStringRoles().contains('ADMIN') || loggedUser.getStringRoles().contains('MODERATOR')}" th:href="${'/admin'}"><span class="active uls-trigger">Admin</span></a>
             <span class="active uls-trigger" th:text="${'Logout'}" onclick="document.getElementById('logout').submit();"></span>
             <form id="logout" th:action="@{/logout}" method="POST"></form>
             <script>
