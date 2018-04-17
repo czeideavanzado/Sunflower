@@ -60,13 +60,13 @@ public class WalletController {
         }
 
         if (seed == null) {
-            result.rejectValue("serialCode", "error.seed", "Seed is either invalid or already activated");
+            return new ModelAndView("redirect:/?walletInvalid");
         }
 
         if(!result.hasErrors()) {
-            return new ModelAndView(WALLET_PATH + "addConfirmation", "seed", seed);
+            return new ModelAndView("redirect:/walletSuccess");
         } else {
-            return new ModelAndView(WALLET_PATH + "index", "seedDTO", seedDTO);
+            return new ModelAndView("redirect:/walletError");
         }
     }
 

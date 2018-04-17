@@ -13,6 +13,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div class="header">
     <div th:replace="/fragments/navbar">
     </div>
+    <div class="alert alert-info alert-dismissable error text-center" th:if="${param.walletInvalid != null}">
+        The seed you redeem is either invalid or activated already</div>
+    <div class="alert alert-danger alert-dismissable error text-center" th:if="${param.walletError != null}">
+        Something went wrong while adding to your wallet! Please try again</div>
+    <div class="alert alert-success alert-dismissable error text-center" th:if="${param.walletSuccess != null}">
+        Successfully Added to Wallet!</div>
     <div class="alert alert-success alert-dismissable error text-center" th:if="${param.orderSuccess != null}">
         <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
         Your order has been processed! </div>
