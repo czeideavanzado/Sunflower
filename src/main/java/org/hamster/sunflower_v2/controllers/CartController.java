@@ -71,7 +71,15 @@ public class CartController {
             return "redirect:/error/404";
         }
 
-        modelMap.put("loggedUser", userService.findByUsername(authentication.getName()));
+        User loggedUser = userService.findByUsername(authentication.getName());
+
+        BigDecimal subtotal = (BigDecimal) session.getAttribute("subtotal");
+
+        if (loggedUser.getWallet().getSeeds().compareTo(subtotal) == -1) {
+            return "redirect:/error/404";
+        }
+
+        modelMap.put("loggedUser", loggedUser);
 
         BillingInformationDTO billingInformationDTO = new BillingInformationDTO();
         modelMap.put("billingInformationDto", billingInformationDTO);
@@ -138,6 +146,14 @@ public class CartController {
         if(!cart.containsKey(id)) {
             cart.put(id, productService.find(id));
             session.setAttribute("cart", cart);
+
+            BigDecimal subtotal = BigDecimal.ZERO;
+
+            for (Product product : cart.values()) {
+                subtotal = subtotal.add(product.getPrice());
+            }
+
+            session.setAttribute("subtotal", subtotal);
 
             modelMap.put("success", "success");
             return CART_PATH + "index :: resultsList";

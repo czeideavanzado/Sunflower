@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -92,6 +93,7 @@ public class SunflowerController {
         if(session.getAttribute("cart") == null) {
             Map<Long, Product> cart = new HashMap<>();
             session.setAttribute("cart", cart);
+            session.setAttribute("subtotal", BigDecimal.ZERO);
         }
 
         return "login";
