@@ -11,5 +11,6 @@ public interface CategoryService {
 
     List<Category> findAll();
     Category findById(Long category_id);
+    Category findByName(String category);
     Category save(Category category);
 }

@@ -30,8 +30,9 @@
                                     </span>
                                 </span>
                             </li>
-                            <li class="divider"></li>
-                            <li><a class="text-center" href="#">Place Order</a></li>
+                            <li th:if="${session.cart.size() == 0}" class="text-center">Your shopping cart is empty!</li>
+                            <li th:if="${session.cart.size() > 0}" class="divider"></li>
+                            <li th:if="${session.cart.size() > 0}"><a class="text-center" href="#">Place Order</a></li>
                         </ul>
                     </li>
                 </ul>

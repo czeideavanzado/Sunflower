@@ -72,46 +72,52 @@ public class ProductController {
             productService.sellProduct(productDTO);
             return new ModelAndView("redirect:/product/sell?success");
         } else {
-            return new ModelAndView(PRODUCT_PATH + "redirect:/product/sell?error", "product", productDTO);
+            return new ModelAndView("redirect:/product/sell?error", "product", productDTO);
         }
     }
 
-    @GetMapping(value = "/sellConfirmation")
-    public String sellConfirmed() {
-        return PRODUCT_PATH + "sellConfirmation";
-    }
-
     @GetMapping(value = "/view/{id}")
-    public String viewProductForm(@PathVariable("id") Long id, ModelMap modelMap, HttpSession session) {
-        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    public String viewProductForm(@PathVariable("id") Long id, ModelMap modelMap, HttpSession session, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        modelMap.put("loggedUser", loggedUser);
+        modelMap.put("loggedUser", productService.findByUserByUsername(authentication.getName()));
         modelMap.put("product", productService.find(id));
 
         return PRODUCT_PATH + "view";
     }
 
     @GetMapping(value = "/edit/{id}")
-    public String editProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
-        User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+    public String editProductForm(@PathVariable("id") Long id, ModelMap modelMap, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User loggedUser = productService.findByUserByUsername(authentication.getName());
 
         if (loggedUser != (productService.find(id).getSeller())) {
             return "redirect:/error/403";
         }
 
+        List<Category> categories = categoryService.findAll();
+
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("product", productService.find(id));
+        modelMap.put("categories", categories);
         return PRODUCT_PATH + "edit";
     }
 
     @PostMapping(value = "/edit/{id}")
     public ModelAndView editProduct(@PathVariable("id") Long id, @ModelAttribute("product") @Valid Product product, BindingResult result,
-                                    WebRequest request, Errors errors) {
+                                    WebRequest request, Errors errors,
+                                    @RequestParam("file") MultipartFile file, @RequestParam("category") Long category_id) {
         if(!result.hasErrors()) {
+            if (!file.isEmpty()) {
+                product.setPhoto(storageService.storeProduct(file));
+            }
+
+            product.setCategory(categoryService.findById(category_id));
             productService.updateProduct(product, id);
-            return new ModelAndView(PRODUCT_PATH + "editConfirmation", "product", product);
+            return new ModelAndView("redirect:/product/edit?success");
         } else {
-            return new ModelAndView(PRODUCT_PATH + "edit", "product", product);
+            return new ModelAndView("redirect:/product/edit?error");
         }
     }
 

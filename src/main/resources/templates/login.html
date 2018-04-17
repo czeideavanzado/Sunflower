@@ -24,6 +24,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <h1>Log in</h1>
                 </div>
                 <div class="signin">
+                    <div class="alert alert-success alert-dismissable error" th:if="${param.verified != null}">
+                        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+                        Account verification successful! </div>
+                    <div class="alert alert-warning alert-dismissable error" th:if="${param.expired != null}">
+                        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+                        The verification link has already expired! <br /> <a th:href="${'/registration/resend?token=' + param.expired[0]}"> Click here to resend the link </a> </div>
+                    <div class="alert alert-success alert-dismissable error" th:if="${param.resetPassword != null}">
+                        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+                        Your password has been reset! </div>
+                    <div class="alert alert-danger alert-dismissable error" th:if="${param.sessionExpired != null}">
+                        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+                        <i class=" fa fa-exclamation-triangle"></i> Your session has expired</div>
+                    <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'incorrect')}">
+                        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+                        Incorrect username or password </div>
+                    <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'locked')}">
+                        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+                        Your account has been locked until further notice </div>
+                    <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'email')}">
+                        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+                        Email does not exist! </div>
                     <div class="alert alert-success alert-dismissable error" th:if="${param.logout != null}">
                         Successfully Logged Out</div>
                     <form th:action="@{/login}" method="POST">
@@ -40,7 +61,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <div class="clearfix"> </div>
                         </div>
                         <div class="signin-rit">
-                            <p><input type="checkbox" name="checkbox" checked="" /> Remember me</p>
+                            <p><input type="checkbox" id="remember" name="remember-me" value="true" /> Remember me</p>
+                            <!--<p><input type="checkbox" name="checkbox" checked="" /> Remember me</p>-->
 								<span class="checkbox1">
 									 <a th:href="${'/forgotPassword'}"><label class="checkbox">Forgot Password?</label></a>
 								</span>
@@ -52,7 +74,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="new_people">
                     <h2>Not Registered?</h2>
                     <p>Join now and sell your items!</p>
-                    <a href="register.html">Register Now!</a>
+                    <a th:href="${'/registration'}">Register Now!</a>
                 </div>
             </div>
         </div>

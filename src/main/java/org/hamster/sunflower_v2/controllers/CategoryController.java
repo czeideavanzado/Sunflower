@@ -51,6 +51,93 @@ public class CategoryController {
 
         modelMap.addAttribute("loggedUser", userService.findByUsername(authentication.getName()));
         modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("fragment", "all");
+        modelMap.addAttribute("categoryName", "All Products");
+        return CATEGORY_PATH + "index";
+    }
+
+    @GetMapping(value = "/fashion")
+    public String fashion(ModelMap modelMap, Authentication authentication, Pageable pageable) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Category fashion = categoryService.findByName("Fashion");
+
+        PageWrapper<Product> page = page = new PageWrapper<>(productService.findByCategory(fashion, pageable), "/category/fashion");
+
+        modelMap.addAttribute("page", page);
+
+        modelMap.addAttribute("loggedUser", userService.findByUsername(authentication.getName()));
+        modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("fragment", "fashion");
+        modelMap.addAttribute("categoryName", "Fashion");
+        return CATEGORY_PATH + "index";
+    }
+
+    @GetMapping(value = "/mobiles")
+    public String mobiles(ModelMap modelMap, Authentication authentication, Pageable pageable) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Category mobiles = categoryService.findByName("Mobiles");
+
+        PageWrapper<Product> page = page = new PageWrapper<>(productService.findByCategory(mobiles, pageable), "/category/mobiles");
+
+        modelMap.addAttribute("page", page);
+
+        modelMap.addAttribute("loggedUser", userService.findByUsername(authentication.getName()));
+        modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("fragment", "mobiles");
+        modelMap.addAttribute("categoryName", "Mobiles");
+        return CATEGORY_PATH + "index";
+    }
+
+    @GetMapping(value = "/electronics+appliances")
+    public String electronicsAndAppliances(ModelMap modelMap, Authentication authentication, Pageable pageable) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Category electronicsAndAppliances = categoryService.findByName("Electronics & Appliances");
+
+        PageWrapper<Product> page = page = new PageWrapper<>(productService.findByCategory(electronicsAndAppliances, pageable), "/category/electronics+appliances");
+
+        modelMap.addAttribute("page", page);
+
+        modelMap.addAttribute("loggedUser", userService.findByUsername(authentication.getName()));
+        modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("fragment", "electronics_appliances");
+        modelMap.addAttribute("categoryName", "Electronics & Appliances");
+        return CATEGORY_PATH + "index";
+    }
+
+    @GetMapping(value = "/furniture")
+    public String furniture(ModelMap modelMap, Authentication authentication, Pageable pageable) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Category furniture = categoryService.findByName("Furniture");
+
+        PageWrapper<Product> page = page = new PageWrapper<>(productService.findByCategory(furniture, pageable), "/category/furniture");
+
+        modelMap.addAttribute("page", page);
+
+        modelMap.addAttribute("loggedUser", userService.findByUsername(authentication.getName()));
+        modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("fragment", "furniture");
+        modelMap.addAttribute("categoryName", "Furniture");
+        return CATEGORY_PATH + "index";
+    }
+
+    @GetMapping(value = "/books")
+    public String books(ModelMap modelMap, Authentication authentication, Pageable pageable) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Category books = categoryService.findByName("Books");
+
+        PageWrapper<Product> page = page = new PageWrapper<>(productService.findByCategory(books, pageable), "/category/books");
+
+        modelMap.addAttribute("page", page);
+
+        modelMap.addAttribute("loggedUser", userService.findByUsername(authentication.getName()));
+        modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("fragment", "books");
+        modelMap.addAttribute("categoryName", "Books");
         return CATEGORY_PATH + "index";
     }
 }

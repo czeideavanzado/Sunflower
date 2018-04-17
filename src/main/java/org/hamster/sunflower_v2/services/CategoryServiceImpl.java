@@ -31,6 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category findByName(String category) {
+        return categoryRepository.findByName(category);
+    }
+
+    @Override
     public Category save(Category category) {
         return categoryRepository.save(category);
     }

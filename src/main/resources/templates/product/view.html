@@ -64,7 +64,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </script>
                 <!-- //FlexSlider -->
                 <div class="product-details">
-                    <h5 th:if="${product.archived == true}">Archived</h5>
+                    <h5 th:if="${product.archived == true}">This product has been archived</h5>
                     <!--<h4>Views : <strong>150</strong></h4>-->
                     <!--<p><strong>Display </strong>: 1.5 inch HD LCD Touch Screen</p>-->
                     <p><strong>Summary : </strong><th:block th:text="${product.description}"></th:block></p>
@@ -89,18 +89,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <div class="clearfix"></div>
                     </div>
                 </div>
-                <div class="interested text-center">
+                <div class="interested text-center" th:unless="${loggedUser != null &#124;&#124; product.archived == true}">
+                    <th:block>
+                        <h4>Interested in this product?</h4><!--<small> Add it to your cart!</small>-->
+                        <p><a th:href="${'/login'}">Login now!</a></p>
+                    </th:block>
+                </div>
+                <div class="interested text-center" th:if="${loggedUser != null &amp;&amp; product.archived == false}">
                     <!-- Results block -->
                     <div id="resultsBlock">
 
                     </div>
 
-                    <th:block th:if="${session.cart.size() == 0}">
+                    <th:block th:if="${loggedUser.id == product.seller.id}">
+                        <a th:href="${'/product/remove/' + product.id}"><p><i class="glyphicon glyphicon-trash"></i>Remove your product</p></a>
+                        <a th:href="${'/product/edit/' + product.id}"><p><i class="glyphicon glyphicon-pencil"></i>Edit your product</p></a>
+                    </th:block>
+
+                    <th:block th:if="${session.cart.size() == 0 &amp;&amp; loggedUser.id != product.seller.id}">
                         <h4>Interested in this product?</h4><!--<small> Add it to your cart!</small>-->
                         <p><i id="add" class="glyphicon glyphicon-shopping-cart"></i>&lt;- Add it to your cart!</p>
                     </th:block>
 
-                    <th:block th:each="item : ${session.cart}">
+                    <th:block th:each="item : ${session.cart}" th:if="${loggedUser.id != product.seller.id}">
                         <th:block th:if="${item.key == product.id}">
                             <div class="alert alert-info alert-dismissable error">
                                 This was already added to your cart!</div>
@@ -138,7 +149,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
 
-    var id = /*[[${product.id}]]*/ '0';
+    let id = /*[[${product.id}]]*/ '0';
 
     $("#add").on('click', function () {
         let url = [];

@@ -1,0 +1,159 @@
+<div th:fragment="mobiles" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container">
+        <div class="select-box">
+            <!--<div class="select-city-for-local-ads ads-list">-->
+            <!--<label>Select your city to see local ads</label>-->
+            <!--<select>-->
+            <!--<optgroup label="Popular Cities">-->
+            <!--<option selected="" style="display:none;color:#eee;">Entire USA</option>-->
+            <!--<option>Birmingham</option>-->
+            <!--</optgroup>-->
+            <!--<optgroup label="More Cities">-->
+            <!--<optgroup label="Alabama">-->
+            <!--<option>Birmingham</option>-->
+            <!--</optgroup>-->
+            <!--</optgroup>-->
+            <!--</select>-->
+            <!--</div>-->
+            <div class="browse-category ads-list">
+                <label>Browse Categories</label>
+                <select class="selectpicker show-tick" data-live-search="true">
+                    <option th:each="category : ${categories}" th:text="${category.name}"></option>
+                </select>
+            </div>
+            <div class="search-product ads-list">
+                <label>Search for a specific product</label>
+                <div class="search">
+                    <div id="custom-search-input">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-lg" placeholder="Iphone X" />
+                            <span class="input-group-btn">
+								<a th:href="${'#'}">
+                                    <button class="btn btn-info btn-lg" type="button">
+									    <i class="glyphicon glyphicon-search"></i>
+								    </button>
+                                </a>
+							</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <ol class="breadcrumb" style="margin-bottom: 5px;">
+            <li><a th:href="${'/'}">Home</a></li>
+            <li><a href="#">Categories</a></li>
+            <li class="active">Mobiles</li>
+        </ol>
+        <div class="ads-grid">
+            <div class="side-bar col-md-3">
+                <div class="search-hotel">
+                    <h3 class="sear-head">Name contains</h3>
+                    <form>
+                        <input id="searchProduct" type="text" placeholder="Product name..." required="" onkeyup="productSearch()" />
+                        <input type="submit" value=" " />
+                    </form>
+                </div>
+
+                <!--<div class="featured-ads">-->
+                <!--<h2 class="sear-head fer">Featured Ads</h2>-->
+                <!--<div class="featured-ad">-->
+                <!--<a href="single.html">-->
+                <!--<div class="featured-ad-left">-->
+                <!--<img src="images/f1.jpg" title="ad image" alt="" />-->
+                <!--</div>-->
+                <!--<div class="featured-ad-right">-->
+                <!--<h4>Lorem Ipsum is simply dummy text of the printing industry</h4>-->
+                <!--<p>$ 450</p>-->
+                <!--</div>-->
+                <!--<div class="clearfix"></div>-->
+                <!--</a>-->
+                <!--</div>-->
+                <!--<div class="featured-ad">-->
+                <!--<a href="single.html">-->
+                <!--<div class="featured-ad-left">-->
+                <!--<img src="images/f2.jpg" title="ad image" alt="" />-->
+                <!--</div>-->
+                <!--<div class="featured-ad-right">-->
+                <!--<h4>Lorem Ipsum is simply dummy text of the printing industry</h4>-->
+                <!--<p>$ 380</p>-->
+                <!--</div>-->
+                <!--<div class="clearfix"></div>-->
+                <!--</a>-->
+                <!--</div>-->
+                <!--<div class="clearfix"></div>-->
+                <!--</div>-->
+            </div>
+            <div class="ads-display col-md-9">
+                <div class="wrapper">
+                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                    <span class="text">Mobiles</span>
+                                </a>
+                            </li>
+                            <!--<li role="presentation" class="next">-->
+                            <!--<a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">-->
+                            <!--<span class="text">Ads with Photos</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--<li role="presentation">-->
+                            <!--<a href="#samsa" role="tab" id="samsa-tab" data-toggle="tab" aria-controls="samsa">-->
+                            <!--<span class="text">Company</span>-->
+                            <!--</a>-->
+                            <!--</li>-->
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                <div>
+                                    <div id="container">
+                                        <!--<div class="view-controls-list" id="viewcontrols">-->
+                                        <!--<label>view :</label>-->
+                                        <!--<a class="gridview"><i class="glyphicon glyphicon-th"></i></a>-->
+                                        <!--<a class="listview active"><i class="glyphicon glyphicon-th-list"></i></a>-->
+                                        <!--</div>-->
+                                        <div class="sort">
+                                            <div class="sort-by">
+                                                <label>Sort By : </label>
+                                                <select onchange="sortBy(this)">
+                                                    <option></option>
+                                                    <option>Most recent</option>
+                                                    <option>Price: Low to High</option>
+                                                    <option>Price: High to Low</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div id="resultsBlock">
+                                            <ul id="sort" class="list" th:each="item : ${page.getContent()}">
+                                                <a th:href="${'/product/view/' + item.id}">
+                                                    <li>
+                                                        <img th:src="${'/images/client/product/' + item.photo}" title="" alt="" />
+                                                        <section class="list-left">
+                                                            <h5 class="title" th:text="${item.name}"></h5>
+                                                            <span class="adprice" th:text="${'&#8369;' + item.price}"></span>
+                                                            <p class="catpath" th:text="${item.category.name}"></p>
+                                                        </section>
+                                                        <section class="list-right">
+                                                            <span class="cityname" th:text="${item.seller.firstName + ' ' + item.seller.lastName}"></span>
+                                                            <span class="date" th:text="${#dates.format(item.createdDate, 'MMMM dd, yyyy')}"></span>
+                                                        </section>
+                                                        <div class="clearfix"></div>
+                                                    </li>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul th:replace="/fragments/paginationbar">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
