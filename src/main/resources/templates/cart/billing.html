@@ -28,35 +28,35 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <form th:action="${'/cart/processOrder'}" method="POST" th:object="${billingInformationDto}">
                 <div class="personal-details">
                         <label>Province <span>*</span></label>
-                        <input type="text" class="name" th:field="*{province}" name="province" />
+                        <input type="text" class="name" th:field="*{province}" required="" name="province" pattern="([A-z0-9À-ž\s]){2,}" />
                         <div class="clearfix"></div>
 
                         <label>City <span>*</span></label>
-                        <input type="text" class="name" th:field="*{city}" name="city" />
+                        <input type="text" class="name" th:field="*{city}" required="" name="city" pattern="([A-z0-9À-ž\s]){2,}" />
                         <div class="clearfix"></div>
 
                         <label>Building <span>*</span></label>
-                        <input type="text" class="name" th:field="*{building}" name="building" />
+                        <input type="text" class="name" th:field="*{building}" required="" name="building" pattern="([A-z0-9À-ž\s]){2,}" />
                         <div class="clearfix"></div>
 
                         <label>Street <span>*</span></label>
-                        <input type="text" class="name" th:field="*{street}" name="street" />
+                        <input type="text" class="name" th:field="*{street}" required="" name="street" pattern="([A-z0-9À-ž\s]){2,}" />
                         <div class="clearfix"></div>
 
                         <label>Subdivision</label>
-                        <input type="text" class="name" th:field="*{subdivision}" name="subdivision" />
+                        <input type="text" class="name" th:field="*{subdivision}" name="subdivision" pattern="([A-z0-9À-ž\s]){2,}" />
                         <div class="clearfix"></div>
 
                         <label>Barangay</label>
-                        <input type="text" class="name" th:field="*{barangay}" name="barangay"/>
+                        <input type="text" class="name" th:field="*{barangay}" name="barangay" pattern="([A-z0-9À-ž\s]){2,}"/>
                         <div class="clearfix"></div>
 
                         <label>Landmark</label>
-                        <input type="text" class="name" th:field="*{landmark}" name="landmark"/>
+                        <input type="text" class="name" th:field="*{landmark}" name="landmark" pattern="([A-z0-9À-ž\s]){2,}"/>
                         <div class="clearfix"></div>
 
                         <label>Contact Number <span>*</span></label>
-                        <input type="text" class="phone" th:field="*{contactNumber}" name="contactNumber" />
+                        <input type="text" class="phone" th:field="*{contactNumber}" required="" name="contactNumber" pattern="([0-9+]){11,13}" />
                         <div class="clearfix"></div>
 
                         <label>Shipping Type</label>

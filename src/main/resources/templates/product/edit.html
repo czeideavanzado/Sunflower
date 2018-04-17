@@ -36,7 +36,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </select>
                 <div class="clearfix"></div>
                 <label>Name <span>*</span></label>
-                <input type="text" class="phone" th:field="*{name}" required="" />
+                <input type="text" class="phone" th:field="*{name}" required="" pattern="([A-z0-9À-ž\s]){2,}" />
                 <div class="clearfix"></div>
                 <label>Description <span>*</span></label>
                 <textarea th:text="${product.description}" th:field="*{description}" class="mess" placeholder="Write few lines about your product" rows="5" id="description" maxlength="250">
