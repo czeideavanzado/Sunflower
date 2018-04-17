@@ -2,6 +2,8 @@ package org.hamster.sunflower_v2.services;
 
 import org.hamster.sunflower_v2.domain.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,6 +101,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public User findByUserByUsername(String username) {
         return getSeller(username);
+    }
+
+    @Override
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByOrderByPriceAsc(Pageable pageable) {
+        return productRepository.findAllByOrderByPriceAsc(pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByOrderByPriceDesc(Pageable pageable) {
+        return productRepository.findAllByOrderByPriceDesc(pageable);
+    }
+
+    @Override
+    public Page<Product> findAllByOrderByCreatedDateDesc(Pageable pageable) {
+        return productRepository.findAllByOrderByCreatedDateDesc(pageable);
     }
 
     private User getSeller(String username) {

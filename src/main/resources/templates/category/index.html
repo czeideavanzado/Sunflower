@@ -24,35 +24,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div class="total-ads main-grid-border">
     <div class="container">
         <div class="select-box">
-            <div class="select-city-for-local-ads ads-list">
-                <label>Select your city to see local ads</label>
-                <select>
-                    <optgroup label="Popular Cities">
-                        <option selected="" style="display:none;color:#eee;">Entire USA</option>
-                        <option>Birmingham</option>
-                    </optgroup>
-                    <optgroup label="More Cities">
-                        <optgroup label="Alabama">
-                            <option>Birmingham</option>
-                        </optgroup>
-                    </optgroup>
-                </select>
-            </div>
+            <!--<div class="select-city-for-local-ads ads-list">-->
+                <!--<label>Select your city to see local ads</label>-->
+                <!--<select>-->
+                    <!--<optgroup label="Popular Cities">-->
+                        <!--<option selected="" style="display:none;color:#eee;">Entire USA</option>-->
+                        <!--<option>Birmingham</option>-->
+                    <!--</optgroup>-->
+                    <!--<optgroup label="More Cities">-->
+                        <!--<optgroup label="Alabama">-->
+                            <!--<option>Birmingham</option>-->
+                        <!--</optgroup>-->
+                    <!--</optgroup>-->
+                <!--</select>-->
+            <!--</div>-->
             <div class="browse-category ads-list">
                 <label>Browse Categories</label>
                 <select class="selectpicker show-tick" data-live-search="true">
-                    <option data-tokens="Furniture">Furniture</option>
-                    <option data-tokens="Mobiles">Mobiles</option>
-                    <option data-tokens="Electronics &amp; Appliances">Electronics &amp; Appliances</option>
-                    <option data-tokens="Cars">Cars</option>
-                    <option data-tokens="Bikes">Bikes</option>
-                    <option data-tokens="Pets">Pets</option>
-                    <option data-tokens="Books, Sports &amp; Hobbies">Books, Sports &amp; Hobbies</option>
-                    <option data-tokens="Fashion">Fashion</option>
-                    <option data-tokens="Kids">Kids</option>
-                    <option data-tokens="Services">Services</option>
-                    <option data-tokens="Jobs">Jobs</option>
-                    <option data-tokens="Real Estate">Real Estate</option>
+                    <option th:each="category : ${categories}" th:text="${category.name}"></option>
                 </select>
             </div>
             <div class="search-product ads-list">
@@ -60,11 +49,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="search">
                     <div id="custom-search-input">
                         <div class="input-group">
-                            <input type="text" class="form-control input-lg" placeholder="Buscar" />
+                            <input type="text" class="form-control input-lg" placeholder="Iphone X" />
                             <span class="input-group-btn">
-								<button class="btn btn-info btn-lg" type="button">
-									<i class="glyphicon glyphicon-search"></i>
-								</button>
+								<a th:href="${'#'}">
+                                    <button class="btn btn-info btn-lg" type="button">
+									    <i class="glyphicon glyphicon-search"></i>
+								    </button>
+                                </a>
 							</span>
                         </div>
                     </div>
@@ -148,16 +139,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <div class="sort">
                                             <div class="sort-by">
                                                 <label>Sort By : </label>
-                                                <select>
-                                                    <option value="">Most recent</option>
-                                                    <option value="">Price: Rs Low to High</option>
-                                                    <option value="">Price: Rs High to Low</option>
+                                                <select onchange="sortBy(this)">
+                                                    <option></option>
+                                                    <option>Most recent</option>
+                                                    <option>Price: Low to High</option>
+                                                    <option>Price: High to Low</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
-                                        <ul class="list" th:each="page : ${pages}">
-                                            <a th:href="${'/product/view/' + item.id}" th:each="item : ${page}">
+                                        <ul id="sort" class="list" th:each="item : ${page.getContent()}">
+                                            <a th:href="${'/product/view/' + item.id}">
                                                 <li>
                                                     <img th:src="${'/images/client/product/' + item.photo}" title="" alt="" />
                                                     <section class="list-left">
@@ -176,10 +168,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     </div>
                                 </div>
                             </div>
-                            <ul class="pagination pagination-sm">
-                                <li><a href="#">Prev</a></li>
-                                <li th:each="page, pStat : ${pages}"><a href="#">1</a></li>
-                                <li><a href="#">Next</a></li>
+                            <ul th:replace="/fragments/paginationbar">
                             </ul>
                         </div>
                     </div>
@@ -189,10 +178,50 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
     </div>
 </div>
-<!-- // Furnitures -->
 <!--footer section start-->
-<footer >
+<footer th:replace="/fragments/footer">
 </footer>
 <!--footer section end-->
+<script>
+    function sortBy(select)  {
+        let index = select.selectedIndex;
+        let sort = "createdDate";
+        let direction;
+
+        if (index == 0) {
+            return;
+        }
+
+        if (index === 1) {
+            direction = "desc";
+        } else if (index === 2) {
+            sort = "price";
+            direction = "asc";
+        } else if (index == 3) {
+            sort = "price";
+            direction = "desc";
+        }
+
+
+
+        let url = "https://localhost:8443/category/all";
+
+        window.location.href = url + "?sort=" + sort + "," + direction;
+
+        // $.ajax({
+        //     type: "GET",
+        //     contentType: "application/json",
+        //     url: "/category/all?sort=" + sort + "," + direction,
+        //     success: function () {
+        //         // $("#sort").load(location.href + " #sort>*","");
+        //         // $('#sort').listview('refresh');
+        //         $('#sort').trigger('create');
+        //     },
+        //     error: function (e) {
+        //         console.log("ERROR : ", e);
+        //     }
+        // });
+    }
+</script>
 </body>
 </html>

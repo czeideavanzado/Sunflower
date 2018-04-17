@@ -1,6 +1,8 @@
 package org.hamster.sunflower_v2.services;
 
 import org.hamster.sunflower_v2.domain.models.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,4 +31,9 @@ public interface ProductService {
     void setOpen(Long id);
 
     User findByUserByUsername(String username);
+
+    Page<Product> findAll(Pageable pageable);
+    Page<Product> findAllByOrderByPriceAsc(Pageable pageable);
+    Page<Product> findAllByOrderByPriceDesc(Pageable pageable);
+    Page<Product> findAllByOrderByCreatedDateDesc(Pageable pageable);
 }

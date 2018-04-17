@@ -1,17 +1,20 @@
 package org.hamster.sunflower_v2.controllers;
 
 import org.hamster.sunflower_v2.domain.models.Category;
+import org.hamster.sunflower_v2.domain.models.PageWrapper;
 import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.services.CategoryService;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,29 +42,15 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/all")
-    public String index(ModelMap modelMap, Authentication authentication) {
+    public String index(ModelMap modelMap, Authentication authentication, Pageable pageable) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        List<Product> products = productService.findAll();
+        PageWrapper<Product> page = page = new PageWrapper<>(productService.findAll(pageable), "/category/all");
 
-        Set<Product> items = new HashSet<>();
-        Set<Set<Product>> pages = new HashSet<>();
-
-        for (Product product : products) {
-            items.add(product);
-
-            if (items.size() == 14) {
-                pages.add(items);
-                items = new TreeSet<>();
-            }
-        }
-
-        if (pages.size() == 0) {
-            pages.add(items);
-        }
+        modelMap.addAttribute("page", page);
 
         modelMap.addAttribute("loggedUser", userService.findByUsername(authentication.getName()));
-        modelMap.addAttribute("pages", pages);
+        modelMap.addAttribute("categories", categoryService.findAll());
         return CATEGORY_PATH + "index";
     }
 }
