@@ -39,7 +39,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="flexslider">
                     <ul class="slides">
                         <li data-thumb="images/ss1.jpg">
-                            <img th:src="${'/images/client/product/' + product.photo}" />
+                            <img th:src="${product.photo != null &amp;&amp; product.photo != ''} ? ${'/images/client/product/' + product.photo} : '/images/no_image.png'"
+                                 title="" alt="" />
                         </li>
                         <!--<li data-thumb="images/ss2.jpg">-->
                             <!--<img src="images/ss2.jpg" />-->

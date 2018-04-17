@@ -78,11 +78,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByCategory(Category category) {
-        return productRepository.findByCategory(category);
-    }
-
-    @Override
     public Product find(Long id) {
         return productRepository.findOne(id);
     }
@@ -110,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findByCategory(Category category, Pageable pageable) {
-        return productRepository.findByCategory(category, pageable);
+        return productRepository.findByCategoryAndArchivedIsFalse(category, pageable);
     }
 
     @Override

@@ -19,7 +19,8 @@
                             <li th:each="product : ${session.cart}">
                                 <span class="item">
                                     <span class="item-left">
-                                        <img th:src="${'/images/client/product/' + product.value.photo}" height="50px" width="100px" alt=""/>
+                                        <img th:src="${product.value.photo != null &amp;&amp; product.value.photo != ''} ? ${'/images/client/product/' + product.value.photo} : '/images/no_image.png'"
+                                             height="50px" width="50px" alt="" />
                                         <span class="item-info">
                                             <span th:text="${product.value.name}"></span>
                                             <span th:text="${'&#8369;' + product.value.price}"></span>
@@ -32,7 +33,7 @@
                             </li>
                             <li th:if="${session.cart.size() == 0}" class="text-center">Your shopping cart is empty!</li>
                             <li th:if="${session.cart.size() > 0}" class="divider"></li>
-                            <li th:if="${session.cart.size() > 0}"><a class="text-center" href="#">Place Order</a></li>
+                            <li th:if="${session.cart.size() > 0}"><a class="text-center" th:href="${'/cart/placeOrder'}">Place Order</a></li>
                         </ul>
                     </li>
                 </ul>

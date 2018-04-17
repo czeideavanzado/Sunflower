@@ -7,6 +7,7 @@ import org.hamster.sunflower_v2.services.TransactionService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,6 +61,23 @@ public class CartController {
         return CART_PATH + "index";
     }
 
+    @GetMapping("/placeOrder")
+    public String placeOrder(ModelMap modelMap, HttpSession session, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Map<Long, Product> cart = (HashMap) session.getAttribute("cart");
+
+        if (cart.isEmpty()) {
+            return "redirect:/error/404";
+        }
+
+        modelMap.put("loggedUser", userService.findByUsername(authentication.getName()));
+
+        BillingInformationDTO billingInformationDTO = new BillingInformationDTO();
+        modelMap.put("billingInformationDto", billingInformationDTO);
+        return CART_PATH + "billing";
+    }
+
     @PostMapping(value = "processOrder")
     public ModelAndView processOrder(@ModelAttribute("billingInformationDto") @Valid BillingInformationDTO billingInformationDTO, ModelMap modelMap,
                                      HttpSession session) {
@@ -106,7 +124,11 @@ public class CartController {
         userService.addOrder(loggedUser, orderService.saveOrder(order));
         transactionService.createTransaction(order);
 
-        return CART_PATH + "orderSuccess";
+        cart.clear();
+
+        session.setAttribute("cart", cart);
+
+        return "redirect:/?orderSuccess";
     }
 
     @GetMapping(value = "buy/{id}")

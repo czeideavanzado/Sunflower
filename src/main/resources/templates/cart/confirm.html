@@ -1,99 +1,131 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/header :: head('Cart')">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/header :: head('Billing Information')">
 </head>
 <body>
-<div class="page-container">
-    <div>
-        <div class="mother-grid-inner">
-            <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
-            <!--inner block start here-->
-            <div class="inner-block">
-                <div class="shopping-cart">
-                    <div class="column-labels">
-                        <label class="product-image">&nbsp;</label>
-                        <label class="product-details">Product</label>
-                        <label class="product-price">&nbsp;</label>
-                        <label class="product-quantity">Price</label>
-                        <label class="product-removal">&nbsp;</label>
-                        <label class="product-line-price">&nbsp;</label>
-                    </div>
+<div class="header">
+    <div th:replace="/fragments/navbar">
+    </div>
+</div>
+<div class="banner text-center">
+    <div class="container">
+        <!--<h1>Sell or Advertise   <span class="segment-heading">    anything online </span> with Resale</h1>-->
+        <!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>-->
+        <!--<a href="post-ad.html">Post Free Ad</a>-->
+    </div>
+</div>
+<!-- Submit Ad -->
+<div class="submit-ad main-grid-border">
+    <div class="container">
+        <h2 class="head">Billing Information</h2>
+        <div class="post-ad-form">
+            <div class="personal-details">
+                <label>Name</label>
+                <input type="text" class="name" th:field="${loggedUser.fullName}" disabled=""/>
+                <div class="clearfix"></div>
 
-                    <div class="product" th:each="product : ${session.cart}">
-                        <div class="product-image">
-                            &nbsp;
-                        </div>
-                        <div class="product-details">
-                            <div class="product-title" th:text="${product.value.name}"></div>
+                <label>Address</label>
+                <input type="text" class="name" th:field="${billingInformationDto.fullAddress}" disabled=""/>
+                <div class="clearfix"></div>
 
-                        </div>
-                        <div class="product-quantity">
-                            &nbsp;
-                        </div>
-                        <div class="product-line-price" th:text="${product.value.price}"></div>
-                    </div>
+                <label>Contact Number</label>
+                <input type="text" class="phone" th:field="${billingInformationDto.contactNumber}" name="contactNumber" disabled="" />
+                <div class="clearfix"></div>
 
-                    <div class="billing">
-                        <div class="billing-item">
-                            <label>Billing</label>
-                            <div class="billing-value" th:text="${loggedUser.firstName + ' ' + loggedUser.lastName}"></div>
-                        </div>
-                        <div class="billing-item">
-                            <label>Address</label>
-                            <div class="billing-value" th:text="${billingInformationDto.getFullAddress()}"></div>
-                        </div>
-                        <div class="billing-item">
-                            <label>Contact #</label>
-                            <div class="billing-value" th:text="${billingInformationDto.contactNumber}"></div>
-                        </div>
-                        <div class="billing-item billing-item-total">
-                            <label>Sunflower Seeds</label>
-                            <div class="billing-value" th:text="${loggedUser.getWallet().getSeeds()}"></div>
-                        </div>
-                    </div>
+                <label>Subtotal &#8369;</label>
+                <input th:value="${#numbers.formatDecimal(total, 0, 2)}" type="text" class="phone" disabled="" />
+                <div class="clearfix"></div>
 
-                    <div class="totals">
-                        <div class="totals-item">
-                        <label>Subtotal</label>
-                        <div class="totals-value" th:text="${total}"></div>
-                        </div>
-                        <div class="totals-item">
-                        <label>Tax (5%)</label>
-                        <div class="totals-value" th:text="${#numbers.formatDecimal(total * 0.05, 0, 2)}"></div>
-                        </div>
-                        <div class="totals-item">
-                        <label th:text="${billingInformationDto.shippingType}"></label>
-                            <th:block th:switch="${billingInformationDto.shippingType}">
-                                <div th:case="'Standard Shipping'" class="totals-value" th:text="${'200.00'}"></div>
-                                <div th:case="'Express Shipping'" class="totals-value" th:text="${'500.00'}"></div>
-                                <div th:case="'Overnight Shipping'" class="totals-value" th:text="${'700.00'}"></div>
-                            </th:block>
-                        </div>
-                        <div class="totals-item totals-item-total">
-                            <label>Total</label>
-                            <th:block th:switch="${billingInformationDto.shippingType}">
-                                <div th:case="'Standard Shipping'" class="totals-value" th:text="${#numbers.formatDecimal(total * 1.05 + 200, 0, 2)}"></div>
-                                <div th:case="'Express Shipping'" class="totals-value" th:text="${#numbers.formatDecimal(total * 1.05 + 500, 0, 2)}"></div>
-                                <div th:case="'Overnight Shipping'" class="totals-value" th:text="${#numbers.formatDecimal(total * 1.05 + 7c00, 0, 2)}"></div>
-                            </th:block>
-                        </div>
-                    </div>
+                <label>Tax (5%)</label>
+                <input type="text" class="phone" th:value="${#numbers.formatDecimal(total * 0.05, 0, 2)}" disabled="" />
+                <div class="clearfix"></div>
 
-                    <a th:href="${'/reauthorize?info'}"><button class="checkout">Confirm Order</button></a>
-                </div>
+                <label th:text="${billingInformationDto.shippingType}"></label>
+                <th:block th:switch="${billingInformationDto.shippingType}">
+                    <input type="text" class="phone" disabled="" th:case="'Standard Shipping'" th:value="${'200.00'}" />
+                    <input type="text" class="phone" disabled="" th:case="'Express Shipping'" th:value="${'500.00'}" />
+                    <input type="text" class="phone" disabled="" th:case="'Overnight Shipping'" th:value="${'700.00'}" />
+                </th:block>
+                <div class="clearfix"></div>
+
+                <label>Total</label>
+                <th:block th:switch="${billingInformationDto.shippingType}">
+                    <input type="text" class="phone" disabled="" th:case="'Standard Shipping'" th:value="${#numbers.formatDecimal(total * 1.05 + 200, 0, 2)}" />
+                    <input type="text" class="phone" disabled="" th:case="'Express Shipping'" th:value="${#numbers.formatDecimal(total * 1.05 + 500, 0, 2)}" />
+                    <input type="text" class="phone" disabled="" th:case="'Overnight Shipping'" th:value="${#numbers.formatDecimal(total * 1.05 + 7c00, 0, 2)}" />
+                </th:block>
+                <div class="clearfix"></div>
+                <input type="submit" value="Confirm Order" onclick="reauthorize()" />
+                <div class="clearfix"></div>
             </div>
-            <!--inner block end here-->
-            <!--copy rights start here-->
-            <div class="copyrights">
-                <p>© 2016 Sunflower. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
-            </div>
-            <!--COPY rights end here-->
+            <!--<input type="submit" value="Post" />-->
+            <div class="clearfix"></div>
         </div>
     </div>
-    <div class="clearfix"> </div>
 </div>
+<!-- // Submit Ad -->
+<!--footer section start-->
+<footer th:replace="/fragments/footer">
+</footer>
+<!--footer section end-->
+<script>
+    function reauthorize() {
+        let url = "https://localhost:8443/reauthorize?info";
 
-<div th:replace="/fragments/footer :: footer"></div>
-<script src="/js/shoppingcart.js"></script>
+        window.location.href = url;
+    }
+</script>
 </body>
 </html>
+
+<!--<div class="shopping-cart">-->
+    <!--<div class="column-labels">-->
+        <!--<label class="product-image">&nbsp;</label>-->
+        <!--<label class="product-details">Product</label>-->
+        <!--<label class="product-price">&nbsp;</label>-->
+        <!--<label class="product-quantity">Price</label>-->
+        <!--<label class="product-removal">&nbsp;</label>-->
+        <!--<label class="product-line-price">&nbsp;</label>-->
+    <!--</div>-->
+
+    <!--<div class="product" th:each="product : ${session.cart}">-->
+        <!--<div class="product-image">-->
+            <!--&nbsp;-->
+        <!--</div>-->
+        <!--<div class="product-details">-->
+            <!--<div class="product-title" th:text="${product.value.name}"></div>-->
+
+        <!--</div>-->
+        <!--<div class="product-quantity">-->
+            <!--&nbsp;-->
+        <!--</div>-->
+        <!--<div class="product-line-price" th:text="${product.value.price}"></div>-->
+    <!--</div>-->
+
+    <!--<div class="billing">-->
+        <!--<div class="billing-item">-->
+            <!--<label>Billing</label>-->
+            <!--<div class="billing-value" th:text="${loggedUser.firstName + ' ' + loggedUser.lastName}"></div>-->
+        <!--</div>-->
+        <!--<div class="billing-item">-->
+            <!--<label>Address</label>-->
+            <!--<div class="billing-value" th:text="${billingInformationDto.getFullAddress()}"></div>-->
+        <!--</div>-->
+        <!--<div class="billing-item">-->
+            <!--<label>Contact #</label>-->
+            <!--<div class="billing-value" th:text="${billingInformationDto.contactNumber}"></div>-->
+        <!--</div>-->
+        <!--<div class="billing-item billing-item-total">-->
+            <!--<label>Sunflower Seeds</label>-->
+            <!--<div class="billing-value" th:text="${loggedUser.getWallet().getSeeds()}"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
+<!--</div>-->

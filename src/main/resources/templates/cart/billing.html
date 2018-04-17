@@ -1,0 +1,88 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="/fragments/header :: head('Place Order')">
+</head>
+<body>
+<div class="header">
+    <div th:replace="/fragments/navbar">
+    </div>
+</div>
+<div class="banner text-center">
+    <div class="container">
+        <!--<h1>Sell or Advertise   <span class="segment-heading">    anything online </span> with Resale</h1>-->
+        <!--<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>-->
+        <!--<a href="post-ad.html">Post Free Ad</a>-->
+    </div>
+</div>
+<!-- Submit Ad -->
+<div class="submit-ad main-grid-border">
+    <div class="container">
+        <h2 class="head">Place Order</h2>
+        <div class="post-ad-form">
+            <form th:action="${'/cart/processOrder'}" method="POST" th:object="${billingInformationDto}">
+                <div class="personal-details">
+                        <label>Province <span>*</span></label>
+                        <input type="text" class="name" th:field="*{province}" name="province" />
+                        <div class="clearfix"></div>
+
+                        <label>City <span>*</span></label>
+                        <input type="text" class="name" th:field="*{city}" name="city" />
+                        <div class="clearfix"></div>
+
+                        <label>Building <span>*</span></label>
+                        <input type="text" class="name" th:field="*{building}" name="building" />
+                        <div class="clearfix"></div>
+
+                        <label>Street <span>*</span></label>
+                        <input type="text" class="name" th:field="*{street}" name="street" />
+                        <div class="clearfix"></div>
+
+                        <label>Subdivision</label>
+                        <input type="text" class="name" th:field="*{subdivision}" name="subdivision" />
+                        <div class="clearfix"></div>
+
+                        <label>Barangay</label>
+                        <input type="text" class="name" th:field="*{barangay}" name="barangay"/>
+                        <div class="clearfix"></div>
+
+                        <label>Landmark</label>
+                        <input type="text" class="name" th:field="*{landmark}" name="landmark"/>
+                        <div class="clearfix"></div>
+
+                        <label>Contact Number <span>*</span></label>
+                        <input type="text" class="phone" th:field="*{contactNumber}" name="contactNumber" />
+                        <div class="clearfix"></div>
+
+                        <label>Shipping Type</label>
+                        <select th:field="*{shippingType}" name="shippingType">
+                            <option value="Standard Shipping">Standard Shipping &#8369;200</option>
+                            <option value="Express Shipping">Express Shipping &#8369;500</option>
+                            <option value="Overnight Shipping">Overnight Shipping &#8369;700</option>
+                        </select>
+                        <div class="clearfix"></div>
+                        <!--<p class="post-terms">By clicking <strong>post Button</strong> you accept our <a-->
+                                <!--href="terms.html" target="_blank">Terms of Use </a> and <a href="privacy.html"-->
+                                                                                           <!--target="_blank">Privacy-->
+                            <!--Policy</a></p>-->
+                        <input type="submit" value="Order"/>
+                        <div class="clearfix"></div>
+                </div>
+                <!--<input type="submit" value="Post" />-->
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- // Submit Ad -->
+<!--footer section start-->
+<footer th:replace="/fragments/footer">
+</footer>
+<!--footer section end-->
+</body>
+</html>

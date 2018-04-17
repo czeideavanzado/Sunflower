@@ -64,13 +64,23 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
                 "/forgotPassword/**", "/resetPassword/**", "/login",
                 "/profile/**", "/css/**", "/images/**",
                 "/js/**", "/fonts/**", "/search/**",
-                "/category/**", "/product/**"
+                "/category/**", "/product/view/**"
         };
+
+        String[] sellerResources = new String[]{
+                "/product/sell", "/product/edit/**", "/product/remove/**",
+                "/product/myProducts"
+        };
+
+        String[] buyerResources = new String[]{
+                "/product/myOrders", "/cart/**"
+        };
+
         http.authorizeRequests()
                 .antMatchers(anonymousResources).permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/product/sell").hasAnyAuthority("SELLER")
-                .antMatchers("/cart/**").hasAnyAuthority("BUYER", "ADMIN")
+                .antMatchers(sellerResources).hasAnyAuthority("SELLER")
+                .antMatchers(buyerResources).hasAnyAuthority("BUYER")
                 .anyRequest().authenticated()
                     .and()
 //                .formLogin().loginPage("/login").failureUrl("/login?error=incorrect").permitAll()

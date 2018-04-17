@@ -13,6 +13,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div class="header">
     <div th:replace="/fragments/navbar">
     </div>
+    <div class="alert alert-success alert-dismissable error text-center" th:if="${param.orderSuccess != null}">
+        <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
+        Your order has been processed! </div>
 </div>
 <div class="main-banner banner text-center">
     <div class="container">
@@ -177,5 +180,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <footer th:replace="/fragments/footer">
 </footer>
 <!--footer section end-->
+<script>
+    $(".alert").fadeTo(5000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500);
+    });
+</script>
 </body>
 </html>

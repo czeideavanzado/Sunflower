@@ -20,10 +20,6 @@ public class BillingInformationDTO {
 
     @NotNull
     @NotEmpty
-    private String houseDetails;
-
-    @NotNull
-    @NotEmpty
     private String building;
 
     @NotNull
@@ -36,6 +32,8 @@ public class BillingInformationDTO {
 
     private String landmark;
 
+    @NotNull
+    @NotEmpty
     private String contactNumber;
 
     private String shippingType;
@@ -43,10 +41,9 @@ public class BillingInformationDTO {
     public BillingInformationDTO() {
     }
 
-    public BillingInformationDTO(String province, String city, String houseDetails, String building, String street, String subdivision, String barangay, String landmark, String contactNumber, String shippingType) {
+    public BillingInformationDTO(String province, String city, String building, String street, String subdivision, String barangay, String landmark, String contactNumber, String shippingType) {
         this.province = province;
         this.city = city;
-        this.houseDetails = houseDetails;
         this.building = building;
         this.street = street;
         this.subdivision = subdivision;
@@ -70,14 +67,6 @@ public class BillingInformationDTO {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getHouseDetails() {
-        return houseDetails;
-    }
-
-    public void setHouseDetails(String houseDetails) {
-        this.houseDetails = houseDetails;
     }
 
     public String getBuilding() {
@@ -152,8 +141,8 @@ public class BillingInformationDTO {
 
         string.append(street + ", ");
         string.append(building + ", ");
-        string.append(houseDetails + ", ");
         string.append(city);
+        string.append(province);
 
         return string.toString();
     }

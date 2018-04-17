@@ -19,7 +19,6 @@ public interface ProductService {
     void removeProduct(Long id);
 
     List<Product> findAll();
-    List<Product> findByCategory(Category category);
     Product find(Long id);
     List<Product> findByKeyword(String keyword);
     BigDecimal findPrice(Long id);

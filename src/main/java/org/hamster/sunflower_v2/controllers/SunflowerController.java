@@ -137,7 +137,13 @@ public class SunflowerController {
     }
 
     @GetMapping(value = "/reauthorize")
-    public String reAuthorize(ModelMap modelMap, Authentication authentication) {
+    public String reAuthorize(ModelMap modelMap, Authentication authentication, HttpSession session) {
+        Map<Long, Product> cart = (HashMap) session.getAttribute("cart");
+
+        if (cart.isEmpty()) {
+            return "redirect:/error/404";
+        }
+
         authentication = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser = userService.findByUsername(authentication.getName());
 
