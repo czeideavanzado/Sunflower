@@ -17,8 +17,11 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -79,11 +82,12 @@ public class ProductController {
     }
 
     @GetMapping(value = "/view/{id}")
-    public String viewProductForm(@PathVariable("id") Long id, ModelMap modelMap) {
+    public String viewProductForm(@PathVariable("id") Long id, ModelMap modelMap, HttpSession session) {
         User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         modelMap.put("loggedUser", loggedUser);
         modelMap.put("product", productService.find(id));
+
         return PRODUCT_PATH + "view";
     }
 

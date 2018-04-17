@@ -1,139 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/header :: head('Cart')">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
 </head>
+
 <body>
-<!--pop up strat here-->
-<script src="/js/jquery.magnific-popup.js" type="text/javascript"></script>
-<script>
-    $(document).ready(function() {
-        $('.popup-with-zoom-anim').magnificPopup({
-            type: 'inline',
-            fixedContentPos: false,
-            fixedBgPos: true,
-            overflowY: 'auto',
-            closeBtnInside: true,
-            preloader: false,
-            midClick: true,
-            removalDelay: 300,
-            mainClass: 'my-mfp-zoom-in'
-        });
-
-    });
-</script>
-<!--pop up end here-->
-<div class="page-container">
-    <div>
-        <div class="mother-grid-inner">
-            <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
-            <!--inner block start here-->
-            <div class="inner-block">
-                <div class="shopping-cart">
-                    <div class="column-labels">
-                        <label class="product-image">&nbsp;</label>
-                        <label class="product-details">Product</label>
-                        <label class="product-price">&nbsp;</label>
-                        <label class="product-quantity">&nbsp;</label>
-                        <label class="product-removal">&nbsp;</label>
-                        <label class="product-line-price">Price</label>
-                    </div>
-
-                    <div class="product" th:each="product : ${session.cart}">
-                        <div class="product-image">
-                            <img th:src="${product.value.photo != null} ? ${'/images/' + product.value.photo} : ${'/images/no_image.jpg'}" />
-                        </div>
-                        <div class="product-details">
-                            <div class="product-title" th:text="${product.value.name}"></div>
-                            <p class="product-description" th:text="${product.value.description}"></p>
-                        </div>
-                        <div class="product-price">&nbsp;</div>
-                        <div class="product-quantity">
-                            <!--<input type="number" value="2" min="1" />-->
-                            &nbsp;
-                        </div>
-                        <div class="product-removal">
-                            <a th:href="${'/cart/remove/' + product.value.id}">
-                                <button class="remove-product">
-                                    Remove
-                                </button>
-                            </a>
-                        </div>
-                        <div class="product-line-price" th:text="${product.value.price}"></div>
-                    </div>
-
-                    <div class="totals">
-                        <div class="totals-item totals-item-total">
-                            <label>Total</label>
-                            <div class="totals-value" id="cart-total" th:if="${total != 0}" th:text="${total != null} ? ${total} : ${''}"></div>
-                        </div>
-                    </div>
-
-                    <a class="popup-with-zoom-anim" href="#small-dialog"><button th:disabled="${session.cart.size() == 0}" class="checkout">Checkout</button></a>
-
-                </div>
-            </div>
-            <!--inner block end here-->
-            <!--pop-up-grid-->
-            <div id="popup">
-                <div id="small-dialog" class="mfp-hide">
-                    <div class="pop_up">
-                        <div class="payment-online-form-left">
-                            <div id="paymentBlock">
-                                <h4><span class="shopping-pay-1"> </span>Shopping Details</h4>
-                                <form id="shoppingForm" th:action="${'/cart/processOrder'}" method="POST" th:object="${billingInformationDto}">
-                                    <br />
-                                    <ul>
-                                        <li><input th:field="*{province}" name="province" class="text-box-dark" type="text" placeholder="Province" required="" /></li>
-                                        <li><input th:field="*{city}" name="city" class="text-box-dark" type="text" placeholder="City" required="" /></li>
-                                    </ul>
-                                    <ul>
-                                        <li><input th:field="*{houseDetails}" name="houseDetails" class="text-box-dark" type="text" placeholder="House No./Unit/Floor" required="" /></li>
-                                        <li><input th:field="*{building}" name="building" class="text-box-dark" type="text" placeholder="Building" required="" /></li>
-                                    </ul>
-                                    <ul>
-                                        <li><input th:field="*{street}" name="street" class="text-box-dark" type="text" placeholder="Street" required="" /></li>
-                                        <li><input th:field="*{subdivision}" name="subdivision" class="text-box-dark" type="text" placeholder="Subdivision" /></li>
-                                    </ul>
-                                    <div class="clear"></div>
-                                    <div class="clear"></div>
-                                    <ul>
-                                        <li><input th:field="*{barangay}" name="barangay" class="text-box-dark" type="text" placeholder="Barangay" /></li>
-                                        <li><input th:field="*{landmark}" name="landmark" class="text-box-dark" type="text" placeholder="Landmark" /></li>
-                                    </ul>
-                                    <ul>
-                                        <li><input th:field="*{contactNumber}" name="contactNumber" class="text-box-dark" type="text" placeholder="Contact #" required="" /></li>
-                                        <li>
-                                            <select th:field="*{shippingType}" name="shippingType">
-                                                <option value="Standard Shipping">Standard Shipping &#8369;200</option>
-                                                <option value="Express Shipping">Express Shipping &#8369;500</option>
-                                                <option value="Overnight Shipping">Overnight Shipping &#8369;700</option>
-                                            </select>
-                                        </li>
-                                    </ul>
-                                    <ul class="payment-sendbtns">
-                                        <li><input type="reset" value="Reset" /></li>
-                                        <li class="order"><input type="submit" value="Process Order" /></li>
-                                    </ul>
-                                    <div class="clear"></div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--pop-up-grid-->
-            <!--copy rights start here-->
-            <div class="copyrights">
-                <p>© 2016 Sunflower. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
-            </div>
-            <!--COPY rights end here-->
-        </div>
-    </div>
-    <div class="clearfix"> </div>
+<div th:fragment="resultsList" id="results-block"
+     xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="alert alert-success alert-dismissable error" th:if="${success != null}">
+        Added to cart!</div>
+    <div class="alert alert-info alert-dismissable error" th:if="${error != null}">
+        This was already added to your cart!</div>
 </div>
-
-<div th:replace="/fragments/footer :: footer"></div>
-<script src="/js/shoppingcart.js"></script>
 </body>
 </html>

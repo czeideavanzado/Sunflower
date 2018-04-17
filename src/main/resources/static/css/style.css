@@ -216,6 +216,12 @@ a.account {
 a.account:hover {
 	background-color: #f3c500;
 }
+#add {
+    cursor: pointer;
+}
+#bs-example-navbar-collapse-1 {
+    margin: 13px 0 0 0;
+}
 span.active.uls-trigger {
     float: left;
     cursor: pointer;

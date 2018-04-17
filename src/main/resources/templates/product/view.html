@@ -6,7 +6,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="/fragments/header :: head('Home')">
+<head th:replace="/fragments/header :: head(${product.category.name})">
 </head>
 <body>
 <div class="header">
@@ -30,12 +30,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <a th:if="${product.category.name == 'Electronics &amp; Appliances'}" th:href="${'/category/electronics+appliances'}">Electronics &amp; Appliances</a>
                 <a th:unless="${product.category.name == 'Electronics &amp; Appliances'}" th:href="${'/category/' + product.category.name}" th:text="${product.category.name}"></a>
             </li>
-            <li class="active">Mobile Phone</li>
+            <li class="active" th:text="${product.name}"></li>
         </ol>
         <div class="product-desc">
             <div class="col-md-7 product-view">
                 <h2 th:text="${product.name}">Lorem Ipsum is simply dummy text of the printing and typesetting industry</h2>
-                <p> <i class="glyphicon glyphicon-map-marker"></i><a href="#">state</a>, <a href="#">city</a>| Posted on <th:block th:text="${#dates.format(product.createdDate, 'MMMM dd, yyyy hh:mm')}"></th:block>, Product ID: <th:block th:text="${product.id}"></th:block></p>
+                <p> <i class="glyphicon glyphicon-user"></i><a href="#" th:text="${product.seller.firstName + ' ' + product.seller.lastName}"></a> | Posted on <th:block th:text="${#dates.format(product.createdDate, 'MMMM dd, yyyy hh:mm')}"></th:block>, Product ID: <th:block th:text="${product.id}"></th:block></p>
                 <div class="flexslider">
                     <ul class="slides">
                         <li data-thumb="images/ss1.jpg">
@@ -90,8 +90,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                 </div>
                 <div class="interested text-center">
-                    <h4>Interested in this product?</h4><!--<small> Add it to your cart!</small>-->
-                    <!--<p><i class="glyphicon glyphicon-earphone"></i>00-85-9875462655</p>-->
+                    <!-- Results block -->
+                    <div id="resultsBlock">
+
+                    </div>
+
+                    <th:block th:if="${session.cart.size() == 0}">
+                        <h4>Interested in this product?</h4><!--<small> Add it to your cart!</small>-->
+                        <p><i id="add" class="glyphicon glyphicon-shopping-cart"></i>&lt;- Add it to your cart!</p>
+                    </th:block>
+
+                    <th:block th:each="item : ${session.cart}">
+                        <th:block th:if="${item.key == product.id}">
+                            <div class="alert alert-info alert-dismissable error">
+                                This was already added to your cart!</div>
+                        </th:block>
+                        <th:block th:unless="${item.key == product.id}">
+                            <h4>Interested in this product?</h4><!--<small> Add it to your cart!</small>-->
+                            <p><i id="add" class="glyphicon glyphicon-shopping-cart"></i>&lt;- Add it to your cart!</p>
+                        </th:block>
+                    </th:block>
                 </div>
                 <!--<div class="tips">-->
                     <!--<h4>Safety Tips for Buyers</h4>-->
@@ -117,5 +135,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <footer th:replace="/fragments/footer">
 </footer>
 <!--footer section end-->
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+
+    var id = /*[[${product.id}]]*/ '0';
+
+    $("#add").on('click', function () {
+        let url = [];
+        // let keyword = $("#search").val();
+        url.push("/cart/buy/", id);
+        $('#resultsBlock').load(url.join(""));
+
+        $("#bs-example-navbar-collapse-1").load(location.href + " #bs-example-navbar-collapse-1>*","");
+    });
+
+    /*]]>*/
+</script>
 </body>
 </html>

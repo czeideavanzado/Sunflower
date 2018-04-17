@@ -43,7 +43,7 @@ public class SunflowerController {
     }
 
     @GetMapping
-    public String index(ModelMap modelMap, Authentication authentication) {
+    public String index(ModelMap modelMap, Authentication authentication, HttpSession session) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser = userService.findByUsername(authentication.getName());
 

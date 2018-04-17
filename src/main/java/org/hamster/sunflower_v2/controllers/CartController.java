@@ -6,6 +6,7 @@ import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.TransactionService;
 import org.hamster.sunflower_v2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -109,25 +110,30 @@ public class CartController {
     }
 
     @GetMapping(value = "buy/{id}")
-    public String buy(@PathVariable("id") Long id, HttpSession session) {
+    public String buy(@PathVariable("id") Long id, HttpSession session, ModelMap modelMap) {
         cart = (HashMap) session.getAttribute("cart");
 
         if(!cart.containsKey(id)) {
             cart.put(id, productService.find(id));
+            session.setAttribute("cart", cart);
 
+            modelMap.put("success", "success");
+            return CART_PATH + "index :: resultsList";
         }
 
-        return "redirect:../../cart";
+        modelMap.put("error", "error");
+        return CART_PATH + "index :: resultsList";
     }
 
     @GetMapping(value = "remove/{id}")
-    public String remove(@PathVariable("id") Long id, HttpSession session) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public void remove(@PathVariable("id") Long id, HttpSession session) {
         cart = (HashMap) session.getAttribute("cart");
 
         cart.remove(id);
         session.setAttribute("cart", cart);
 
-        return "redirect:../../cart";
+//        return "redirect:../../cart";
     }
 
     private BigDecimal total(HttpSession session) {
