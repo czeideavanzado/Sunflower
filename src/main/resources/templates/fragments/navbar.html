@@ -41,6 +41,7 @@
             </span><!-- navbar-collapse -->
             <a class="account" th:href="${'/wallet'}" th:if="${loggedUser.getStringRoles().contains('BUYER')}" th:text="${loggedUser.wallet.seeds}"></a>
             <span class="active uls-trigger" th:text="${loggedUser.firstName}"></span>
+            <a th:if="${loggedUser.getStringRoles().contains('BUYER')}" th:href="${'/product/myOrders'}"><span class="active uls-trigger">View Orders</span></a>
             <a th:if="${loggedUser.getStringRoles().contains('SELLER')}" th:href="${'/product/myProducts'}"><span class="active uls-trigger">My Products</span></a>
             <a th:if="${loggedUser.getStringRoles().contains('SELLER')}" th:href="${'/product/sell'}"><span class="active uls-trigger">Sell Product</span></a>
             <a th:if="${loggedUser.getStringRoles().contains('ADMIN') || loggedUser.getStringRoles().contains('MODERATOR')}" th:href="${'/admin'}"><span class="active uls-trigger">Admin</span></a>
