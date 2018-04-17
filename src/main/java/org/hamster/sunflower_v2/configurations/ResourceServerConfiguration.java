@@ -78,7 +78,7 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(anonymousResources).permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/admin/**").hasAnyAuthority("ADMIN", "MODERATOR")
                 .antMatchers(sellerResources).hasAnyAuthority("SELLER")
                 .antMatchers(buyerResources).hasAnyAuthority("BUYER")
                 .anyRequest().authenticated()

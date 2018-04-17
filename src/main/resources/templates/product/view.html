@@ -102,8 +102,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     </div>
 
-                    <th:block th:if="${loggedUser.id == product.seller.id}">
-                        <a th:href="${'/product/remove/' + product.id}"><p><i class="glyphicon glyphicon-trash"></i>Remove your product</p></a>
+                    <th:block th:if="${(loggedUser.id == product.seller.id || loggedUser.getStringRoles().contains('ADMIN')) &amp;&amp; product.getArchive() == false}">
+                        <a th:if="${product.getStatus() != 'PENDING'}" th:href="${'/product/remove/' + product.id}"><p><i class="glyphicon glyphicon-trash"></i>Remove your product</p></a>
                         <a th:href="${'/product/edit/' + product.id}"><p><i class="glyphicon glyphicon-pencil"></i>Edit your product</p></a>
                     </th:block>
 

@@ -10,10 +10,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
 <body>
+<div class="header">
+    <div th:replace="/fragments/navbar">
+    </div>
+</div>
 <div class="page-container">
     <div>
         <div class="mother-grid-inner">
-            <div th:replace="/fragments/navbar :: navbar(${loggedUser})"></div>
             <!--inner block start here-->
             <div class="inner-block">
                 <div class="market-updates">
@@ -56,7 +59,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <tbody th:each="user: ${users}">
                                     <tr>
                                         <td th:text="${user.id}"></td>
-                                        <td><a th:href="${'/profile/' + user.id}" th:text="${user.firstName}"></a></td>
+                                        <td th:text="${user.firstName}"></td>
                                         <td th:text="${user.username}"></td>
                                         <td th:text="${user.enabled}"></td>
                                         <td>
@@ -119,7 +122,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <tbody th:each="user: ${users}">
                                     <tr th:if="${user.getStringRoles().contains('MODERATOR')}">
                                         <td th:text="${user.id}"></td>
-                                        <td><a th:href="${'/profile/' + user.id}" th:text="${user.firstName}"></a></td>
+                                        <td th:text="${user.firstName}"></td>
                                         <td th:text="${user.username}"></td>
                                         <td th:text="${user.enabled}"></td>
                                         <!--<td th:text=""></td>-->
@@ -156,10 +159,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="clearfix"> </div>
                 </div>
                 <div class="chit-chat-layer1">
-                    <div class="col-md-6 chit-chat-layer1-left">
+                    <div style="max-height: 400px; overflow-y: scroll;" class="col-md-6 chit-chat-layer1-left">
                         <div class="work-progres">
+                            <!--<div class="chit-chat-heading">-->
+                            <!--Products-->
+                            <!--</div>-->
                             <div class="table-responsive">
-                                <table class="table table-hover table-striped table-bordered" width="100%" cellspacing="0" id="seedsTable">
+                                <table class="table table-hover">
                                     <thead>
                                     <tr>
                                         <th>Serial Code</th>
@@ -182,6 +188,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-6 chit-chat-layer1-left">
                         <div class="work-progres">
                             <!--<div class="chit-chat-heading">-->
@@ -211,9 +218,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             </form>
                                             <form th:unless="${product.getSeller().getStringRoles().contains('SELLER') == false}" th:if="${product.getArchive() == true}" th:action="@{'/admin/unarchive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
                                                 <button>UN-ARCHIVE</button>
-                                            </form>
-                                            <form th:if="${product.getStatus() != 'PENDING'}" th:action="@{'/admin/remove/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
-                                                <button>DELETE</button>
                                             </form>
                                         </td>
                                     </tr>
