@@ -23,261 +23,293 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <!--users header-->
                     <div class="col-md-6 market-update-gd">
                         <div class="market-update-block clr-block-3">
-                            <div class="col-md-8 market-update-left">
-                                <h4 th:text="${'Users'}"></h4>
+                            <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                        <span class="text">Users</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                    <div>
+                                        <div id="container">
+                                            <div class="clearfix"></div>
+                                            <div id="resultsBlock">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Name</th>
+                                                            <th>Username</th>
+                                                            <th>Active</th>
+                                                            <th>Roles</th>
+                                                            <!--<th>Progress</th>-->
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody th:each="user: ${users}">
+                                                        <tr>
+                                                            <td th:text="${user.id}"></td>
+                                                            <td th:text="${user.firstName}"></td>
+                                                            <td th:text="${user.username}"></td>
+                                                            <td th:text="${user.enabled}"></td>
+                                                            <td>
+                                                                <ul th:if="${!user.getStringRoles().contains('ADMIN')}">
+                                                                    <li>BUYER</li>
+                                                                    <!--remove buyer-->
+                                                                    <form th:if="${user.getStringRoles().contains('BUYER')}" th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                                        <button>x</button>
+                                                                    </form>
+                                                                    <!--enable buyer-->
+                                                                    <form th:if="${!user.getStringRoles().contains('BUYER')}" th:action="@{'/admin/enableb/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                                        <button>+</button>
+                                                                    </form>
+
+                                                                    <li>SELLER</li>
+                                                                    <!--remove seller-->
+                                                                    <form th:if="${user.getStringRoles().contains('SELLER')}" th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                                        <button>x</button>
+                                                                    </form>
+                                                                    <!--enable seller-->
+                                                                    <form th:if="${!user.getStringRoles().contains('SELLER')}" th:action="@{'/admin/enables/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                                        <button>+</button>
+                                                                    </form>
+
+                                                                    <li th:if="${loggedUser.getStringRoles().contains('ADMIN')}">MODERATOR</li>
+                                                                    <!--disable mod-->
+                                                                    <form th:if="${user.getStringRoles().contains('MODERATOR')}" th:unless="${!loggedUser.getStringRoles().contains('ADMIN')}" th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                                        <button>x</button>
+                                                                    </form>
+                                                                    <!--enable mod-->
+                                                                    <form th:if="${!user.getStringRoles().contains('MODERATOR')}" th:unless="${!loggedUser.getStringRoles().contains('ADMIN')}" th:action="@{'/admin/admine/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
+                                                                        <button>+</button>
+                                                                    </form>
+                                                                </ul>
+                                                                <ul th:if="${user.getStringRoles().contains('ADMIN')}">
+                                                                    <li>ADMIN</li>
+                                                                </ul>
+                                                            </td>
+                                                            <!--<td th:text=""></td>-->
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
-                    </div>
-                    <!--admins header-->
-                    <div class="col-md-6 market-update-gd">
-                        <div class="market-update-block clr-block-1">
-                            <div class="col-md-8 market-update-left">
-                                <h4 th:text="${'Moderators'}"></h4>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-                <div class="chit-chat-layer1">
-                    <div class="col-md-6 chit-chat-layer1-left">
-                        <div class="work-progres">
-                            <!--user display-->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Username</th>
-                                        <th>Active</th>
-                                        <th>Roles</th>
-                                        <!--<th>Progress</th>-->
-                                    </tr>
-                                    </thead>
-                                    <tbody th:each="user: ${users}">
-                                    <tr>
-                                        <td th:text="${user.id}"></td>
-                                        <td th:text="${user.firstName}"></td>
-                                        <td th:text="${user.username}"></td>
-                                        <td th:text="${user.enabled}"></td>
-                                        <td>
-                                            <ul th:if="${!user.getStringRoles().contains('ADMIN')}">
-                                                <li>BUYER</li>
-                                                <!--remove buyer-->
-                                                <form th:if="${user.getStringRoles().contains('BUYER')}" th:action="@{'/admin/buyer/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
-                                                    <button>x</button>
-                                                </form>
-                                                <!--enable buyer-->
-                                                <form th:if="${!user.getStringRoles().contains('BUYER')}" th:action="@{'/admin/enableb/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
-                                                    <button>+</button>
-                                                </form>
 
-                                                <li>SELLER</li>
-                                                <!--remove seller-->
-                                                <form th:if="${user.getStringRoles().contains('SELLER')}" th:action="@{'/admin/seller/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
-                                                    <button>x</button>
-                                                </form>
-                                                <!--enable seller-->
-                                                <form th:if="${!user.getStringRoles().contains('SELLER')}" th:action="@{'/admin/enables/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
-                                                    <button>+</button>
-                                                </form>
 
-                                                <li th:if="${loggedUser.getStringRoles().contains('ADMIN')}">MODERATOR</li>
-                                                <!--disable mod-->
-                                                <form th:if="${user.getStringRoles().contains('MODERATOR')}" th:unless="${!loggedUser.getStringRoles().contains('ADMIN')}" th:action="@{'/admin/disablea/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
-                                                    <button>x</button>
-                                                </form>
-                                                <!--enable mod-->
-                                                <form th:if="${!user.getStringRoles().contains('MODERATOR')}" th:unless="${!loggedUser.getStringRoles().contains('ADMIN')}" th:action="@{'/admin/admine/' + ${user.id}}" th:object="${user}" th:method="POST" enctype="multipart/form-data">
-                                                    <button>+</button>
-                                                </form>
-                                            </ul>
-                                            <ul th:if="${user.getStringRoles().contains('ADMIN')}">
-                                                <li>ADMIN</li>
-                                            </ul>
-                                        </td>
-                                        <!--<td th:text=""></td>-->
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 chit-chat-layer1-left">
-                        <div class="work-progres">
-                            <!--user display-->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Username</th>
-                                        <th>Active</th>
-                                        <!--<th>Progress</th>-->
-                                    </tr>
-                                    </thead>
-                                    <tbody th:each="user: ${users}">
-                                    <tr th:if="${user.getStringRoles().contains('MODERATOR')}">
-                                        <td th:text="${user.id}"></td>
-                                        <td th:text="${user.firstName}"></td>
-                                        <td th:text="${user.username}"></td>
-                                        <td th:text="${user.enabled}"></td>
-                                        <!--<td th:text=""></td>-->
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-                <div class="market-updates">
-                    <!--seeds-->
-                    <div class="col-md-6 market-update-gd">
                         <div class="market-update-block clr-block-3">
-                            <div class="col-md-8 market-update-left">
-                                <h3 th:text="${seeds.size()}"></h3>
-                                <h4 th:text="${seeds.size() > 1} ? ${'Seeds in Circulation'} : ${'Seed in Circulation'}"></h4>
+                            <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                        <h3 th:text="${seeds.size()}"></h3>
+                                        <span class="text" th:text="${seeds.size() > 1} ? ${'Seeds in Circulation'} : ${'Seed in Circulation'}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                    <div>
+                                        <div id="container">
+                                            <div class="clearfix"></div>
+                                            <div id="resultsBlock">
+                                                <div style="max-height: 400px; overflow-y: scroll;" class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Serial Code</th>
+                                                            <th>Value</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tfoot>
+                                                        <tr>
+                                                            <th>Serial Code</th>
+                                                            <th>Value</th>
+                                                        </tr>
+                                                        </tfoot>
+                                                        <tbody th:each="seed: ${seeds.entrySet()}">
+                                                        <tr>
+                                                            <td th:text="${seed.getKey()}"></td>
+                                                            <td th:text="${seed.getValue()}"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                     </div>
-                    <!--products-->
                     <div class="col-md-6 market-update-gd">
                         <div class="market-update-block clr-block-1">
-                            <div class="col-md-8 market-update-left">
-                                <h3 th:text="${products.size()}"></h3>
-                                <h4 th:text="${products.size() > 1} ? ${'Products'} : ${'Product'}"></h4>
+                            <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                        <span class="text">Moderators</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                    <div>
+                                        <div id="container">
+                                            <div class="clearfix"></div>
+                                            <div id="resultsBlock">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Name</th>
+                                                            <th>Username</th>
+                                                            <th>Active</th>
+                                                            <!--<th>Progress</th>-->
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody th:each="user: ${users}">
+                                                        <tr th:if="${user.getStringRoles().contains('MODERATOR')}">
+                                                            <td th:text="${user.id}"></td>
+                                                            <td th:text="${user.firstName}"></td>
+                                                            <td th:text="${user.username}"></td>
+                                                            <td th:text="${user.enabled}"></td>
+                                                            <!--<td th:text=""></td>-->
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                     </div>
 
-                    <div class="clearfix"> </div>
-                </div>
-                <div class="chit-chat-layer1">
-                    <div style="max-height: 400px; overflow-y: scroll;" class="col-md-6 chit-chat-layer1-left">
-                        <div class="work-progres">
-                            <!--<div class="chit-chat-heading">-->
-                            <!--Products-->
-                            <!--</div>-->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Serial Code</th>
-                                        <th>Value</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Serial Code</th>
-                                        <th>Value</th>
-                                    </tr>
-                                    </tfoot>
-                                    <tbody th:each="seed: ${seeds.entrySet()}">
-                                    <tr>
-                                        <td th:text="${seed.getKey()}"></td>
-                                        <td th:text="${seed.getValue()}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 chit-chat-layer1-left">
-                        <div class="work-progres">
-                            <!--<div class="chit-chat-heading">-->
-                            <!--Products-->
-                            <!--</div>-->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Product Name</th>
-                                        <th>Price</th>
-                                        <th>Seller</th>
-                                        <th>Archived</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody th:each="product: ${products}">
-                                    <tr>
-                                        <td th:text="${product.id}"></td>
-                                        <td><a th:href="${'/product/view/' + product.id}" th:text="${product.name}"></a></td>
-                                        <td th:text="${product.price}"></td>
-                                        <td th:text="${product.getSeller().firstName}"></td>
-                                        <td th:text="${product.getArchive()}"></td>
-                                        <td>
-                                            <form th:if="${product.getArchive() == false}" th:action="@{'/admin/archive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
-                                                <button>ARCHIVE</button>
-                                            </form>
-                                            <form th:unless="${product.getSeller().getStringRoles().contains('SELLER') == false}" th:if="${product.getArchive() == true}" th:action="@{'/admin/unarchive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
-                                                <button>UN-ARCHIVE</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!--TRANSACTIONS-->
                     <div class="col-md-6 market-update-gd">
                         <div class="market-update-block clr-block-1">
-                            <div class="col-md-8 market-update-left">
-                                <h3 th:text="${transactions.size()}"></h3>
-                                <h4 th:text="${transactions.size() > 1} ? ${'Transactions'} : ${'Transaction'}"></h4>
+                            <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                        <h3 class="text" th:text="${products.size()}"></h3>
+                                        <span class="text" th:text="${products.size() > 1} ? ${'Products'} : ${'Product'}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                    <div>
+                                        <div id="container">
+                                            <div class="clearfix"></div>
+                                            <div id="resultsBlock">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Product Name</th>
+                                                            <th>Price</th>
+                                                            <th>Seller</th>
+                                                            <th>Archived</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody th:each="product: ${products}">
+                                                        <tr>
+                                                            <td th:text="${product.id}"></td>
+                                                            <td><a th:href="${'/product/view/' + product.id}" th:text="${product.name}"></a></td>
+                                                            <td th:text="${product.price}"></td>
+                                                            <td th:text="${product.getSeller().firstName}"></td>
+                                                            <td th:text="${product.getArchive()}"></td>
+                                                            <td>
+                                                                <form th:if="${product.getArchive() == false}" th:action="@{'/admin/archive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
+                                                                    <button>ARCHIVE</button>
+                                                                </form>
+                                                                <form th:unless="${product.getSeller().getStringRoles().contains('SELLER') == false}" th:if="${product.getArchive() == true}" th:action="@{'/admin/unarchive/' + ${product.id}}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
+                                                                    <button>UN-ARCHIVE</button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
                     </div>
-                    <div class="col-md-6 chit-chat-layer1-left">
-                        <div class="work-progres">
-                            <!--<div class="chit-chat-heading">-->
-                            <!--Products-->
-                            <!--</div>-->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Buyer</th>
-                                        <th>Products</th>
-                                        <th>Status</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody th:each="transaction: ${transactions}">
-                                    <tr>
-                                        <td th:text="${transaction.getId()}"></td>
-                                        <td th:text="${transaction.getTransactionOrder().buyer.firstName}"></td>
-                                        <td>
-                                            <ul>
-                                                <li th:each="detail : ${details}" th:if="${detail.order == transaction.getTransactionOrder()}">
-                                                    <a th:href="${'/product/view/' + detail.getProduct().id}" th:text="${detail.getProduct().name}"></a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                        <td th:text="${transaction.getTransactionOrder().transactionStatus}"></td>
 
-                                        <!--cancel transaction-->
-                                        <td>
-                                            <form th:if="${transaction.getTransactionOrder().transactionStatus != 'CANCELLED'}" th:action="@{'/admin/cancel/' + ${transaction.getId()}}" th:object="${transaction}" th:method="POST" enctype="multipart/form-data">
-                                            <button>CANCEL</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                    <div class="col-md-6 market-update-gd">
+                        <div class="market-update-block clr-block-1">
+                            <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
+                                        <h3 th:text="${transactions.size()}"></h3>
+                                        <span class="text" th:text="${transactions.size() > 1} ? ${'Transactions'} : ${'Transaction'}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                    <div>
+                                        <div id="container">
+                                            <div class="clearfix"></div>
+                                            <div id="resultsBlock">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Buyer</th>
+                                                            <th>Products</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody th:each="transaction: ${transactions}">
+                                                        <tr>
+                                                            <td th:text="${transaction.getId()}"></td>
+                                                            <td th:text="${transaction.getTransactionOrder().buyer.firstName}"></td>
+                                                            <td>
+                                                                <ul>
+                                                                    <li th:each="detail : ${details}" th:if="${detail.order == transaction.getTransactionOrder()}">
+                                                                        <a th:href="${'/product/view/' + detail.getProduct().id}" th:text="${detail.getProduct().name}"></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </td>
+                                                            <td th:text="${transaction.getTransactionOrder().transactionStatus}"></td>
+
+                                                            <!--cancel transaction-->
+                                                            <td>
+                                                                <form th:if="${transaction.getTransactionOrder().transactionStatus != 'CANCELLED'}" th:action="@{'/admin/cancel/' + ${transaction.getId()}}" th:object="${transaction}" th:method="POST" enctype="multipart/form-data">
+                                                                    <button>CANCEL</button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="clearfix"> </div>
                         </div>
                     </div>
                     <div class="clearfix"> </div>
                 </div>
+
             </div>
             <!--inner block end here-->
             <!--copy rights start here-->
