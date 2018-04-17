@@ -7,30 +7,23 @@
 <body>
 <div th:fragment="resultsList" id="results-block"
      xmlns:th="http://www.w3.org/1999/xhtml">
-    <div class="pro-head">
-        <h2>Products</h2>
-    </div>
-    <span th:each="product : ${results}">
-    <div class="col-md-3 product-grid" th:if="${product.getArchive() == false}">
-        <div class="product-items">
-            <div class="project-eff">
-                <div id="nivo-lightbox-demo">
-                    <p><a th:href="${product.photo != null} ? ${'/images/' + product.photo} : ${'/images/no_image.jpg'}"><span class="rollover1"></span></a></p>
-                    <img class="img-responsive" th:src="${product.photo != null} ? ${'/images/' + product.photo} : ${'/images/no_image.jpg'}" />
-                </div>
-            </div>
-            <div class="produ-cost">
-                <h4 th:text="${product.name}"></h4>
-                <h5 th:text="'&#8369;' + ${product.price}"></h5>
-                <a th:href="${'/cart/buy/' + product.id}"><button th:unless="${product.getSeller() == loggedUser || loggedUser == null }">Add to Cart</button></a>
-                <a th:href="${'/product/view/' + product.id}"><button th:text="View"></button></a>
-            </div>
-        </div>
-    </div>
-    </span>
-    <div th:if="${#lists.isEmpty(results)}">
-        No results found...
-    </div>
+    <ul id="sort" class="list" th:each="item : ${page.getContent()}">
+        <a th:href="${'/product/view/' + item.id}">
+            <li>
+                <img th:src="${'/images/client/product/' + item.photo}" title="" alt="" />
+                <section class="list-left">
+                    <h5 class="title" th:text="${item.name}"></h5>
+                    <span class="adprice" th:text="${'&#8369;' + item.price}"></span>
+                    <p class="catpath" th:text="${item.category.name}"></p>
+                </section>
+                <section class="list-right">
+                    <span class="cityname" th:text="${item.seller.firstName + ' ' + item.seller.lastName}"></span>
+                    <span class="date" th:text="${#dates.format(item.createdDate, 'MMMM dd, yyyy')}"></span>
+                </section>
+                <div class="clearfix"></div>
+            </li>
+        </a>
+    </ul>
 </div>
 </body>
 </html>

@@ -1,8 +1,11 @@
 package org.hamster.sunflower_v2.controllers;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.hamster.sunflower_v2.domain.models.PageWrapper;
+import org.hamster.sunflower_v2.domain.models.Product;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +27,11 @@ public class SearchController {
         this.productService = productService;
     }
 
-    @GetMapping
-    public String searchAll(Model model) {
-        model.addAttribute("results", productService.findAll());
+    @GetMapping(value = "/all/{keyword}")
+    public String search(Model model, @PathVariable("keyword") String keyword, Pageable pageable) {
+        PageWrapper<Product> page = page = new PageWrapper<>(productService.findAllByNameContaining(keyword, pageable), "/category/all");
 
-        return "/search/results :: resultsList";
-    }
-
-    @GetMapping(value = "{keyword}")
-    public String search(Model model, @PathVariable("keyword") String keyword) {
-        model.addAttribute("results", productService.findByKeyword(keyword));
+        model.addAttribute("page", page);
 
         return "/search/results :: resultsList";
     }

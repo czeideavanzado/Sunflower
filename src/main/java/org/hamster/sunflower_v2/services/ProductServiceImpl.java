@@ -109,18 +109,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findAllByOrderByPriceAsc(Pageable pageable) {
-        return productRepository.findAllByOrderByPriceAsc(pageable);
-    }
-
-    @Override
-    public Page<Product> findAllByOrderByPriceDesc(Pageable pageable) {
-        return productRepository.findAllByOrderByPriceDesc(pageable);
-    }
-
-    @Override
-    public Page<Product> findAllByOrderByCreatedDateDesc(Pageable pageable) {
-        return productRepository.findAllByOrderByCreatedDateDesc(pageable);
+    public Page<Product> findAllByNameContaining(String keyword, Pageable pageable) {
+        return productRepository.findAllByNameContaining(keyword, pageable);
     }
 
     private User getSeller(String username) {

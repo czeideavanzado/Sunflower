@@ -33,7 +33,6 @@ public interface ProductService {
     User findByUserByUsername(String username);
 
     Page<Product> findAll(Pageable pageable);
-    Page<Product> findAllByOrderByPriceAsc(Pageable pageable);
-    Page<Product> findAllByOrderByPriceDesc(Pageable pageable);
-    Page<Product> findAllByOrderByCreatedDateDesc(Pageable pageable);
+    Page<Product> findAllByNameContaining(String keyword, Pageable pageable);
+
 }

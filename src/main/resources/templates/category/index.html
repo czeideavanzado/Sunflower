@@ -66,14 +66,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <ol class="breadcrumb" style="margin-bottom: 5px;">
             <li><a href="index.html">Home</a></li>
             <li><a href="categories.html">Categories</a></li>
-            <li class="active">Furniture</li>
+            <li class="active">All</li>
         </ol>
         <div class="ads-grid">
             <div class="side-bar col-md-3">
                 <div class="search-hotel">
                     <h3 class="sear-head">Name contains</h3>
                     <form>
-                        <input type="text" value="Product name..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Product name...';}" required="" />
+                        <input id="searchProduct" type="text" placeholder="Product name..." required="" onkeyup="productSearch()" />
                         <input type="submit" value=" " />
                     </form>
                 </div>
@@ -148,23 +148,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
-                                        <ul id="sort" class="list" th:each="item : ${page.getContent()}">
-                                            <a th:href="${'/product/view/' + item.id}">
-                                                <li>
-                                                    <img th:src="${'/images/client/product/' + item.photo}" title="" alt="" />
-                                                    <section class="list-left">
-                                                        <h5 class="title" th:text="${item.name}"></h5>
-                                                        <span class="adprice" th:text="${'&#8369;' + item.price}"></span>
-                                                        <p class="catpath" th:text="${item.category.name}"></p>
-                                                    </section>
-                                                    <section class="list-right">
-                                                        <span class="cityname" th:text="${item.seller.firstName + ' ' + item.seller.lastName}"></span>
-                                                        <span class="date" th:text="${#dates.format(item.createdDate, 'MMMM dd, yyyy')}"></span>
-                                                    </section>
-                                                    <div class="clearfix"></div>
-                                                </li>
-                                            </a>
-                                        </ul>
+                                        <div id="resultsBlock">
+                                            <ul id="sort" class="list" th:each="item : ${page.getContent()}">
+                                                <a th:href="${'/product/view/' + item.id}">
+                                                    <li>
+                                                        <img th:src="${'/images/client/product/' + item.photo}" title="" alt="" />
+                                                        <section class="list-left">
+                                                            <h5 class="title" th:text="${item.name}"></h5>
+                                                            <span class="adprice" th:text="${'&#8369;' + item.price}"></span>
+                                                            <p class="catpath" th:text="${item.category.name}"></p>
+                                                        </section>
+                                                        <section class="list-right">
+                                                            <span class="cityname" th:text="${item.seller.firstName + ' ' + item.seller.lastName}"></span>
+                                                            <span class="date" th:text="${#dates.format(item.createdDate, 'MMMM dd, yyyy')}"></span>
+                                                        </section>
+                                                        <div class="clearfix"></div>
+                                                    </li>
+                                                </a>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -183,6 +185,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </footer>
 <!--footer section end-->
 <script>
+    function productSearch() {
+        let url = [];
+        let keyword = $("#searchProduct").val();
+
+        url.push("/search/all/", keyword.toString());
+        $('#resultsBlock').load(url.join(""));
+    }
+
     function sortBy(select)  {
         let index = select.selectedIndex;
         let sort = "createdDate";
@@ -207,20 +217,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         let url = "https://localhost:8443/category/all";
 
         window.location.href = url + "?sort=" + sort + "," + direction;
-
-        // $.ajax({
-        //     type: "GET",
-        //     contentType: "application/json",
-        //     url: "/category/all?sort=" + sort + "," + direction,
-        //     success: function () {
-        //         // $("#sort").load(location.href + " #sort>*","");
-        //         // $('#sort').listview('refresh');
-        //         $('#sort').trigger('create');
-        //     },
-        //     error: function (e) {
-        //         console.log("ERROR : ", e);
-        //     }
-        // });
     }
 </script>
 </body>
