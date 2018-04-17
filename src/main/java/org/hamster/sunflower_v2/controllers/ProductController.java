@@ -6,6 +6,7 @@ import org.hamster.sunflower_v2.services.OrderService;
 import org.hamster.sunflower_v2.services.ProductService;
 import org.hamster.sunflower_v2.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -134,11 +135,20 @@ public class ProductController {
     }
 
     @GetMapping(value = "/myProducts")
-    public String myProducts(ModelMap modelMap) {
-        User seller = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        modelMap.put("loggedUser", seller);
-        modelMap.put("products", seller.getProducts());
-        return PRODUCT_PATH + "my_products";
+    public String myProducts(ModelMap modelMap, Authentication authentication, Pageable pageable) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = productService.findByUserByUsername(authentication.getName());
+
+        PageWrapper<Product> page = new PageWrapper<>(productService.findBySeller(user, pageable), "/category/myProducts");
+
+        modelMap.addAttribute("page", page);
+
+        modelMap.addAttribute("loggedUser", user);
+        modelMap.addAttribute("categories", categoryService.findAll());
+        modelMap.addAttribute("fragment", "myProducts");
+        modelMap.addAttribute("categoryName", "My Products");
+        return "category/index";
     }
 
     @GetMapping(value = "/myOrders")

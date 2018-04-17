@@ -10,7 +10,8 @@
     <ul id="sort" class="list" th:each="item : ${page.getContent()}">
         <a th:href="${'/product/view/' + item.id}">
             <li>
-                <img th:src="${'/images/client/product/' + item.photo}" title="" alt="" />
+                <img th:src="${item.photo != null &amp;&amp; item.photo != ''} ? ${'/images/client/product/' + item.photo} : '/images/no_image.png'"
+                     title="" alt="" />
                 <section class="list-left">
                     <h5 class="title" th:text="${item.name}"></h5>
                     <span class="adprice" th:text="${'&#8369;' + item.price}"></span>

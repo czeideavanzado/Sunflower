@@ -1,45 +1,45 @@
 <div th:fragment="all" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="container">
-        <div class="select-box">
-            <!--<div class="select-city-for-local-ads ads-list">-->
-            <!--<label>Select your city to see local ads</label>-->
-            <!--<select>-->
-            <!--<optgroup label="Popular Cities">-->
-            <!--<option selected="" style="display:none;color:#eee;">Entire USA</option>-->
-            <!--<option>Birmingham</option>-->
-            <!--</optgroup>-->
-            <!--<optgroup label="More Cities">-->
-            <!--<optgroup label="Alabama">-->
-            <!--<option>Birmingham</option>-->
-            <!--</optgroup>-->
-            <!--</optgroup>-->
-            <!--</select>-->
+        <!--<div class="select-box">-->
+            <!--&lt;!&ndash;<div class="select-city-for-local-ads ads-list">&ndash;&gt;-->
+            <!--&lt;!&ndash;<label>Select your city to see local ads</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;<select>&ndash;&gt;-->
+            <!--&lt;!&ndash;<optgroup label="Popular Cities">&ndash;&gt;-->
+            <!--&lt;!&ndash;<option selected="" style="display:none;color:#eee;">Entire USA</option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<option>Birmingham</option>&ndash;&gt;-->
+            <!--&lt;!&ndash;</optgroup>&ndash;&gt;-->
+            <!--&lt;!&ndash;<optgroup label="More Cities">&ndash;&gt;-->
+            <!--&lt;!&ndash;<optgroup label="Alabama">&ndash;&gt;-->
+            <!--&lt;!&ndash;<option>Birmingham</option>&ndash;&gt;-->
+            <!--&lt;!&ndash;</optgroup>&ndash;&gt;-->
+            <!--&lt;!&ndash;</optgroup>&ndash;&gt;-->
+            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="browse-category ads-list">-->
+                <!--<label>Browse Categories</label>-->
+                <!--<select class="selectpicker show-tick" data-live-search="true">-->
+                    <!--<option th:each="category : ${categories}" th:text="${category.name}"></option>-->
+                <!--</select>-->
             <!--</div>-->
-            <div class="browse-category ads-list">
-                <label>Browse Categories</label>
-                <select class="selectpicker show-tick" data-live-search="true">
-                    <option th:each="category : ${categories}" th:text="${category.name}"></option>
-                </select>
-            </div>
-            <div class="search-product ads-list">
-                <label>Search for a specific product</label>
-                <div class="search">
-                    <div id="custom-search-input">
-                        <div class="input-group">
-                            <input type="text" class="form-control input-lg" placeholder="Iphone X" />
-                            <span class="input-group-btn">
-								<a th:href="${'#'}">
-                                    <button class="btn btn-info btn-lg" type="button">
-									    <i class="glyphicon glyphicon-search"></i>
-								    </button>
-                                </a>
-							</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
+            <!--<div class="search-product ads-list">-->
+                <!--<label>Search for a specific product</label>-->
+                <!--<div class="search">-->
+                    <!--<div id="custom-search-input">-->
+                        <!--<div class="input-group">-->
+                            <!--<input type="text" class="form-control input-lg" placeholder="Iphone X" />-->
+                            <!--<span class="input-group-btn">-->
+								<!--<a th:href="${'#'}">-->
+                                    <!--<button class="btn btn-info btn-lg" type="button">-->
+									    <!--<i class="glyphicon glyphicon-search"></i>-->
+								    <!--</button>-->
+                                <!--</a>-->
+							<!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="clearfix"></div>-->
+        <!--</div>-->
         <ol class="breadcrumb" style="margin-bottom: 5px;">
             <li><a th:href="${'/'}">Home</a></li>
             <li><a href="#">Categories</a></li>

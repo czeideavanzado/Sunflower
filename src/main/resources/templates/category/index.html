@@ -31,11 +31,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
 
+    let category = /*[[${fragment}]]*/ 'all';
+
+    if (category === "electronics_appliances") {
+        category = "electronics+appliances";
+    }
+
     function productSearch() {
         let url = [];
         let keyword = $("#searchProduct").val();
+        let keywordNoSpaces = keyword.split(' ').join('+');
 
-        url.push("/search/all/", keyword.toString());
+        url.push("/search/" + category + "?keyword=", keywordNoSpaces.toString());
         $('#resultsBlock').load(url.join(""));
     }
 
@@ -56,13 +63,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         } else if (index == 3) {
             sort = "price";
             direction = "desc";
-        }
-
-
-        let category = /*[[${fragment}]]*/ 'all';
-
-        if (category === "electronics_appliances") {
-            category = "electronics+appliances";
         }
 
         let url = "https://localhost:8443/category/" + category;

@@ -32,7 +32,8 @@ public interface ProductService {
     User findByUserByUsername(String username);
 
     Page<Product> findAll(Pageable pageable);
+    Page<Product> findBySeller(User user, Pageable pageable);
     Page<Product> findByCategory(Category category, Pageable pageable);
     Page<Product> findAllByNameContaining(String keyword, Pageable pageable);
-
+    Page<Product> findByCategoryAndArchivedIsFalseAndNameContaining(Category category, String keyword, Pageable pageable);
 }

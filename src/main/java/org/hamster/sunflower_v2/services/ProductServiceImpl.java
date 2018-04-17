@@ -104,13 +104,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<Product> findBySeller(User user, Pageable pageable) {
+        return productRepository.findBySeller(user, pageable);
+    }
+
+    @Override
     public Page<Product> findByCategory(Category category, Pageable pageable) {
         return productRepository.findByCategoryAndArchivedIsFalse(category, pageable);
     }
 
     @Override
     public Page<Product> findAllByNameContaining(String keyword, Pageable pageable) {
-        return productRepository.findAllByNameContaining(keyword, pageable);
+        return productRepository.findAllByNameContainingAndArchivedIsFalse(keyword, pageable);
+    }
+
+    @Override
+    public Page<Product> findByCategoryAndArchivedIsFalseAndNameContaining(Category category, String keyword, Pageable pageable) {
+        return productRepository.findByCategoryAndArchivedIsFalseAndNameContaining(category, keyword, pageable);
     }
 
     private User getSeller(String username) {
