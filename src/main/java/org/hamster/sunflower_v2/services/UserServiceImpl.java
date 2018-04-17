@@ -301,11 +301,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void disableAdmin(Long id) {
+    public void disableMod(Long id) {
         User user1 = userRepository.findOne(id);
         Set<Role> roles = user1.getRoles();
         for (Role role : roles) {
-            if(role.getRole().equalsIgnoreCase("ADMIN"))
+            if(role.getRole().equalsIgnoreCase("MODERATOR"))
                 roles.remove(role);
         }
         user1.setRoles(roles);
@@ -333,9 +333,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void enableAdmin(Long id) {
+    public void enableMod(Long id) {
         User user1 = userRepository.findOne(id);
-        Role role = roleRepository.findByRole("ADMIN");
+        Role role = roleRepository.findByRole("MODERATOR");
         Set<Role> roles = user1.getRoles();
         roles.add(role);
         user1.setRoles(roles);

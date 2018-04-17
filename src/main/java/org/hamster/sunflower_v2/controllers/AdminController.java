@@ -143,7 +143,7 @@ public class AdminController {
                                      WebRequest request, Errors errors) {
 
         if(!result.hasErrors()) {
-            userService.disableAdmin(id);
+            userService.disableMod(id);
             return new ModelAndView("redirect:/admin");
         } else {
             return new ModelAndView("redirect:/admin");
@@ -155,7 +155,7 @@ public class AdminController {
                                      WebRequest request, Errors errors) {
 
         if(!result.hasErrors()) {
-            userService.enableAdmin(id);
+            userService.enableMod(id);
             return new ModelAndView("redirect:/admin");
         } else {
             return new ModelAndView("redirect:/admin");
@@ -195,6 +195,17 @@ public class AdminController {
                                        WebRequest request, Errors errors) {
         if(!result.hasErrors()) {
             productService.unarchiveProduct(id);
+            return new ModelAndView("redirect:/admin");
+        } else {
+            return new ModelAndView("redirect:/admin");
+        }
+    }
+
+    @PostMapping(value = "/remove/{id}")
+    public ModelAndView deleteProduct(@PathVariable("id") Long id, @ModelAttribute("product") @Valid Product product, BindingResult result,
+                                         WebRequest request, Errors errors) {
+        if(!result.hasErrors()) {
+            productService.removeProduct(id);
             return new ModelAndView("redirect:/admin");
         } else {
             return new ModelAndView("redirect:/admin");
