@@ -30,7 +30,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <div class="sign-up2">
                             <!--<form>-->
-                                <input type="text" id="firstName" name="firstName" required="" />
+                                <input type="text" id="firstName" name="firstName" required="" pattern="^[a-zA-Z\s]+$" />
                             <!--</form>-->
                         </div>
                         <div class="clearfix"> </div>
@@ -41,7 +41,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <div class="sign-up2">
                             <!--<form>-->
-                                <input type="text" id="lastName" name="lastName" required="" />
+                                <input type="text" id="lastName" name="lastName" required="" pattern="^[a-zA-Z\s]+$" />
                             <!--</form>-->
                         </div>
                         <div class="clearfix"> </div>
@@ -52,7 +52,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <div class="sign-up2">
                             <!--<form>-->
-                                <input type="text" id="username" name="username" required="" />
+                                <input type="email" id="username" name="username" required="" />
                             <!--</form>-->
                         </div>
                         <div class="clearfix"> </div>
@@ -63,7 +63,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
                         <div class="sign-up2">
                             <!--<form>-->
-                                <input type="password" id="password" name="password" required="" autocomplete="off" oninput="check()"/>
+                                <input type="password" id="password" name="password" required="" minlength="8" autocomplete="off" oninput="check()"/>
                             <!--</form>-->
                         </div>
                         <div class="clearfix"> </div>
