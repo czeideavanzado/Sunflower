@@ -15,6 +15,7 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -233,18 +234,34 @@ public class UserServiceImpl implements UserService {
 
         UserAttempt userAttempt = getUserAttemptByUsername(username);
 
+        if (userAttempt.getExpiryDate() != null) {
+            if (accountLockedExpiration(userAttempt)) {
+                resetFailedAttempt(username);
+            }
+        }
+
         if (userAttempt.getAttempt() < 3) {
             userAttempt.setAttempt(userAttempt.getAttempt() + 1);
-            userAttemptRepository.save(userAttempt);
 
             if (userAttempt.getAttempt() == 3) {
                 User user = userAttempt.getLogger();
                 user.setAccountNonLocked(false);
                 userRepository.save(user);
+
+                userAttempt.setExpiryDate();
             }
+
+            userAttemptRepository.save(userAttempt);
         }
 
-        return userAttempt.getAttempt() + 1 > 3 ? "locked" : "incorrect";
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy-HH:mm:ss");
+        String dateString = "";
+
+        if (userAttempt.getExpiryDate() != null) {
+            dateString = sdf.format(userAttempt.getExpiryDate());
+        }
+
+        return userAttempt.getAttempt() + 1 > 3 ? "locked&expiration=" + dateString : "incorrect&attempt=" + userAttempt.getAttempt();
     }
 
     @Override
@@ -340,5 +357,11 @@ public class UserServiceImpl implements UserService {
         roles.add(role);
         user1.setRoles(roles);
         userRepository.save(user1);
+    }
+
+    private boolean accountLockedExpiration(UserAttempt userAttempt) {
+        Calendar cal = Calendar.getInstance();
+
+        return (userAttempt.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0;
     }
 }

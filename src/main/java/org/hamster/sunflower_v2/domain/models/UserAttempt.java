@@ -5,10 +5,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "user_attempts")
 public class UserAttempt {
+
+    private static final int EXPIRATION = 60;
 
     @Id
     @GeneratedValue(generator = "user_attempt_sequence")
@@ -31,9 +35,19 @@ public class UserAttempt {
     @Column(name = "attempts")
     private int attempt = 0;
 
+
     @UpdateTimestamp
     @Column(name = "modified_date")
     private java.sql.Timestamp modifiedDate;
+
+    private Date expiryDate;
+
+    private Date calculateExpiryDate(int expiryTimeInMinutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Timestamp(cal.getTime().getTime()));
+        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        return new Date(cal.getTime().getTime());
+    }
 
     public UserAttempt() {
     }
@@ -56,5 +70,13 @@ public class UserAttempt {
 
     public Timestamp getModifiedDate() {
         return modifiedDate;
+    }
+
+    public void setExpiryDate() {
+        this.expiryDate = calculateExpiryDate(EXPIRATION);
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
     }
 }

@@ -38,10 +38,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <i class=" fa fa-exclamation-triangle"></i> Your session has expired</div>
                     <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'incorrect')}">
                         <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
-                        Incorrect username or password </div>
+                        Incorrect username or password <br /> Attempts : <th:block th:text="${param.attempt[0]}"></th:block> </div>
                     <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'locked')}">
                         <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
-                        Your account has been locked until further notice </div>
+                        Your account has been locked until <br /> <th:block th:text="${param.expiration[0]}"></th:block> </div>
                     <div class="alert alert-danger alert-dismissable error" th:if="${(param.error != null) and (param.error[0] == 'email')}">
                         <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button"> × </button>-->
                         Email does not exist! </div>
