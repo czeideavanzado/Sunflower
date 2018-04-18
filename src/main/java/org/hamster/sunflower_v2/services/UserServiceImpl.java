@@ -237,6 +237,7 @@ public class UserServiceImpl implements UserService {
         if (userAttempt.getExpiryDate() != null) {
             if (accountLockedExpiration(userAttempt)) {
                 resetFailedAttempt(username);
+                unlockUser(username);
             }
         }
 
@@ -262,6 +263,14 @@ public class UserServiceImpl implements UserService {
         }
 
         return userAttempt.getAttempt() + 1 > 3 ? "locked&expiration=" + dateString : "incorrect&attempt=" + userAttempt.getAttempt();
+    }
+
+    private void unlockUser(String username) {
+        UserAttempt userAttempt = getUserAttemptByUsername(username);
+        
+        User user = userAttempt.getLogger();
+        user.setAccountNonLocked(true);
+        userRepository.save(user);
     }
 
     @Override
