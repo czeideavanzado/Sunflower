@@ -43,7 +43,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <th>#</th>
                                                             <th>Name</th>
                                                             <th>Username</th>
-                                                            <th>Active</th>
+                                                            <th>Verified</th>
+                                                            <th>Locked</th>
                                                             <th>Roles</th>
                                                             <!--<th>Progress</th>-->
                                                         </tr>
@@ -54,6 +55,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <td th:text="${user.firstName}"></td>
                                                             <td th:text="${user.username}"></td>
                                                             <td th:text="${user.enabled}"></td>
+                                                            <td th:text="${!user.accountNonLocked}"></td>
                                                             <td>
                                                                 <ul th:if="${!user.getStringRoles().contains('ADMIN')}">
                                                                     <li>BUYER</li>
@@ -124,19 +126,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                         <thead>
                                                         <tr>
                                                             <th>Serial Code</th>
+                                                            <th>Serial Pin</th>
                                                             <th>Value</th>
                                                         </tr>
                                                         </thead>
-                                                        <tfoot>
-                                                        <tr>
-                                                            <th>Serial Code</th>
-                                                            <th>Value</th>
-                                                        </tr>
-                                                        </tfoot>
+                                                        <!--<tfoot>-->
+                                                        <!--<tr>-->
+                                                            <!--<th>Serial Code</th>-->
+                                                            <!--<th>Value</th>-->
+                                                        <!--</tr>-->
+                                                        <!--</tfoot>-->
                                                         <tbody th:each="seed: ${seeds.entrySet()}">
                                                         <tr>
-                                                            <td th:text="${seed.getKey()}"></td>
-                                                            <td th:text="${seed.getValue()}"></td>
+                                                            <td th:text="${seed.getKey().serialCode}"></td>
+                                                            <td th:text="${seed.getKey().serialPin}"></td>
+                                                            <td th:text="${seed.getValue().value}"></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -312,11 +316,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
             </div>
             <!--inner block end here-->
-            <!--copy rights start here-->
-            <div class="copyrights">
-                <p>© 2016 Shoppy. All Rights Reserved | Design by  <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
-            </div>
-            <!--COPY rights end here-->
         </div>
     </div>
     <div class="clearfix"> </div>

@@ -61,11 +61,11 @@ public class SeedServiceImpl implements SeedService {
     }
 
     @Override
-    public Map<String, BigDecimal> findActiveSeeds() {
-        Map<String, BigDecimal> seeds  = new HashMap<>();
+    public Map<SeedId, Seed> findActiveSeeds() {
+        Map<SeedId, Seed> seeds  = new HashMap<>();
         for (Seed seed : seedRepository.findAll()) {
             if (seed.isActive()) {
-                seeds.put(seed.getId().getSerialCode(), seed.getValue());
+                seeds.put(seed.getId(), seed);
             }
         }
 
