@@ -38,4 +38,6 @@ public interface UserService {
     void enableBuyer(Long id);
     void enableSeller(Long id);
     void enableMod(Long id);
+
+    void subtractSeed(User user, Product product);
 }

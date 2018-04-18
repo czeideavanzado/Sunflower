@@ -7,7 +7,6 @@ import org.hamster.sunflower_v2.exceptions.EmailDoesNotExistException;
 import org.hamster.sunflower_v2.exceptions.EmailExistsException;
 import org.hamster.sunflower_v2.exceptions.TokenDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +14,7 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -267,7 +267,7 @@ public class UserServiceImpl implements UserService {
 
     private void unlockUser(String username) {
         UserAttempt userAttempt = getUserAttemptByUsername(username);
-        
+
         User user = userAttempt.getLogger();
         user.setAccountNonLocked(true);
         userRepository.save(user);
@@ -366,6 +366,17 @@ public class UserServiceImpl implements UserService {
         roles.add(role);
         user1.setRoles(roles);
         userRepository.save(user1);
+    }
+
+    @Override
+    public void subtractSeed(User user, Product product) {
+        BigDecimal seeds = user.getWallet().getSeeds();
+
+        seeds = seeds.subtract(product.getPrice());
+
+        user.getWallet().setSeeds(seeds);
+
+        userRepository.save(user);
     }
 
     private boolean accountLockedExpiration(UserAttempt userAttempt) {

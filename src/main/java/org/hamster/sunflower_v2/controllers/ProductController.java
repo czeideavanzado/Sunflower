@@ -165,11 +165,6 @@ public class ProductController {
                                           WebRequest request, Errors errors) {
         User loggedUser = productService.findByUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        if (loggedUser != (productService.find(id).getSeller())) {
-            return new ModelAndView("redirect:/error/403");
-        }
-
-
         if(!result.hasErrors()) {
             orderService.cancelTransaction(id);
             List<OrderDetail> details = orderService.findAllDetails();
@@ -177,9 +172,9 @@ public class ProductController {
                 if(detail.getOrder().getId() == id)
                     productService.setOpen(detail.getProduct().getId());
             }
-            return new ModelAndView("redirect:/product/myOrders");
+            return new ModelAndView("redirect:/product/myOrders?success");
         } else {
-            return new ModelAndView("redirect:/product/myOrders");
+            return new ModelAndView("redirect:/product/myOrders?error");
         }
     }
 }

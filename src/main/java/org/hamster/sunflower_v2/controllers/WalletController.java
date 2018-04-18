@@ -64,9 +64,9 @@ public class WalletController {
         }
 
         if(!result.hasErrors()) {
-            return new ModelAndView("redirect:/walletSuccess");
+            return new ModelAndView("redirect:/?walletSuccess");
         } else {
-            return new ModelAndView("redirect:/walletError");
+            return new ModelAndView("redirect:/?walletError");
         }
     }
 

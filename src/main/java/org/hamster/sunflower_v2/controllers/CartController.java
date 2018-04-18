@@ -126,6 +126,8 @@ public class CartController {
             OrderDetail orderDetail = new OrderDetail(order, product);
             orderDetailSet.add(orderService.createOrderDetail(orderDetail));
             productService.setPending(product.getId());
+
+            userService.subtractSeed(loggedUser, product);
         }
 
         order.setOrderDetails(orderDetailSet);

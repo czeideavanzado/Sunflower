@@ -11,6 +11,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div class="header">
     <div th:replace="/fragments/navbar">
     </div>
+    <div class="alert alert-success alert-dismissable error text-center" th:if="${param.success != null}">
+        Your transaction has been canceled!</div>
+    <div class="alert alert-danger alert-dismissable error text-center" th:if="${param.error != null}">
+        Something went wrong canceling your transaction! Try again</div>
 </div>
 <div class="page-container">
     <div>
@@ -57,7 +61,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                                     </ul>
                                                                 </td>
                                                                 <td>
-                                                                    <form th:if="${order.transactionStatus != 'CANCELLED'}" th:action="@{'/product/cancel/' + ${order.getId()}}" th:method="POST" enctype="multipart/form-data">
+                                                                    <form th:if="${order.transactionStatus != 'CANCELLED &amp;&amp; loggedUser != '}" th:action="@{'/product/cancel/' + ${order.getId()}}" th:method="POST" enctype="multipart/form-data">
                                                                         <button>CANCEL</button>
                                                                     </form>
                                                                 </td>
@@ -93,6 +97,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </div>
 
 <div th:replace="/fragments/footer :: footer"></div>
-
+<script>
+    $(".alert").fadeTo(5000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500);
+    });
+</script>
 </body>
 </html>
